@@ -192,11 +192,30 @@ forge test
 ## 🗺️ Roadmap
 
 - [x] **Sprint 0** — Protocol design documents · axioms · event taxonomy · sequence diagrams
-- [ ] **Sprint 1** — Identity and governance contracts · CredentialRegistry · RoleManager
-- [ ] **Sprint 2** — Core lifecycle contracts · DevicePassportNFT · ServiceLogRegistry · TransferManager
-- [ ] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT
-- [ ] **Sprint 4** — Integration shell · Paymaster stub · deploy scripts · testnet deployment
+- [x] **Sprint 1** — Identity and governance · CredentialRegistry · RoleManager · MigrationGovernance
+- [x] **Sprint 2** — Core lifecycle · DevicePassportNFT · ServiceLogRegistry · CorrectionRegistry · TransferManager
+- [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT
+- [x] **Sprint 4** — Deployment scripts · live demo · CT scanner pilot verified on-chain
 
+## ✅ Live Demo Results
+
+The complete CT scanner pilot workflow was executed on a local blockchain:
+PASSPORT STATUS - CardioScan Pro 3000
+Token ID:         1
+UDI:              00844588003288/LOT2026-001/SN00432
+Service events:   4 (PM, Calibration, Inspection, SW Update)
+Compliance score: 100 / 100
+Certified:        true
+Cert level:       GOLD
+Recall active:    false
+
+Full workflow verified:
+- Device passport minted by manufacturer
+- Dual-signature ownership transfer to hospital
+- 4 service events logged on-chain
+- Compliance score calculated automatically
+- Gold certification issued via dual-signature
+- Full history preserved across all transfers
 ---
 
 ## Enterprise Inquiries
