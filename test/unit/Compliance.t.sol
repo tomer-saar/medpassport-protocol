@@ -117,7 +117,8 @@ contract ComplianceTest is Test {
         tokenId = passport.mintDevicePassport(
             manufacturer, UDI,
             DeviceTypes.DeviceClass.CLASS_IIB,
-            MODEL, METADATA
+            MODEL, METADATA,
+            true
         );
 
         vm.prank(manufacturer);

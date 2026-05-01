@@ -120,7 +120,8 @@ contract DevicePassportTest is Test {
             UDI,
             DeviceTypes.DeviceClass.CLASS_IIB,
             MODEL,
-            METADATA
+            METADATA,
+            true
         );
     }
 
@@ -179,7 +180,8 @@ contract DevicePassportTest is Test {
             UDI,
             DeviceTypes.DeviceClass.CLASS_IIB,
             MODEL,
-            METADATA
+            METADATA,
+            true
         );
     }
 
@@ -191,7 +193,8 @@ contract DevicePassportTest is Test {
             UDI,
             DeviceTypes.DeviceClass.CLASS_I,
             MODEL,
-            METADATA
+            METADATA,
+            true
         );
     }
 
@@ -599,5 +602,36 @@ contract DevicePassportTest is Test {
         console.log("Service events:", serviceLog.getEventCount(tokenId));
         console.log("Corrections:", correctionReg.getCorrectionCount(tokenId));
         console.log("LIFECYCLE TEST PASSED");
+    }
+    // ============================================================
+    //  GS1 UDI VALIDATION
+    // ============================================================
+
+    function test_GS1_ValidUDI_PassesInProductionMode() public {
+        // Real GS1 GTIN with valid check digit
+        // 0084458800328 + check digit 8 = 00844588003288
+        vm.prank(manufacturer);
+        uint256 tokenId = passport.mintDevicePassport(
+            manufacturer,
+            "00844588003288",
+            DeviceTypes.DeviceClass.CLASS_IIB,
+            "CardioScan Pro 3000",
+            "ipfs://QmTest",
+            false  // production mode — GS1 validation enforced
+        );
+        assertGt(tokenId, 0);
+    }
+
+    function test_GS1_InvalidUDI_RejectedInProductionMode() public {
+        vm.prank(manufacturer);
+        vm.expectRevert("UDI must follow GS1 format");
+        passport.mintDevicePassport(
+            manufacturer,
+            "INVALID-UDI-123",
+            DeviceTypes.DeviceClass.CLASS_IIB,
+            "CardioScan Pro 3000",
+            "ipfs://QmTest",
+            false  // production mode — GS1 validation enforced
+        );
     }
 }

@@ -144,7 +144,8 @@ contract DevicePassportNFT is ERC721 {
         string  calldata udi,
         DeviceTypes.DeviceClass deviceClass,
         string  calldata model,
-        string  calldata metadataURI
+        string  calldata metadataURI,
+        bool    simulatedDevice
     ) external returns (uint256 tokenId) {
         // Check caller has MANUFACTURER role and active credential
         roleManager.requireManufacturer(msg.sender);
@@ -156,6 +157,9 @@ contract DevicePassportNFT is ERC721 {
 
         require(to != address(0), "Recipient cannot be zero address");
         require(bytes(udi).length > 0, "UDI cannot be empty");
+        if (!simulatedDevice) {
+            require(_isValidGS1UDI(udi), "UDI must follow GS1 format");
+        }
         require(bytes(model).length > 0, "Model cannot be empty");
 
         // Mint the token
@@ -363,8 +367,66 @@ contract DevicePassportNFT is ERC721 {
         if (!_exists(tokenId))
             revert TokenDoesNotExist(tokenId);
     }
-
-    function _exists(uint256 tokenId) internal view returns (bool) {
+function _exists(uint256 tokenId) internal view returns (bool) {
         return _ownerOf(tokenId) != address(0);
+    }
+
+    /**
+     * @notice Validates that a UDI string follows GS1 format.
+     * @dev GS1 UDI-DI must be a 14-digit GTIN.
+     *      The UDI string must be non-empty and at least 14
+     *      characters long to contain a valid GTIN component.
+     *      Full GS1 check digit validation is performed on
+     *      the first 14 characters.
+     *
+     *      Format accepted:
+     *      - 14-digit GTIN only: "00844588003288"
+     *      - GTIN with UDI-PI:   "00844588003288/LOT2026-001/SN00432"
+     *      - AI-encoded format:  "(01)00844588003288..."
+     *
+     * @param udi The UDI string to validate
+     * @return True if the UDI passes GS1 format validation
+     */
+    function _isValidGS1UDI(string calldata udi)
+        internal pure returns (bool)
+    {
+        bytes memory b = bytes(udi);
+
+        // Must be at least 14 characters to contain a GTIN
+        if (b.length < 14) return false;
+
+        // Find the start of the 14-digit GTIN
+        // Handle AI-encoded format: "(01)XXXXXXXXXXXXXX"
+        uint256 start = 0;
+        if (b.length >= 4 &&
+            b[0] == '(' && b[1] == '0' &&
+            b[2] == '1' && b[3] == ')') {
+            start = 4;
+            if (b.length < start + 14) return false;
+        }
+
+        // Extract and validate 14 GTIN digits
+        uint256[14] memory digits;
+        for (uint256 i = 0; i < 14; i++) {
+            uint8 c = uint8(b[start + i]);
+            if (c < 48 || c > 57) return false; // not a digit
+            digits[i] = c - 48;
+        }
+
+        // GS1 check digit validation — Luhn-style algorithm
+        // Multiply alternating digits by 3 and 1 from right
+        uint256 sum = 0;
+        for (uint256 i = 0; i < 13; i++) {
+            // positions 0,2,4,6,8,10,12 multiplied by 3
+            // positions 1,3,5,7,9,11   multiplied by 1
+            if (i % 2 == 0) {
+                sum += digits[i] * 3;
+            } else {
+                sum += digits[i];
+            }
+        }
+
+        uint256 checkDigit = (10 - (sum % 10)) % 10;
+        return checkDigit == digits[13];
     }
 }

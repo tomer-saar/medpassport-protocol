@@ -78,7 +78,8 @@ contract LiveDemo is Script {
             "00844588003288/LOT2026-001/SN00432",
             DeviceTypes.DeviceClass.CLASS_IIB,
             "CardioScan Pro 3000",
-            "ipfs://QmMedPassportDemoCTScanner2026"
+            "ipfs://QmMedPassportDemoCTScanner2026",
+            true
         );
         vm.stopBroadcast();
         console.log("Device passport minted. Token ID:", tokenId);
