@@ -171,6 +171,9 @@ contract DevicePassportNFT is ERC721 {
         _devices[tokenId] = DeviceTypes.DeviceIdentity({
             udi:               udi,
             deviceIdentifier:  udi,
+            basicUdiDi:        "",
+            gudidRef:          "",
+            eudamedRef:        "",
             deviceClass:       deviceClass,
             model:             model,
             manufacturerWallet: msg.sender,

@@ -77,17 +77,23 @@ library DeviceTypes {
     // ============================================================
 
     struct DeviceIdentity {
-        string      udi;
-        string      deviceIdentifier;
+        string  udi;               // Full UDI — GS1 format, same in EU and US
+        string  deviceIdentifier;  // UDI-DI component — primary lookup key
+        string  basicUdiDi;        // EU Basic UDI-DI — EUDAMED only, not on label
+                                   // Empty string for US-only devices
+        string  gudidRef;          // US GUDID record reference
+                                   // Empty string for EU-only devices
+        string  eudamedRef;        // EU EUDAMED actor SRN + device reference
+                                   // Empty string for US-only devices
         DeviceClass deviceClass;
-        string      model;
-        address     manufacturerWallet;
-        uint256     manufactureDate;
-        string      metadataURI;
-        bool        recallActive;
-        bool        decommissioned;
-        uint256     lastServiceBlock;
-        uint256     eventCount;
+        string  model;
+        address manufacturerWallet;
+        uint256 manufactureDate;
+        string  metadataURI;
+        bool    recallActive;
+        bool    decommissioned;
+        uint256 lastServiceBlock;
+        uint256 eventCount;
     }
 
     struct ServiceEvent {
