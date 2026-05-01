@@ -15,15 +15,16 @@
 
 <br/>
 
-**MedPassport is an open-source protocol that assigns every medical device
-a permanent, tamper-evident Digital Product Passport — carrying lifecycle
-evidence across the organizational handoffs where today's systems go silent.**
+**MedPassport is an open-source protocol that assigns every medical device a permanent,
+tamper-evident Digital Product Passport — carrying lifecycle evidence across the
+organizational handoffs where today's systems go silent.**
 
 <br/>
 
 [📄 Whitepaper](docs/WHITEPAPER.md) &nbsp;·&nbsp;
-[🏗️ Architecture](#️-architecture) &nbsp;·&nbsp;
+[🏗️ Architecture](#architecture) &nbsp;·&nbsp;
 [🔐 Security & Privacy](#-security--privacy) &nbsp;·&nbsp;
+[🌍 Dual-Market](#-dual-market-readiness--eu-and-us) &nbsp;·&nbsp;
 [🚀 Quick Start](#-quick-start) &nbsp;·&nbsp;
 [🤝 Contributing](CONTRIBUTING.md)
 
@@ -33,26 +34,23 @@ evidence across the organizational handoffs where today's systems go silent.**
 
 ## The Problem This Solves
 
-Medical device lifecycle data crosses six organizational boundaries —
-manufacturer, distributor, hospital, ISO service organization,
-refurbisher, and secondary buyer. At every handoff, existing systems
-go silent.
+Medical device lifecycle data crosses six organizational boundaries — manufacturer,
+distributor, hospital, ISO service organization, refurbisher, and secondary buyer.
+At every handoff, existing systems go silent.
 
 The consequence is structural:
 
-- Recalls take weeks to reach affected devices because post-distribution
-  visibility depends on voluntary reporting from downstream holders
-- Audit preparation takes days because evidence is assembled from
-  3–8 disconnected systems under time pressure
-- Refurbished devices sell at 30–50% discount because buyers cannot
-  independently verify service history
-- Warranty disputes take 30–90 days because both parties work from
-  competing paper records
+- Recalls take weeks to reach affected devices because post-distribution visibility
+  depends on voluntary reporting from downstream holders
+- Audit preparation takes days because evidence is assembled from 3–8 disconnected
+  systems under time pressure
+- Refurbished devices sell at 30–50% discount because buyers cannot independently
+  verify service history
+- Warranty disputes take 30–90 days because both parties work from competing paper records
 
-**This is not a software problem. It is an architectural one.**
-No existing platform carries device evidence across organizational
-boundaries without depending on a single trusted operator.
-MedPassport removes the need for that operator.
+**This is not a software problem. It is an architectural one.** No existing platform
+carries device evidence across organizational boundaries without depending on a single
+trusted operator. MedPassport removes the need for that operator.
 
 ---
 
@@ -69,83 +67,79 @@ MedPassport removes the need for that operator.
 ---
 
 ## Architecture
-┌─────────────────────────────────────────────────────────────┐
-│                      STAKEHOLDER TIER                       │
-│  Manufacturer · Hospital · ISO Service Org · Refurbisher    │
-│  Regulator · Insurer (read-only) · Public (read-only)       │
-└───────────────────────┬─────────────────────────────────────┘
-│  Role-based permissioned access
-┌───────────────────────▼─────────────────────────────────────┐
-│                    ENTERPRISE API LAYER                     │
-│  Role-based access · Dashboards · Audit views               │
-│  ERC-4337 Paymaster · SSO / SAML integration                │
-├─────────────────────────────────────────────────────────────┤
-│                  OFF-CHAIN DOCUMENT VAULT                   │
-│  IPFS + Arweave · Service reports · Calibration certs       │
-│  No PII · No PHI · Hash-anchored on-chain                   │
-└───────────────────────┬─────────────────────────────────────┘
-│  Hashes · attestations · metadata only
-┌───────────────────────▼─────────────────────────────────────┐
-│              ON-CHAIN LEDGER  (Polygon / Ethereum)          │
-│                                                             │
-│  ┌──────────────┐  ┌─────────────────┐  ┌───────────────┐  │
-│  │Device identity│  │ Service event  │  │  Cert token   │  │
-│  │token (ERC-721)│  │ log (append-   │  │  (ERC-5192    │  │
-│  │UDI · ownership│  │ only hashes)   │  │  soulbound)   │  │
-│  │recall flag    │  │                │  │  Bronze/Ag/Au │  │
-│  └──────────────┘  └─────────────────┘  └───────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-│  Read-only · approved fields only
-┌───────────────────────▼─────────────────────────────────────┐
-│                    READ-ONLY CONSUMERS                      │
-│  Public buyer (QR scan) · Insurer API · CMMS / ERP sync     │
-└─────────────────────────────────────────────────────────────┘
+
+```mermaid
+graph TD
+    A["👥 Stakeholder Tier
+    Manufacturer · Hospital · ISO Service Org
+    Refurbisher · Regulator · Insurer · Public"]
+
+    B["🔐 Enterprise API Layer
+    Role-based access · Dashboards · Audit views
+    ERC-4337 Paymaster · SSO / SAML integration"]
+
+    C["📦 Off-Chain Document Vault
+    IPFS + Arweave · Service reports · Calibration certs
+    No PII · No PHI · Hash-anchored on-chain"]
+
+    D["🔗 On-Chain Ledger — Polygon / Ethereum
+    Device identity token ERC-721
+    Service event log append-only hashes
+    Certification token ERC-5192 soulbound"]
+
+    F["👁️ Read-Only Consumers
+    Public buyer QR scan · Insurer API · CMMS / ERP sync"]
+
+    A --> B
+    B --> C
+    B --> D
+    C --> D
+    D --> F
+```
+
 ---
 
 ## Smart Contract Stack
-src/
-├── types/
-│   └── DeviceTypes.sol           # Shared structs and enums
-├── access/
-│   ├── CredentialRegistry.sol    # Credential states and transitions
-│   ├── RoleManager.sol           # Role-based permissions
-│   └── MigrationGovernance.sol   # M&A and succession handling
-├── core/
-│   ├── DevicePassportNFT.sol     # ERC-721 device identity token
-│   ├── ServiceLogRegistry.sol    # Append-only event log
-│   ├── CorrectionRegistry.sol    # Dispute and correction chain
-│   └── TransferManager.sol       # Dual-signature ownership transfer
-├── compliance/
-│   ├── ComplianceScorer.sol      # Weighted scoring algorithm
-│   └── CertificationSBT.sol      # ERC-5192 soulbound cert token
-└── account-abstraction/
-└── MedPassportPaymasterStub.sol  # Gasless UX layer
+
+Ten contracts deployed in dependency order:
+
+| Layer | Contract | Purpose |
+|---|---|---|
+| **Types** | `DeviceTypes.sol` | Shared enums and structs — the protocol dictionary |
+| **Access** | `CredentialRegistry.sol` | Credential states — ACTIVE, REVOKED, INACTIVE, MIGRATED |
+| **Access** | `RoleManager.sol` | Role-based permission enforcement for every write path |
+| **Access** | `MigrationGovernance.sol` | Multisig M&A and credential succession handling |
+| **Core** | `DevicePassportNFT.sol` | ERC-721 device identity token — one per physical device |
+| **Core** | `ServiceLogRegistry.sol` | Append-only lifecycle event log — 10 event types |
+| **Core** | `CorrectionRegistry.sol` | Dispute and correction chain — SUPERSEDES, DISPUTES, AMENDS |
+| **Core** | `TransferManager.sol` | Dual-signature ownership transfer with 72h expiry |
+| **Compliance** | `ComplianceScorer.sol` | Weighted 0-100 compliance score from service history |
+| **Compliance** | `CertificationSBT.sol` | ERC-5192 soulbound trust stamp — Bronze, Silver, Gold |
+
 ---
 
 ## 🔐 Security & Privacy
 
 ### Zero-PII architecture
 
-No PII or PHI is ever written to the ledger. Enforced at three
-independent levels — protocol, API gateway, and tenant configuration.
-No override exists.
+No PII or PHI is ever written to the ledger. Enforced at three independent levels —
+protocol, API gateway, and tenant configuration. No override exists.
 
 ### Append-only integrity
 
-Events are signed attestations. Corrections append a superseding
-record referencing the original hash. The original is permanently
-preserved. Nothing is deleted.
+Events are signed attestations. Corrections append a superseding record referencing
+the original hash. The original is permanently preserved. Nothing is deleted.
 
 ### Dual-signature for high-risk events
 
-Ownership transfer and certification require two independent
-credentialed actors. Neither can complete the action unilaterally.
+Ownership transfer and certification require two independent credentialed actors.
+Neither can complete the action unilaterally.
 
 ### GAMP 5 aligned
 
-Managed SaaS classified as GAMP 5 Category 4. Full Validation
-Support Package provided at enterprise onboarding — IQ/OQ/PQ
-templates, traceability matrix, risk assessment.
+Managed SaaS classified as GAMP 5 Category 4. Full Validation Support Package
+provided at enterprise onboarding — IQ/OQ/PQ templates, traceability matrix,
+risk assessment.
 
 ---
 
@@ -155,7 +149,7 @@ templates, traceability matrix, risk assessment.
 |---|---|---|
 | **ISO 13485:2016** | Global | §7.5.8 Traceability · §8.2.1 Feedback · §8.3 Nonconforming product |
 | **EU MDR 2017/745** | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 Incident reporting |
-| **EUDAMED** | EU | 4 modules mandatory 28 May 2026 · UDI/Device registration · Actor registration |
+| **EUDAMED** | EU | 4 modules mandatory 28 May 2026 · UDI registration · Actor registration |
 | **EU ESPR 2024/1781** | EU | DPP-ready architecture · JRC methodology aligned |
 | **FDA QMSR 21 CFR 820** | US | §820.10 UDI · §820.35 Records · §820.65 Traceability · §820.200 Servicing |
 | **FDA GUDID** | US | UDI-DI validation bridge · QMSR inspection-ready |
@@ -169,28 +163,25 @@ MedPassport is designed for global deployment from a single protocol implementat
 
 | Market | Registry | Status |
 |---|---|---|
-| 🇪🇺 **EU** | EUDAMED — 4 modules mandatory from 28 May 2026 | ✅ Designed — EUDAMED bridge in Phase 2 |
-| 🇺🇸 **US** | FDA GUDID — QMSR in effect February 2026 | ✅ Designed — GUDID bridge in Phase 2 |
-| 🌐 **Both** | Single deployment, dual validation at mint | ✅ Architecture complete |
+| 🇪🇺 EU | EUDAMED — 4 modules mandatory from 28 May 2026 | ✅ Designed — EUDAMED bridge in Phase 2 |
+| 🇺🇸 US | FDA GUDID — QMSR in effect February 2026 | ✅ Designed — GUDID bridge in Phase 2 |
+| 🌐 Both | Single deployment, dual validation at mint | ✅ Architecture complete |
 
 **Why ISO 13485 makes this efficient:**
-FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through
-MedPassport delivers 80% of US QMSR compliance automatically. Three targeted
-additions — dual UDI fields, GUDID bridge, and jurisdiction flagging —
-complete the picture.
+FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through MedPassport
+delivers 80% of US QMSR compliance automatically. Three targeted additions — dual UDI
+fields, GUDID bridge, and jurisdiction flagging — complete the picture.
 
-> *Enterprise Addendum covering deployment architecture, governance model,
-> GAMP 5 validation, dual-market integration, pilot definition, and ROI
-> benchmarks available on request —
-> [contact via LinkedIn](https://linkedin.com/in/tomer-saar)*
+> *Enterprise Addendum covering deployment architecture, governance model, GAMP 5
+> validation, dual-market integration, pilot definition, and ROI benchmarks available
+> on request — [contact via LinkedIn](https://www.linkedin.com/in/tomer-saar/)*
 
 ---
 
 ## 📄 Documentation
 
-The protocol design documents are published before any contract code.
-Every architectural decision is documented, justified, and traceable
-to a regulatory requirement.
+Every architectural decision is documented, justified, and traceable to a regulatory
+requirement before any contract code is written.
 
 | Document | Description |
 |---|---|
@@ -230,7 +221,10 @@ forge test
 ## ✅ Live Demo Results
 
 The complete CT scanner pilot workflow was executed and verified on-chain:
+
+```
 PASSPORT STATUS - CardioScan Pro 3000
+======================================
 Token ID:         1
 UDI:              00844588003288/LOT2026-001/SN00432
 Service events:   4 (PM, Calibration, Inspection, SW Update)
@@ -238,20 +232,23 @@ Compliance score: 100 / 100
 Certified:        true
 Cert level:       GOLD
 Recall active:    false
+======================================
 Full workflow verified:
-Passport minted by manufacturer
-Dual-signature ownership transfer to hospital
-4 service events logged on-chain
-Compliance score calculated automatically
-Gold certification issued via dual-signature
-Full history preserved across all transfers
+  Passport minted by manufacturer
+  Dual-signature ownership transfer to hospital
+  4 service events logged on-chain
+  Compliance score calculated automatically
+  Gold certification issued via dual-signature
+  Full history preserved across all transfers
+```
+
 ---
 
 ## Enterprise Inquiries
 
-MedPassport maintains a separate Enterprise Addendum covering
-deployment architecture, governance model, GAMP 5 validation,
-dual-market integration, pilot definition, and ROI benchmarks.
+MedPassport maintains a separate Enterprise Addendum covering deployment architecture,
+governance model, GAMP 5 validation, dual-market integration, pilot definition, and
+ROI benchmarks.
 
 Shared directly with qualified enterprise contacts on request.
 
@@ -264,17 +261,17 @@ Shared directly with qualified enterprise contacts on request.
 **Tomer Saar, PMP**
 20+ years in Medical Device Industry
 R&D · Engineering · Manufacturing Management at Tier-1 Global Leaders
-Currently deepening blockchain expertise to build the trust
-infrastructure this industry is missing.
+Currently deepening blockchain expertise to build the trust infrastructure this
+industry is missing.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/tomer-saar)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/tomer-saar/)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions welcome from Solidity developers, medical device
-professionals, healthcare IT specialists, and security researchers.
+Contributions welcome from Solidity developers, medical device professionals,
+healthcare IT specialists, and security researchers.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
 
