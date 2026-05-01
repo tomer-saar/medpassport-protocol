@@ -92,7 +92,7 @@ MedPassport removes the need for that operator.
 │  │Device identity│  │ Service event  │  │  Cert token   │  │
 │  │token (ERC-721)│  │ log (append-   │  │  (ERC-5192    │  │
 │  │UDI · ownership│  │ only hashes)   │  │  soulbound)   │  │
-│  │recall flag   │  │                 │  │  Bronze/Ag/Au │  │
+│  │recall flag    │  │                │  │  Bronze/Ag/Au │  │
 │  └──────────────┘  └─────────────────┘  └───────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 │  Read-only · approved fields only
@@ -100,25 +100,24 @@ MedPassport removes the need for that operator.
 │                    READ-ONLY CONSUMERS                      │
 │  Public buyer (QR scan) · Insurer API · CMMS / ERP sync     │
 └─────────────────────────────────────────────────────────────┘
-
 ---
 
 ## Smart Contract Stack
 src/
 ├── types/
-│   └── DeviceTypes.sol          # Shared structs and enums
+│   └── DeviceTypes.sol           # Shared structs and enums
 ├── access/
-│   ├── CredentialRegistry.sol   # Credential states and transitions
-│   ├── RoleManager.sol          # Role-based permissions
-│   └── MigrationGovernance.sol  # M&A and succession handling
+│   ├── CredentialRegistry.sol    # Credential states and transitions
+│   ├── RoleManager.sol           # Role-based permissions
+│   └── MigrationGovernance.sol   # M&A and succession handling
 ├── core/
-│   ├── DevicePassportNFT.sol    # ERC-721 device identity token
-│   ├── ServiceLogRegistry.sol   # Append-only event log
-│   ├── CorrectionRegistry.sol   # Dispute and correction chain
-│   └── TransferManager.sol      # Dual-signature ownership transfer
+│   ├── DevicePassportNFT.sol     # ERC-721 device identity token
+│   ├── ServiceLogRegistry.sol    # Append-only event log
+│   ├── CorrectionRegistry.sol    # Dispute and correction chain
+│   └── TransferManager.sol       # Dual-signature ownership transfer
 ├── compliance/
-│   ├── ComplianceScorer.sol     # Weighted scoring algorithm
-│   └── CertificationSBT.sol     # ERC-5192 soulbound cert token
+│   ├── ComplianceScorer.sol      # Weighted scoring algorithm
+│   └── CertificationSBT.sol      # ERC-5192 soulbound cert token
 └── account-abstraction/
 └── MedPassportPaymasterStub.sol  # Gasless UX layer
 ---
@@ -152,24 +151,50 @@ templates, traceability matrix, risk assessment.
 
 ## Regulatory Alignment
 
-| Framework | Key coverage |
-|---|---|
-| **ISO 13485:2016** | §7.5.8 Traceability · §8.2.1 Feedback · §8.3 Nonconforming product |
-| **EU MDR 2017/745** | Art. 27 UDI · Art. 83 PMS · Art. 87 Incident reporting |
-| **EU ESPR 2024/1781** | DPP-ready architecture |
-| **FDA QMSR 21 CFR 820** | §820.60 · §820.65 · §820.200 |
-| **21 CFR Part 11** | Audit trail · unique identification · record retrieval |
+| Framework | Jurisdiction | Key coverage |
+|---|---|---|
+| **ISO 13485:2016** | Global | §7.5.8 Traceability · §8.2.1 Feedback · §8.3 Nonconforming product |
+| **EU MDR 2017/745** | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 Incident reporting |
+| **EUDAMED** | EU | 4 modules mandatory 28 May 2026 · UDI/Device registration · Actor registration |
+| **EU ESPR 2024/1781** | EU | DPP-ready architecture · JRC methodology aligned |
+| **FDA QMSR 21 CFR 820** | US | §820.10 UDI · §820.35 Records · §820.65 Traceability · §820.200 Servicing |
+| **FDA GUDID** | US | UDI-DI validation bridge · QMSR inspection-ready |
+| **21 CFR Part 11** | US | Audit trail · unique identification · record retrieval |
 
 ---
 
-## Sprint 0 — Protocol Design Documents
+## 🌍 Dual-Market Readiness — EU and US
+
+MedPassport is designed for global deployment from a single protocol implementation.
+
+| Market | Registry | Status |
+|---|---|---|
+| 🇪🇺 **EU** | EUDAMED — 4 modules mandatory from 28 May 2026 | ✅ Designed — EUDAMED bridge in Phase 2 |
+| 🇺🇸 **US** | FDA GUDID — QMSR in effect February 2026 | ✅ Designed — GUDID bridge in Phase 2 |
+| 🌐 **Both** | Single deployment, dual validation at mint | ✅ Architecture complete |
+
+**Why ISO 13485 makes this efficient:**
+FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through
+MedPassport delivers 80% of US QMSR compliance automatically. Three targeted
+additions — dual UDI fields, GUDID bridge, and jurisdiction flagging —
+complete the picture.
+
+> *Enterprise Addendum covering deployment architecture, governance model,
+> GAMP 5 validation, dual-market integration, pilot definition, and ROI
+> benchmarks available on request —
+> [contact via LinkedIn](https://linkedin.com/in/tomer-saar)*
+
+---
+
+## 📄 Documentation
 
 The protocol design documents are published before any contract code.
-This is intentional — every architectural decision is documented,
-justified, and traceable to a regulatory requirement.
+Every architectural decision is documented, justified, and traceable
+to a regulatory requirement.
 
 | Document | Description |
 |---|---|
+| [Whitepaper v1.2](docs/WHITEPAPER.md) | Full protocol whitepaper — problem, solution, regulatory framework, dual-market readiness |
 | [ADR-000 Protocol Axioms](docs/adrs/ADR-000-protocol-axioms.md) | The five constitutional rules every contract must uphold |
 | [ADR-001 Credential States](docs/adrs/ADR-001-credential-states.md) | Role matrix and credential state transitions |
 | [Event Taxonomy](docs/event-model/EVENT-TAXONOMY.md) | All event types, write authority, and edge cases |
@@ -196,10 +221,15 @@ forge test
 - [x] **Sprint 2** — Core lifecycle · DevicePassportNFT · ServiceLogRegistry · CorrectionRegistry · TransferManager
 - [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT
 - [x] **Sprint 4** — Deployment scripts · live demo · CT scanner pilot verified on-chain
+- [ ] **Phase 2** — EUDAMED bridge · GUDID bridge · CMMS adapter · IPFS storage · mainnet deployment
+- [ ] **Phase 3** — Dual-market onboarding · managed SaaS · insurer API · EUDAMED Vigilance feed
+- [ ] **Phase 4** — ESPR medical device delegated act · OPC-UA IoT connector · academic publication
+
+---
 
 ## ✅ Live Demo Results
 
-The complete CT scanner pilot workflow was executed on a local blockchain:
+The complete CT scanner pilot workflow was executed and verified on-chain:
 PASSPORT STATUS - CardioScan Pro 3000
 Token ID:         1
 UDI:              00844588003288/LOT2026-001/SN00432
@@ -208,25 +238,24 @@ Compliance score: 100 / 100
 Certified:        true
 Cert level:       GOLD
 Recall active:    false
-
 Full workflow verified:
-- Device passport minted by manufacturer
-- Dual-signature ownership transfer to hospital
-- 4 service events logged on-chain
-- Compliance score calculated automatically
-- Gold certification issued via dual-signature
-- Full history preserved across all transfers
+Passport minted by manufacturer
+Dual-signature ownership transfer to hospital
+4 service events logged on-chain
+Compliance score calculated automatically
+Gold certification issued via dual-signature
+Full history preserved across all transfers
 ---
 
 ## Enterprise Inquiries
 
 MedPassport maintains a separate Enterprise Addendum covering
 deployment architecture, governance model, GAMP 5 validation,
-integration priority, pilot definition, and ROI benchmarks.
+dual-market integration, pilot definition, and ROI benchmarks.
 
 Shared directly with qualified enterprise contacts on request.
 
-**Contact:** [(https://www.linkedin.com/in/tomer-saar/)]
+**Contact:** [LinkedIn — Tomer Saar](https://www.linkedin.com/in/tomer-saar/)
 
 ---
 
@@ -238,7 +267,7 @@ R&D · Engineering · Manufacturing Management at Tier-1 Global Leaders
 Currently deepening blockchain expertise to build the trust
 infrastructure this industry is missing.
 
-
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/tomer-saar)
 
 ---
 
