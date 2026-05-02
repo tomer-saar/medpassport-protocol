@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedPassport — Digital Product Passport for Medical Devices</title>
+  <meta name="description" content="MedPassport is an open-source Shared Truth Infrastructure that assigns every medical device a permanent, tamper-evident Digital Product Passport — carrying lifecycle evidence across every organizational handoff." />
+  <meta property="og:title" content="MedPassport — Digital Product Passport for Medical Devices" />
+  <meta property="og:description" content="Cross-organizational trust infrastructure for regulated medical device lifecycles. Zero-PII. No crypto wallet. EUDAMED and GUDID aligned." />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:        #006B6B;
+      --teal-light:  #E6F2F2;
+      --teal-mid:    #CCE5E5;
+      --teal-dark:   #004E4E;
+      --ink:         #0F1A1A;
+      --ink-mid:     #2D4040;
+      --ink-light:   #5A7070;
+      --rule:        #D0DEDE;
+      --white:       #FFFFFF;
+      --off-white:   #F7FAFA;
+      --gold:        #C6922A;
+      --silver:      #6B7F8A;
+      --bronze:      #8B5E3C;
+      --green:       #1A7A4A;
+      --red:         #B03030;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --font-mono:    'DM Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 48px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-mark {
+      width: 32px; height: 32px; background: var(--teal); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+    }
+    .nav-logo-text {
+      font-family: var(--font-display); font-size: 18px; font-weight: 500;
+      color: var(--ink); letter-spacing: -0.3px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 400; color: var(--ink-light);
+      text-decoration: none; letter-spacing: 0.2px; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta {
+      background: var(--teal) !important; color: white !important;
+      padding: 8px 20px; border-radius: 4px; font-weight: 500 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--teal-dark) !important; }
+
+    /* ── Hero ── */
+    .hero-section {
+      padding: 140px 48px 80px;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 20px; padding: 6px 12px;
+      border: 1px solid var(--teal-mid); border-radius: 2px;
+      background: var(--teal-light);
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--teal); border-radius: 50%;
+    }
+
+    /* THE KILLER QUOTE */
+    .hero-quote {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--teal-dark);
+      line-height: 1.4;
+      margin-bottom: 20px;
+      padding-left: 20px;
+      border-left: 3px solid var(--teal);
+    }
+    .hero-quote-attr {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-light);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      padding-left: 20px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 3.5vw, 46px);
+      font-weight: 500; line-height: 1.15;
+      letter-spacing: -0.8px; color: var(--ink);
+      margin-bottom: 20px;
+    }
+    h1 em { font-style: normal; color: var(--teal); }
+
+    .hero-sub {
+      font-size: 16px; font-weight: 300; color: var(--ink-mid);
+      line-height: 1.7; margin-bottom: 36px; max-width: 480px;
+    }
+    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--teal); color: white; padding: 13px 26px;
+      border-radius: 4px; font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      color: var(--teal); font-size: 14px; font-weight: 500;
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      border-bottom: 1px solid var(--teal-mid); padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--teal); }
+
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--rule);
+      border: 1px solid var(--rule); border-radius: 6px;
+      overflow: hidden; margin-top: 40px;
+    }
+    .hero-stat { background: var(--white); padding: 18px 22px; }
+    .hero-stat-value {
+      font-family: var(--font-display); font-size: 26px; font-weight: 500;
+      color: var(--teal); line-height: 1; margin-bottom: 4px;
+    }
+    .hero-stat-label { font-size: 11px; font-weight: 400; color: var(--ink-light); }
+
+    /* Passport preview */
+    .passport-preview {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,107,107,0.10), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .passport-preview-header {
+      background: var(--teal); padding: 16px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .passport-preview-title {
+      font-family: var(--font-mono); font-size: 11px;
+      color: rgba(255,255,255,0.8); letter-spacing: 1px; text-transform: uppercase;
+    }
+    .passport-preview-badge {
+      background: rgba(255,255,255,0.15); color: white;
+      font-family: var(--font-mono); font-size: 10px;
+      padding: 3px 8px; border-radius: 2px; letter-spacing: 0.5px;
+    }
+    .passport-preview-body { padding: 20px 24px; }
+    .passport-field {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid var(--off-white); gap: 16px;
+    }
+    .passport-field:last-child { border-bottom: none; }
+    .passport-field-label {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--ink-light); letter-spacing: 0.8px; text-transform: uppercase;
+    }
+    .passport-field-value { font-size: 13px; color: var(--ink); font-family: var(--font-mono); }
+    .badge-gold {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #FDF3E0; color: var(--gold);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      padding: 3px 10px; border-radius: 2px; border: 1px solid #F0D898;
+    }
+    .badge-clear {
+      display: inline-flex; align-items: center; gap: 4px;
+      color: var(--green); font-size: 12px; font-weight: 500;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .dot-green { background: var(--green); }
+    .dot-red   { background: var(--red); }
+
+    /* ── Sections ── */
+    section { padding: 88px 48px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 2.8vw, 38px);
+      font-weight: 500; line-height: 1.2; letter-spacing: -0.5px;
+      color: var(--ink); margin-bottom: 14px;
+    }
+    .section-sub {
+      font-size: 16px; font-weight: 300; color: var(--ink-mid);
+      line-height: 1.7; max-width: 560px; margin-bottom: 48px;
+    }
+
+    /* ── Three Pillars ── */
+    .pillars-section { background: var(--teal); }
+    .pillars-section h2 { color: white; }
+    .pillars-section .section-label { color: rgba(255,255,255,0.5); }
+    .pillars-section .section-sub { color: rgba(255,255,255,0.7); }
+    .pillars-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; overflow: hidden;
+    }
+    .pillar-card {
+      background: rgba(255,255,255,0.06); padding: 40px 32px;
+      transition: background 0.2s;
+    }
+    .pillar-card:hover { background: rgba(255,255,255,0.10); }
+    .pillar-icon { font-size: 32px; margin-bottom: 20px; }
+    .pillar-name {
+      font-family: var(--font-display); font-size: 22px; font-weight: 500;
+      color: white; margin-bottom: 12px;
+    }
+    .pillar-desc { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.7); line-height: 1.7; }
+    .pillar-contracts {
+      margin-top: 20px; padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+    }
+    .pillar-contract {
+      font-family: var(--font-mono); font-size: 10px;
+      color: rgba(255,255,255,0.4); letter-spacing: 0.3px;
+      display: block; margin-bottom: 4px;
+    }
+
+    /* ── Enterprise Ready ── */
+    .enterprise-section { background: var(--off-white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .enterprise-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; background: var(--rule);
+      border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+    }
+    .enterprise-card { background: var(--white); padding: 32px; }
+    .enterprise-icon { font-size: 28px; margin-bottom: 16px; }
+    .enterprise-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+    .enterprise-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+    .enterprise-tag {
+      display: inline-block; margin-top: 14px;
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--teal); background: var(--teal-light);
+      padding: 3px 10px; border-radius: 2px; letter-spacing: 0.5px;
+    }
+
+    /* ── Information Gap ── */
+    .problem-section { }
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 2px; background: var(--rule);
+      border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+    }
+    .problem-card { background: var(--white); padding: 32px; }
+    .problem-number {
+      font-family: var(--font-display); font-size: 44px; font-weight: 400;
+      color: var(--teal-mid); line-height: 1; margin-bottom: 10px;
+    }
+    .problem-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+    .problem-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+
+    /* ── How It Works ── */
+    .steps {
+      display: flex; flex-direction: column; gap: 0;
+      border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+    }
+    .step {
+      display: grid; grid-template-columns: 64px 1fr;
+      border-bottom: 1px solid var(--rule); transition: background 0.2s;
+    }
+    .step:last-child { border-bottom: none; }
+    .step:hover { background: var(--off-white); }
+    .step-number {
+      background: var(--teal-light);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 20px; font-weight: 500;
+      color: var(--teal); border-right: 1px solid var(--rule);
+    }
+    .step-content { padding: 22px 28px; }
+    .step-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .step-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+    .step-tag {
+      display: inline-block; margin-top: 8px;
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--teal); background: var(--teal-light);
+      padding: 2px 8px; border-radius: 2px; letter-spacing: 0.3px;
+    }
+
+    /* ── Regulatory ── */
+    .reg-section { background: var(--ink); }
+    .reg-section h2 { color: white; }
+    .reg-section .section-label { color: var(--teal-mid); }
+    .reg-section .section-sub { color: rgba(255,255,255,0.6); }
+    .reg-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px; overflow: hidden;
+    }
+    .reg-card { background: rgba(255,255,255,0.04); padding: 32px; transition: background 0.2s; }
+    .reg-card:hover { background: rgba(255,255,255,0.07); }
+    .reg-flag { font-size: 24px; margin-bottom: 12px; }
+    .reg-title {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: rgba(255,255,255,0.4); letter-spacing: 0.8px;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    .reg-name { font-size: 15px; font-weight: 500; color: white; margin-bottom: 8px; }
+    .reg-desc { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .reg-status {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--font-mono); font-size: 10px;
+      color: #4ECDC4; margin-top: 12px; letter-spacing: 0.5px;
+    }
+
+    /* ── Passport Viewer ── */
+    .viewer-section { background: var(--off-white); }
+    .viewer-wrapper { max-width: 760px; margin: 0 auto; }
+    .viewer-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,107,107,0.06);
+    }
+    .viewer-header {
+      background: var(--teal); padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .viewer-header-title { font-family: var(--font-display); font-size: 18px; font-weight: 500; color: white; }
+    .viewer-header-sub {
+      font-family: var(--font-mono); font-size: 10px;
+      color: rgba(255,255,255,0.65); letter-spacing: 1px;
+      text-transform: uppercase; margin-top: 2px;
+    }
+    .viewer-input-area {
+      padding: 28px 32px; border-bottom: 1px solid var(--rule);
+      background: var(--off-white);
+    }
+    .viewer-input-label {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--ink-light); letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 10px; display: block;
+    }
+    .viewer-input-row { display: flex; gap: 12px; }
+    .viewer-input {
+      flex: 1; font-family: var(--font-mono); font-size: 14px;
+      color: var(--ink); background: var(--white);
+      border: 1px solid var(--rule); border-radius: 4px;
+      padding: 11px 16px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .viewer-input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-light);
+    }
+    .viewer-input::placeholder { color: var(--ink-light); opacity: 0.6; }
+    .viewer-btn {
+      background: var(--teal); color: white; border: none;
+      border-radius: 4px; padding: 11px 22px;
+      font-family: var(--font-body); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background 0.2s; white-space: nowrap;
+    }
+    .viewer-btn:hover { background: var(--teal-dark); }
+    .viewer-presets { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .viewer-preset {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--teal); background: var(--teal-light);
+      border: 1px solid var(--teal-mid); border-radius: 2px;
+      padding: 4px 10px; cursor: pointer; transition: background 0.15s;
+    }
+    .viewer-preset:hover { background: var(--teal-mid); }
+    .viewer-empty { padding: 48px 32px; text-align: center; color: var(--ink-light); }
+    .viewer-empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+    .viewer-empty-text { font-size: 14px; font-weight: 300; }
+    .passport-result { display: none; padding: 32px; }
+    .passport-result.visible { display: block; }
+    .result-device-name {
+      font-family: var(--font-display); font-size: 22px;
+      font-weight: 500; color: var(--ink); margin-bottom: 4px;
+    }
+    .result-udi { font-family: var(--font-mono); font-size: 12px; color: var(--ink-light); margin-bottom: 24px; }
+    .result-status-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--rule);
+      border: 1px solid var(--rule); border-radius: 4px;
+      overflow: hidden; margin-bottom: 28px;
+    }
+    .result-status-item { background: var(--white); padding: 14px; text-align: center; }
+    .result-status-value {
+      font-family: var(--font-display); font-size: 20px; font-weight: 500;
+      line-height: 1; margin-bottom: 4px;
+    }
+    .result-status-label {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--ink-light); letter-spacing: 0.8px; text-transform: uppercase;
+    }
+    .result-section-title {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--ink-light); letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+    }
+    .result-events { display: flex; flex-direction: column; margin-bottom: 28px; }
+    .result-event {
+      display: grid; grid-template-columns: 110px 1fr auto;
+      gap: 12px; align-items: center; padding: 10px 0;
+      border-bottom: 1px solid var(--off-white);
+    }
+    .result-event:last-child { border-bottom: none; }
+    .result-event-type {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--teal); background: var(--teal-light);
+      padding: 3px 8px; border-radius: 2px; text-align: center;
+    }
+    .result-event-desc { font-size: 13px; color: var(--ink-mid); }
+    .result-cert-block {
+      border-radius: 6px; padding: 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .result-cert-level {
+      font-family: var(--font-display); font-size: 30px; font-weight: 500;
+    }
+    .result-cert-label {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .result-qr {
+      display: flex; align-items: center; gap: 24px;
+      padding-top: 24px; border-top: 1px solid var(--rule);
+    }
+    #qrcode canvas, #qrcode img { border-radius: 4px; border: 1px solid var(--rule); }
+    .result-qr-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .result-qr-desc { font-size: 12px; color: var(--ink-light); line-height: 1.5; }
+    .result-on-chain {
+      display: flex; align-items: center; gap: 6px;
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--teal); margin-top: 8px;
+    }
+
+    /* ── Who It Serves ── */
+    .audience-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; background: var(--rule);
+      border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
+    }
+    .audience-card { background: var(--white); padding: 36px 30px; }
+    .audience-icon { font-size: 26px; margin-bottom: 14px; }
+    .audience-role {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--teal); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .audience-title { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 10px; line-height: 1.3; }
+    .audience-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+    .audience-metric {
+      margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule);
+      font-family: var(--font-mono); font-size: 11px; color: var(--teal);
+    }
+    .audience-roi {
+      margin-top: 10px; padding: 10px 14px;
+      background: var(--teal-light); border-radius: 4px;
+      font-size: 12px; color: var(--teal-dark); line-height: 1.5;
+    }
+
+    /* ── Ecosystem & Pilots ── */
+    .pilots-section { background: var(--off-white); border-top: 1px solid var(--rule); }
+    .pilots-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+    }
+    .pilots-left h2 { margin-bottom: 16px; }
+    .pilots-left .section-sub { margin-bottom: 32px; }
+    .pilots-criteria { display: flex; flex-direction: column; gap: 12px; }
+    .pilots-criterion {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px; background: var(--white);
+      border: 1px solid var(--rule); border-radius: 4px;
+    }
+    .pilots-criterion-icon {
+      width: 32px; height: 32px; background: var(--teal-light);
+      border-radius: 4px; display: flex; align-items: center;
+      justify-content: center; font-size: 14px; flex-shrink: 0;
+    }
+    .pilots-criterion-text { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .pilots-criterion-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .pilots-right {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: 8px; overflow: hidden;
+    }
+    .pilots-right-header {
+      background: var(--teal); padding: 20px 28px;
+    }
+    .pilots-right-title {
+      font-family: var(--font-display); font-size: 18px;
+      font-weight: 500; color: white; margin-bottom: 4px;
+    }
+    .pilots-right-sub {
+      font-family: var(--font-mono); font-size: 10px;
+      color: rgba(255,255,255,0.65); letter-spacing: 1px; text-transform: uppercase;
+    }
+    .pilots-right-body { padding: 28px; }
+    .pilots-wave {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 16px 0; border-bottom: 1px solid var(--off-white);
+    }
+    .pilots-wave:last-child { border-bottom: none; }
+    .pilots-wave-num {
+      width: 28px; height: 28px; background: var(--teal-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      color: var(--teal); flex-shrink: 0;
+    }
+    .pilots-wave-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+    .pilots-wave-desc { font-size: 12px; color: var(--ink-light); }
+    .pilots-wave-status {
+      margin-top: 6px; font-family: var(--font-mono); font-size: 10px;
+      color: var(--teal); letter-spacing: 0.5px;
+    }
+    .pilots-cta {
+      margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--rule);
+    }
+    .pilots-cta-text { font-size: 13px; color: var(--ink-mid); margin-bottom: 14px; line-height: 1.5; }
+
+    /* ── CTA ── */
+    .cta-section { background: var(--teal); text-align: center; }
+    .cta-section h2 { color: white; margin-bottom: 14px; }
+    .cta-section .section-sub { color: rgba(255,255,255,0.75); margin: 0 auto 36px; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-white {
+      background: white; color: var(--teal); padding: 13px 26px;
+      border-radius: 4px; font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+    .btn-outline-white {
+      background: transparent; color: white; padding: 13px 26px;
+      border-radius: 4px; font-size: 14px; font-weight: 500;
+      text-decoration: none; border: 1px solid rgba(255,255,255,0.4);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline-white:hover { border-color: white; background: rgba(255,255,255,0.08); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ink); padding: 40px 48px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .footer-left { display: flex; align-items: center; gap: 24px; }
+    .footer-logo { font-family: var(--font-display); font-size: 15px; color: rgba(255,255,255,0.5); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .footer-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+    .footer-links a {
+      font-size: 12px; color: rgba(255,255,255,0.35);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.75); }
+    .footer-investor {
+      font-size: 11px; color: rgba(255,255,255,0.2);
+      text-decoration: none; letter-spacing: 0.3px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 1px; transition: color 0.2s, border-color 0.2s;
+    }
+    .footer-investor:hover { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.3); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-content > * { animation: fadeUp 0.6s ease both; }
+    .hero-content > *:nth-child(1) { animation-delay: 0.05s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.15s; }
+    .hero-content > *:nth-child(3) { animation-delay: 0.22s; }
+    .hero-content > *:nth-child(4) { animation-delay: 0.28s; }
+    .hero-content > *:nth-child(5) { animation-delay: 0.34s; }
+    .hero-content > *:nth-child(6) { animation-delay: 0.40s; }
+    .hero-visual { animation: fadeUp 0.7s ease 0.25s both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero-section { grid-template-columns: 1fr; padding: 110px 20px 48px; gap: 40px; }
+      section { padding: 56px 20px; }
+      .pillars-grid, .reg-grid, .audience-grid, .enterprise-grid { grid-template-columns: 1fr; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .pilots-inner { grid-template-columns: 1fr; gap: 40px; }
+      .result-status-bar { grid-template-columns: repeat(2, 1fr); }
+      footer { flex-direction: column; align-items: flex-start; padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">MP</div>
+    <span class="nav-logo-text">MedPassport</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#pillars">Solution</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#regulatory">Regulatory</a></li>
+    <li><a href="#verify">Verify a Device</a></li>
+    <li><a href="#pilots">Pilots</a></li>
+    <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/tomer-saar/" target="_blank" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<div style="background:var(--white);">
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Open Protocol · Shared Truth Infrastructure</div>
+
+      <blockquote class="hero-quote">
+        "The greatest risk to a medical device isn't always mechanical. It's informational."
+      </blockquote>
+
+
+      <h1>Closing <em>the Information Gap</em> in medical device lifecycles</h1>
+      <p class="hero-sub">
+        MedPassport is an open-source Shared Truth Infrastructure based on
+        Distributed Ledger Technology (DLT) — assigning every medical device
+        a tamper-evident Digital Product Passport that survives every
+        organizational handoff. No crypto wallets for enterprise users.
+        No patient data on-chain. No changes to how field technicians work.
+      </p>
+      <div class="hero-actions">
+        <a href="#verify" class="btn-primary">Verify a Device →</a>
+        <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary">Read the Whitepaper ↗</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">$9B</div>
+          <div class="hero-stat-label">Refurbished device market</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">EU + US</div>
+          <div class="hero-stat-label">Dual-market ready</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">Zero PII</div>
+          <div class="hero-stat-label">On-chain by design</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="passport-preview">
+        <div class="passport-preview-header">
+          <div class="passport-preview-title">Device Passport · Live Demo</div>
+          <div class="passport-preview-badge">★ GOLD CERTIFIED</div>
+        </div>
+        <div class="passport-preview-body">
+          <div class="passport-field">
+            <span class="passport-field-label">UDI</span>
+            <span class="passport-field-value" style="font-size:11px;">00844588003288/LOT2026-001</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Device</span>
+            <span class="passport-field-value">CardioScan Pro 3000</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Class</span>
+            <span class="passport-field-value">IIb — Imaging</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Score</span>
+            <span class="passport-field-value" style="color:var(--teal);font-weight:500;">100 / 100</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Certified</span>
+            <span class="badge-gold">★ GOLD</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Recall</span>
+            <span class="badge-clear"><span class="dot dot-green"></span> Clear</span>
+          </div>
+          <div class="passport-field">
+            <span class="passport-field-label">Events</span>
+            <span class="passport-field-value">4 on-chain · Verified</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Three Pillars ── -->
+<section class="pillars-section" id="pillars">
+  <div class="section-inner">
+    <p class="section-label">The Solution</p>
+    <h2>Three pillars of device trust</h2>
+    <p class="section-sub">
+      MedPassport addresses the Information Gap across the full device
+      lifecycle — from manufacture through resale — through three
+      complementary capabilities.
+    </p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">🔑</div>
+        <div class="pillar-name">Provenance</div>
+        <div class="pillar-desc">
+          Every device receives a unique, immutable identity anchored to
+          its UDI at manufacture. Duplicate serial numbers become detectable.
+          Configuration history is permanent. No rework, no migration, and
+          no ownership transfer can silently overwrite it.
+        </div>
+        <div class="pillar-contracts">
+          <span class="pillar-contract">DevicePassportNFT.sol — ERC-721</span>
+          <span class="pillar-contract">GS1 UDI validated against GUDID + EUDAMED</span>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📋</div>
+        <div class="pillar-name">Service History</div>
+        <div class="pillar-desc">
+          Every PM event, calibration, software update, and part replacement
+          is recorded as a signed attestation by a credentialed actor.
+          The record is shared across all authorized parties simultaneously —
+          manufacturer, hospital, ISO, refurbisher, and insurer.
+        </div>
+        <div class="pillar-contracts">
+          <span class="pillar-contract">ServiceLogRegistry.sol — Append-only</span>
+          <span class="pillar-contract">Headless CMMS integration — ServiceMax / Infor EAM</span>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">✅</div>
+        <div class="pillar-name">Compliance</div>
+        <div class="pillar-desc">
+          Audit evidence is built continuously, not assembled under pressure.
+          A weighted compliance score converts service history into a
+          Bronze, Silver, or Gold certification — the trust stamp that
+          makes evidence-based resale pricing possible.
+        </div>
+        <div class="pillar-contracts">
+          <span class="pillar-contract">ComplianceScorer.sol — Weighted 0–100</span>
+          <span class="pillar-contract">CertificationSBT.sol — ERC-5192 Soulbound</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Enterprise Ready ── -->
+<section class="enterprise-section" id="enterprise">
+  <div class="section-inner">
+    <p class="section-label">Enterprise Ready</p>
+    <h2>Designed for regulated environments</h2>
+    <p class="section-sub">
+      The three questions every enterprise CIO asks — answered in the architecture,
+      not the documentation.
+    </p>
+    <div class="enterprise-grid">
+      <div class="enterprise-card">
+        <div class="enterprise-icon">🔒</div>
+        <div class="enterprise-title">Zero-PII Architecture</div>
+        <div class="enterprise-desc">
+          No patient data, PII, or PHI ever reaches the ledger. Only cryptographic
+          hashes, UDI identifiers, and organizational credentials are stored on-chain.
+          This is a protocol-level technical constraint — not a policy. No configuration,
+          override, or administrative permission can change it. Full GDPR and HIPAA alignment.
+        </div>
+        <span class="enterprise-tag">Enforced at protocol level</span>
+      </div>
+      <div class="enterprise-card">
+        <div class="enterprise-icon">💳</div>
+        <div class="enterprise-title">No Crypto Wallet Required</div>
+        <div class="enterprise-desc">
+          Hospital IT departments and OEM procurement teams never touch digital wallets
+          or native tokens. ERC-4337 account abstraction handles all on-chain transaction
+          fees transparently in the background. Users log in via standard SSO and SAML.
+          Costs settle via standard SaaS billing — familiar to any enterprise finance team.
+        </div>
+        <span class="enterprise-tag">Standard SaaS billing</span>
+      </div>
+      <div class="enterprise-card">
+        <div class="enterprise-icon">📉</div>
+        <div class="enterprise-title">Eliminates the Trust Tax</div>
+        <div class="enterprise-desc">
+          The 30–50% discount buyers demand for unverifiable device history is what
+          MedPassport calls the Trust Tax. Every stakeholder in the device lifecycle
+          pays it in a different form — manufacturers in recall complexity, hospitals
+          in audit overhead, insurers in dispute costs. MedPassport removes the
+          information asymmetry that makes the Trust Tax unavoidable.
+        </div>
+        <span class="enterprise-tag">30–50% trust discount eliminated</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Information Gap ── -->
+<section class="problem-section" id="problem">
+  <div class="section-inner">
+    <p class="section-label">The Information Gap</p>
+    <h2>The cost of fragmented device data</h2>
+    <p class="section-sub">
+      Medical device lifecycle data crosses six organizational boundaries.
+      At every handoff, existing systems go silent. The consequences are
+      structural — and measurable.
+    </p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-number">15–25%</div>
+        <div class="problem-title">Recalls that never reach affected devices</div>
+        <div class="problem-desc">Manufacturers depend on voluntary downstream reporting. When data breaks down at handoffs, recall execution is incomplete — leaving patients at risk and manufacturers liable.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">30–50%</div>
+        <div class="problem-title">The Trust Tax on unverified device history</div>
+        <div class="problem-desc">Refurbished devices sell far below their real value because buyers cannot independently verify what happened to them. Verified history converts this discount into negotiating leverage.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">3–8</div>
+        <div class="problem-title">Disconnected systems to assemble audit evidence</div>
+        <div class="problem-desc">Audit preparation takes days because evidence lives across ERP, CMMS, QMS, email, and paper records — assembled under pressure when a notified body arrives unannounced.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">30–90</div>
+        <div class="problem-title">Days to resolve warranty disputes</div>
+        <div class="problem-desc">Both parties reconstruct history from competing paper records. A shared evidence layer — where both parties access the same immutable record — makes disputes resolvable in hours, not months.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ── -->
+<section id="how-it-works" style="background:var(--off-white);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);">
+  <div class="section-inner">
+    <p class="section-label">How It Works</p>
+    <h2>Five steps. Zero workflow changes.</h2>
+    <p class="section-sub">
+      Field technicians take zero additional steps throughout. Every event
+      is captured automatically from existing CMMS systems and written
+      as a signed attestation on the shared ledger.
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Manufacturer mints the passport</div>
+          <div class="step-desc">At manufacture, a unique Digital Product Passport is created and anchored to the device UDI. GS1 format is validated against FDA GUDID and EUDAMED before minting is permitted. No passport — no placement on market.</div>
+          <span class="step-tag">DevicePassportNFT.sol · GS1 validated</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Ownership transfer requires two independent signatures</div>
+          <div class="step-desc">Every change of ownership — manufacturer to distributor, distributor to hospital, hospital to refurbisher — requires two credentialed actors to sign independently. No single party can transfer a device unilaterally. Full chain of custody permanently recorded.</div>
+          <span class="step-tag">TransferManager.sol · Dual-signature · 72h expiry</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Service events logged automatically from existing systems</div>
+          <div class="step-desc">The protocol polls ServiceMax and Infor EAM for closed work orders and writes signed attestations on-chain automatically. PM, calibration, software updates, inspections — all captured without a field technician taking a single additional step.</div>
+          <span class="step-tag">ServiceLogRegistry.sol · Headless CMMS integration</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Compliance score calculated on-chain from service history</div>
+          <div class="step-desc">A weighted algorithm reads the full service history and produces a 0–100 compliance score. Calibration, preventive maintenance, inspection, and software currency each carry defined weights. Incident reports trigger automatic deductions. Recall flags force score to zero.</div>
+          <span class="step-tag">ComplianceScorer.sol · Weighted 0–100</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Certification issued — the trust stamp for resale</div>
+          <div class="step-desc">A certifier proposes. The device owner confirms. Only after two independent signatures is a Soulbound Token minted — a non-transferable trust stamp tied to the device, not the owner. Bronze (60–74), Silver (75–89), or Gold (90–100). A buyer scans a QR code and sees the result instantly.</div>
+          <span class="step-tag">CertificationSBT.sol · ERC-5192 Soulbound · Dual-signature</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Regulatory ── -->
+<section class="reg-section" id="regulatory">
+  <div class="section-inner">
+    <p class="section-label">Regulatory Alignment</p>
+    <h2>Built for the regulations that matter now</h2>
+    <p class="section-sub">
+      EUDAMED mandatory from 28 May 2026. FDA QMSR in effect February 2026.
+      One protocol. Both markets. Because FDA QMSR incorporates ISO 13485 by
+      reference, EU compliance delivers 80% of US compliance automatically.
+    </p>
+    <div class="reg-grid">
+      <div class="reg-card">
+        <div class="reg-flag">🇪🇺</div>
+        <div class="reg-title">EU Market</div>
+        <div class="reg-name">MDR + EUDAMED + ESPR</div>
+        <div class="reg-desc">Four EUDAMED modules mandatory from 28 May 2026. MedPassport UDI anchors to the same UDI in EUDAMED. DPP-ready architecture aligned with the JRC March 2026 methodology for future medical device delegated acts.</div>
+        <div class="reg-status">● EUDAMED bridge — Phase 2 roadmap</div>
+      </div>
+      <div class="reg-card">
+        <div class="reg-flag">🇺🇸</div>
+        <div class="reg-title">US Market</div>
+        <div class="reg-name">QMSR + GUDID + 21 CFR Part 11</div>
+        <div class="reg-desc">QMSR incorporates ISO 13485 by reference — EU compliance gives 80% of US compliance automatically. GUDID bridge verifies UDI against FDA database before minting. Live connection to AccessGUDID confirmed.</div>
+        <div class="reg-status">● GUDID bridge — Live ✓</div>
+      </div>
+      <div class="reg-card">
+        <div class="reg-flag">🌐</div>
+        <div class="reg-title">Global Foundation</div>
+        <div class="reg-name">ISO 13485 + GAMP 5 Category 4</div>
+        <div class="reg-desc">ISO 13485:2016 is the universal foundation. Three targeted additions — dual UDI fields, dual registry bridges, jurisdiction flagging — enable a single deployment to serve both markets simultaneously. Full VSP at enterprise onboarding.</div>
+        <div class="reg-status">● Single deployment · dual market · validated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Passport Viewer ── -->
+<section class="viewer-section" id="verify">
+  <div class="section-inner">
+    <p class="section-label">Device Passport Viewer</p>
+    <h2>Verify any registered device</h2>
+    <p class="section-sub">
+      Enter a UDI to view the device passport — provenance, service history,
+      compliance score, certification status, and recall flag.
+      No account, no wallet, no login required.
+    </p>
+    <div class="viewer-wrapper">
+      <div class="viewer-card">
+        <div class="viewer-header">
+          <div>
+            <div class="viewer-header-title">Passport Lookup</div>
+            <div class="viewer-header-sub">MedPassport Protocol · Open Verification</div>
+          </div>
+          <div style="font-size:28px;">🏥</div>
+        </div>
+        <div class="viewer-input-area">
+          <label class="viewer-input-label" for="udi-input">Unique Device Identifier (UDI)</label>
+          <div class="viewer-input-row">
+            <input type="text" id="udi-input" class="viewer-input"
+              placeholder="e.g. 00844588003288/LOT2026-001/SN00432"
+              autocomplete="off" spellcheck="false" />
+            <button class="viewer-btn" onclick="lookupPassport()">Verify →</button>
+          </div>
+          <div class="viewer-presets">
+            <span class="viewer-preset" onclick="loadDemo('CT')">▶ CT Scanner — GOLD certified</span>
+            <span class="viewer-preset" onclick="loadDemo('PUMP')">▶ Infusion Pump — SILVER certified</span>
+            <span class="viewer-preset" onclick="loadDemo('RECALL')">▶ Recall scenario — active FSCA</span>
+          </div>
+        </div>
+        <div id="passport-empty" class="viewer-empty">
+          <div class="viewer-empty-icon">🔍</div>
+          <div class="viewer-empty-text">Enter a UDI above or select a demo scenario to view a live passport</div>
+        </div>
+        <div id="passport-result" class="passport-result"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Who It Serves ── -->
+<section id="customers">
+  <div class="section-inner">
+    <p class="section-label">Who It Serves</p>
+    <h2>Three waves of value creation</h2>
+    <p class="section-sub">
+      Manufacturers face the strongest regulatory pressure and carry the
+      greatest recall risk. Refurbishers hold the most immediate commercial
+      opportunity. Insurers gain structured data they have never had access
+      to before.
+    </p>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <div class="audience-icon">🏭</div>
+        <div class="audience-role">Wave 1 — Primary Target</div>
+        <div class="audience-title">The Manufacturer closes the recall gap and the compliance burden</div>
+        <div class="audience-desc">On-chain traceability reduces reliance on voluntary downstream reporting for FSCAs. Audit evidence is built continuously — not assembled under pressure when a notified body arrives. EUDAMED obligations satisfied as a byproduct of normal operations.</div>
+        <div class="audience-metric">→ EUDAMED mandatory 28 May 2026</div>
+        <div class="audience-roi">Pilot metric: reduce FSCA reach time from weeks to days for a fleet of Class IIb or Class III devices across a single EU jurisdiction.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-icon">🔄</div>
+        <div class="audience-role">Wave 2 — Earliest ROI</div>
+        <div class="audience-title">The Refurbisher converts the Trust Tax into a negotiating asset</div>
+        <div class="audience-desc">Certified refurbishers are where MedPassport delivers the most immediate, measurable return. A 30–50% trust discount — eliminated. A Gold-certified high-value device — imaging system, ventilator, surgical robot, infusion pump — with a verified service history commands a fundamentally different conversation than one with paper records.</div>
+        <div class="audience-metric">→ $9B refurbished device market</div>
+        <div class="audience-roi">ROI: 30–50% trust discount converted to evidence-based pricing. Asset value protected for secondary markets.</div>
+      </div>
+      <div class="audience-card">
+        <div class="audience-icon">📋</div>
+        <div class="audience-role">Wave 3 — Data Network Effect</div>
+        <div class="audience-title">The Insurer gains structured device condition data for the first time</div>
+        <div class="audience-desc">Warranty claims verified against on-chain service attestations in hours rather than months. Equipment financing risk assessed on actual maintenance history — not device age alone. Premium API access to structured passport data across the MedPassport network.</div>
+        <div class="audience-metric">→ Premium API access tier</div>
+        <div class="audience-roi">Value: structured device condition data that has never existed in a consumable form before.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ecosystem & Pilots ── -->
+<section class="pilots-section" id="pilots">
+  <div class="section-inner">
+    <div class="pilots-inner">
+      <div class="pilots-left">
+        <p class="section-label">Ecosystem & Pilots</p>
+        <h2>Wave 1 Enterprise Rollout — currently selecting partners</h2>
+        <p class="section-sub">
+          The v1 pilot is defined. We are currently in conversation with
+          qualified partners who meet the criteria for the first enterprise
+          deployment.
+        </p>
+        <div class="pilots-criteria">
+          <div class="pilots-criterion">
+            <div class="pilots-criterion-icon">🏥</div>
+            <div>
+              <div class="pilots-criterion-title">EU MDR jurisdiction</div>
+              <div class="pilots-criterion-text">Manufacturer or certified refurbisher operating under EU MDR 2017/745 with Class IIb or above devices.</div>
+            </div>
+          </div>
+          <div class="pilots-criterion">
+            <div class="pilots-criterion-icon">🔧</div>
+            <div>
+              <div class="pilots-criterion-title">Existing CMMS infrastructure</div>
+              <div class="pilots-criterion-text">ServiceMax, Infor EAM, or equivalent CMMS in active use for work order management across the device fleet.</div>
+            </div>
+          </div>
+          <div class="pilots-criterion">
+            <div class="pilots-criterion-icon">📊</div>
+            <div>
+              <div class="pilots-criterion-title">Measurable pilot commitment</div>
+              <div class="pilots-criterion-text">Willingness to define four measurable success metrics and a 9–12 month pilot timeline with a dedicated internal champion.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pilots-right">
+        <div class="pilots-right-header">
+          <div class="pilots-right-title">Pilot Definition</div>
+          <div class="pilots-right-sub">v1 · Single EU MDR jurisdiction · Class IIb or III device fleet</div>
+        </div>
+        <div class="pilots-right-body">
+          <div class="pilots-wave">
+            <div class="pilots-wave-num">1</div>
+            <div>
+              <div class="pilots-wave-title">Device scope</div>
+              <div class="pilots-wave-desc">Class IIb or Class III regulated devices, single EU MDR jurisdiction. One manufacturer or certified refurbisher as the anchor partner.</div>
+              <div class="pilots-wave-status">→ Intake through first PM workflow</div>
+            </div>
+          </div>
+          <div class="pilots-wave">
+            <div class="pilots-wave-num">2</div>
+            <div>
+              <div class="pilots-wave-title">Integration scope</div>
+              <div class="pilots-wave-desc">Headless CMMS adapter — zero additional steps for field technicians. Automatic attestation from ServiceMax work order closures.</div>
+              <div class="pilots-wave-status">→ ServiceMax / Infor EAM</div>
+            </div>
+          </div>
+          <div class="pilots-wave">
+            <div class="pilots-wave-num">3</div>
+            <div>
+              <div class="pilots-wave-title">Success metrics</div>
+              <div class="pilots-wave-desc">Four measurable outcomes: recall reach rate, audit preparation time, resale price delta, service dispute resolution time.</div>
+              <div class="pilots-wave-status">→ 9–12 month timeline</div>
+            </div>
+          </div>
+          <div class="pilots-cta">
+            <div class="pilots-cta-text">
+              The full pilot scope document and Enterprise Addendum — covering
+              deployment architecture, GAMP 5 validation, integration details,
+              and ROI benchmarks — are available to qualified partners on request.
+            </div>
+            <a href="https://www.linkedin.com/in/tomer-saar/" target="_blank" class="btn-primary">
+              Request Enterprise Addendum →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="section-inner">
+    <p class="section-label" style="color:rgba(255,255,255,0.4);display:block;">Open Protocol · Shared Truth Infrastructure · DLT</p>
+    <h2>The protocol is open. The network is where we build together.</h2>
+    <p class="section-sub">
+      Smart contracts, schemas, and documentation are MIT-licensed and
+      publicly available. Enterprise deployment, integration services,
+      and managed SaaS are the commercial layer built on top.
+    </p>
+    <div class="cta-actions">
+      <a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank" class="btn-white">View Protocol on GitHub</a>
+      <a href="https://www.linkedin.com/in/tomer-saar/" target="_blank" class="btn-outline-white">Start a Conversation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-logo">MedPassport Protocol</span>
+    <span class="footer-copy">MIT License · Not legal or regulatory advice · © 2026</span>
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
+    <li><a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank">Whitepaper</a></li>
+    <li><a href="https://www.linkedin.com/in/tomer-saar/" target="_blank">LinkedIn</a></li>
+    <li><a href="mailto:tomer@medpassport.io" class="footer-investor">Investor Relations</a></li>
+  </ul>
+</footer>
+
+<!-- ── Passport Viewer Logic ── -->
+<script>
+const DEMO_DEVICES = {
+  CT: {
+    udi: '00844588003288/LOT2026-001/SN00432',
+    name: 'CardioScan Pro 3000',
+    manufacturer: 'MedDevice GmbH',
+    deviceClass: 'Class IIb — Diagnostic Imaging',
+    manufactureDate: '2024-03-15',
+    currentOwner: 'Mercy General Hospital',
+    complianceScore: 100,
+    certLevel: 'GOLD',
+    certScore: 100,
+    certExpiry: '2027-04-30',
+    recallActive: false,
+    tokenId: 1,
+    events: [
+      { type: 'MINT', desc: 'Passport created at manufacture — GS1 UDI validated', date: '2024-03-15', status: 'Verified' },
+      { type: 'TRANSFER', desc: 'Ownership transferred to Mercy General Hospital — dual-signed', date: '2024-04-02', status: 'Dual-signed' },
+      { type: 'PM', desc: 'Annual preventive maintenance — all checks passed', date: '2025-03-18', status: 'Passed' },
+      { type: 'CALIBRATION', desc: 'Annual calibration — certificate issued', date: '2025-03-18', status: 'Passed' },
+      { type: 'INSPECTION', desc: 'Regulatory inspection — compliance confirmed', date: '2025-06-10', status: 'Passed' },
+      { type: 'SW UPDATE', desc: 'Software v3.2.1 — security patch applied by manufacturer', date: '2025-09-05', status: 'Applied' },
+    ]
+  },
+  PUMP: {
+    udi: '00384109500023/LOT2025-012/SN01891',
+    name: 'InfuPro Elite 500',
+    manufacturer: 'MedTech Solutions AG',
+    deviceClass: 'Class IIb — Active Therapeutic',
+    manufactureDate: '2023-11-08',
+    currentOwner: 'City Medical Center',
+    complianceScore: 82,
+    certLevel: 'SILVER',
+    certScore: 82,
+    certExpiry: '2026-12-31',
+    recallActive: false,
+    tokenId: 2,
+    events: [
+      { type: 'MINT', desc: 'Passport created at manufacture', date: '2023-11-08', status: 'Verified' },
+      { type: 'TRANSFER', desc: 'Ownership transferred to City Medical Center — dual-signed', date: '2023-12-01', status: 'Dual-signed' },
+      { type: 'PM', desc: 'Scheduled PM — minor wear noted and corrected', date: '2024-11-15', status: 'Passed' },
+      { type: 'CALIBRATION', desc: 'Flow rate calibration — within tolerance', date: '2024-11-15', status: 'Passed' },
+    ]
+  },
+  RECALL: {
+    udi: '00729483610044/LOT2023-008/SN00234',
+    name: 'VentAssist Pro II',
+    manufacturer: 'RespiCare International',
+    deviceClass: 'Class III — Life Support',
+    manufactureDate: '2023-01-20',
+    currentOwner: 'Regional Hospital Trust',
+    complianceScore: 0,
+    certLevel: null,
+    certScore: 0,
+    certExpiry: null,
+    recallActive: true,
+    tokenId: 3,
+    events: [
+      { type: 'MINT', desc: 'Passport created at manufacture', date: '2023-01-20', status: 'Verified' },
+      { type: 'TRANSFER', desc: 'Ownership transferred to Regional Hospital Trust — dual-signed', date: '2023-02-14', status: 'Dual-signed' },
+      { type: 'PM', desc: 'Annual preventive maintenance', date: '2024-01-22', status: 'Passed' },
+      { type: 'RECALL', desc: 'FSCA issued — software defect in firmware v2.1.0 affecting alarm threshold', date: '2025-11-03', status: '⚠ Active' },
+    ]
+  }
+};
+
+function loadDemo(type) {
+  const device = DEMO_DEVICES[type];
+  if (!device) return;
+  document.getElementById('udi-input').value = device.udi;
+  renderPassport(device);
+}
+
+function lookupPassport() {
+  const udi = document.getElementById('udi-input').value.trim();
+  if (!udi) return;
+  for (const key of Object.keys(DEMO_DEVICES)) {
+    if (DEMO_DEVICES[key].udi === udi) { renderPassport(DEMO_DEVICES[key]); return; }
+  }
+  renderNotFound(udi);
+}
+
+function renderNotFound(udi) {
+  document.getElementById('passport-empty').style.display = 'none';
+  const result = document.getElementById('passport-result');
+  result.innerHTML = `
+    <div style="padding:48px 32px;text-align:center;">
+      <div style="font-size:36px;margin-bottom:16px;opacity:0.4;">🔍</div>
+      <div style="font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px;">No passport found</div>
+      <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-light);margin-bottom:20px;">${udi}</div>
+      <div style="font-size:13px;color:var(--ink-mid);max-width:400px;margin:0 auto;line-height:1.6;">
+        This device has not been registered on MedPassport. Load a demo scenario above
+        or contact the manufacturer to register the device on the protocol.
+      </div>
+    </div>`;
+  result.classList.add('visible');
+}
+
+function renderPassport(device) {
+  document.getElementById('passport-empty').style.display = 'none';
+  const result = document.getElementById('passport-result');
+  result.classList.add('visible');
+
+  const certColor  = device.certLevel === 'GOLD' ? 'var(--gold)' : device.certLevel === 'SILVER' ? 'var(--silver)' : device.certLevel === 'BRONZE' ? 'var(--bronze)' : 'var(--ink-light)';
+  const certBg     = device.certLevel === 'GOLD' ? '#FDF3E0' : device.certLevel === 'SILVER' ? '#F0F4F6' : device.certLevel === 'BRONZE' ? '#F5EDE8' : 'var(--off-white)';
+  const certBorder = device.certLevel === 'GOLD' ? '#F0D898' : device.certLevel === 'SILVER' ? '#C8D4DA' : device.certLevel === 'BRONZE' ? '#D4B8A8' : 'var(--rule)';
+  const scoreColor = device.complianceScore >= 90 ? 'var(--gold)' : device.complianceScore >= 75 ? 'var(--teal)' : device.complianceScore >= 60 ? 'var(--bronze)' : 'var(--red)';
+
+  const eventsHTML = device.events.map(e => `
+    <div class="result-event">
+      <span class="result-event-type">${e.type}</span>
+      <span class="result-event-desc">${e.desc}<br/>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-light);">${e.date}</span>
+      </span>
+      <span style="font-size:12px;font-weight:500;color:${e.status.includes('⚠') ? 'var(--red)' : 'var(--green)'};">
+        ${e.status.includes('⚠') ? e.status : '✓ ' + e.status}
+      </span>
+    </div>`).join('');
+
+  const recallHTML = device.recallActive
+    ? `<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--red);font-weight:500;background:#FBE8E8;border:1px solid #E8B0B0;border-radius:4px;padding:12px 16px;margin-bottom:20px;">
+        <span>⚠</span> Active Field Safety Corrective Action — Do not use pending resolution
+       </div>`
+    : `<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:500;background:#E8F5EF;border:1px solid #B8DEC9;border-radius:4px;padding:10px 16px;margin-bottom:20px;">
+        <span class="dot dot-green"></span> No active recall — device is cleared for operational use
+       </div>`;
+
+  const certHTML = device.certLevel
+    ? `<div class="result-cert-block" style="background:${certBg};border:1px solid ${certBorder};">
+        <div>
+          <div class="result-cert-label" style="color:${certColor};">Certification Level</div>
+          <div class="result-cert-level" style="color:${certColor};">★ ${device.certLevel}</div>
+          <div style="font-size:12px;color:${certColor};margin-top:4px;">Score ${device.certScore}/100 · Valid until ${device.certExpiry}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:var(--font-mono);font-size:10px;color:${certColor};opacity:0.65;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Soulbound Token</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:${certColor};">ERC-5192 · Non-transferable</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:${certColor};opacity:0.5;margin-top:4px;">Dual-signature verified</div>
+        </div>
+       </div>`
+    : `<div style="background:var(--off-white);border:1px solid var(--rule);border-radius:6px;padding:20px;margin-bottom:20px;text-align:center;color:var(--ink-light);font-size:13px;">
+        No certification — compliance score below threshold or recall active
+       </div>`;
+
+  result.innerHTML = `
+    <div class="result-device-name">${device.name}</div>
+    <div class="result-udi">${device.udi}</div>
+    <div class="result-status-bar">
+      <div class="result-status-item">
+        <div class="result-status-value" style="color:var(--teal);">${device.tokenId}</div>
+        <div class="result-status-label">Token ID</div>
+      </div>
+      <div class="result-status-item">
+        <div class="result-status-value" style="color:${scoreColor};">${device.complianceScore}</div>
+        <div class="result-status-label">Compliance Score</div>
+      </div>
+      <div class="result-status-item">
+        <div class="result-status-value" style="color:var(--teal);">${device.events.length}</div>
+        <div class="result-status-label">On-Chain Events</div>
+      </div>
+      <div class="result-status-item">
+        <div class="result-status-value" style="color:${device.recallActive ? 'var(--red)' : 'var(--green)'};">${device.recallActive ? '⚠' : '✓'}</div>
+        <div class="result-status-label">Recall Status</div>
+      </div>
+    </div>
+    ${recallHTML}
+    ${certHTML}
+    <div class="result-section-title">Service History — On-Chain Attestations</div>
+    <div class="result-events">${eventsHTML}</div>
+    <div class="result-section-title">Device Identity</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin-bottom:24px;">
+      ${[['Manufacturer', device.manufacturer],['Device Class', device.deviceClass],['Manufacture Date', device.manufactureDate],['Current Owner', device.currentOwner]]
+        .map(([l,v]) => `<div style="background:var(--white);padding:12px 16px;">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-light);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px;">${l}</div>
+          <div style="font-size:13px;color:var(--ink);">${v}</div>
+        </div>`).join('')}
+    </div>
+    <div class="result-qr">
+      <div id="qrcode"></div>
+      <div class="result-qr-info">
+        <div class="result-qr-title">Share this passport</div>
+        <div class="result-qr-desc">Scan the QR code to open this device passport. Share with buyers, auditors, or regulatory authorities — no account required.</div>
+        <div class="result-on-chain"><span class="dot dot-green"></span> All events verified on Shared Truth Infrastructure · Polygon network</div>
+      </div>
+    </div>`;
+
+  document.getElementById('qrcode').innerHTML = '';
+  new QRCode(document.getElementById('qrcode'), {
+    text: window.location.href.split('?')[0] + '?udi=' + encodeURIComponent(device.udi),
+    width: 96, height: 96,
+    colorDark: '#006B6B', colorLight: '#FFFFFF',
+  });
+
+  setTimeout(() => {
+    document.getElementById('verify').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const udi = params.get('udi');
+  if (udi) { document.getElementById('udi-input').value = udi; lookupPassport(); }
+  document.getElementById('udi-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') lookupPassport();
+  });
+});
+</script>
+
+</body>
+</html>
