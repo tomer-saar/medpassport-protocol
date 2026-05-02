@@ -207,7 +207,7 @@
     .dot-red   { background: var(--red); }
 
     /* ── Sections ── */
-    section { padding: 88px 48px; }
+    section { padding: 100px 48px; scroll-margin-top: 64px; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
     .section-label {
       font-family: var(--font-mono); font-size: 11px; font-weight: 500;
@@ -318,7 +318,7 @@
     }
 
     /* ── Regulatory ── */
-    .reg-section { background: var(--ink); }
+    .reg-section { background: var(--ink); border-bottom: 4px solid var(--teal); }
     .reg-section h2 { color: white; }
     .reg-section .section-label { color: var(--teal-mid); }
     .reg-section .section-sub { color: rgba(255,255,255,0.6); }
@@ -345,7 +345,7 @@
     }
 
     /* ── Passport Viewer ── */
-    .viewer-section { background: var(--off-white); }
+    .viewer-section { background: var(--off-white); border-top: 1px solid var(--rule); }
     .viewer-wrapper { max-width: 760px; margin: 0 auto; }
     .viewer-card {
       background: var(--white); border: 1px solid var(--rule);
@@ -616,7 +616,12 @@
       .result-status-bar { grid-template-columns: repeat(2, 1fr); }
       footer { flex-direction: column; align-items: flex-start; padding: 28px 20px; }
     }
-  </style>
+  
+    /* Section scroll and spacing fix */
+    section[id] { scroll-margin-top: 80px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 88px 48px; }
+    @media (max-width: 900px) { .section-inner { padding: 56px 24px; } }
+</style>
 </head>
 <body>
 
@@ -858,7 +863,7 @@
 </section>
 
 <!-- ── How It Works ── -->
-<section id="how-it-works" style="background:var(--off-white);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);">
+<section id="how-it-works" style="background:var(--off-white);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:96px 0;">
   <div class="section-inner">
     <p class="section-label">How It Works</p>
     <h2>Five steps. Zero workflow changes.</h2>
@@ -913,7 +918,7 @@
 </section>
 
 <!-- ── Regulatory ── -->
-<section class="reg-section" id="regulatory">
+<section class="reg-section" id="regulatory" style="padding:96px 0;">
   <div class="section-inner">
     <p class="section-label">Regulatory Alignment</p>
     <h2>Built for the regulations that matter now</h2>
@@ -949,7 +954,7 @@
 </section>
 
 <!-- ── Passport Viewer ── -->
-<section class="viewer-section" id="verify">
+<section class="viewer-section" id="verify" style="padding:96px 0;">
   <div class="section-inner">
     <p class="section-label">Device Passport Viewer</p>
     <h2>Verify any registered device</h2>
@@ -992,7 +997,7 @@
 </section>
 
 <!-- ── Who It Serves ── -->
-<section id="customers">
+<section id="customers" style="padding:96px 0;">
   <div class="section-inner">
     <p class="section-label">Who It Serves</p>
     <h2>Three waves of value creation</h2>
@@ -1032,7 +1037,7 @@
 </section>
 
 <!-- ── Ecosystem & Pilots ── -->
-<section class="pilots-section" id="pilots">
+<section class="pilots-section" id="pilots" style="padding:96px 0;">
   <div class="section-inner">
     <div class="pilots-inner">
       <div class="pilots-left">
