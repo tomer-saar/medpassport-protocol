@@ -115,21 +115,30 @@ contract LiveDemo is Script {
             DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             keccak256("pm_report_2026_Q1"),
             "QmPMReport2026Q1",
-            true, "", "Annual PM - all checks passed"
+            true, "", "Annual PM - all checks passed",
+            false,
+            false,
+            false
         );
         svcLog.logEvent(
             tokenId,
             DeviceTypes.EventType.CALIBRATION,
             keccak256("calibration_cert_2026"),
             "QmCalibCert2026",
-            true, "", "Annual calibration passed"
+            true, "", "Annual calibration passed",
+            false,
+            false,
+            false
         );
         svcLog.logEvent(
             tokenId,
             DeviceTypes.EventType.INSPECTION,
             keccak256("regulatory_inspection_2026"),
             "QmInspection2026",
-            true, "", "Regulatory inspection passed"
+            true, "", "Regulatory inspection passed",
+            false,
+            false,
+            false
         );
         vm.stopBroadcast();
 
@@ -139,7 +148,10 @@ contract LiveDemo is Script {
             DeviceTypes.EventType.SOFTWARE_UPDATE,
             keccak256("sw_update_v321"),
             "QmSWUpdateV321",
-            true, "v3.2.1", "Security patch applied"
+            true, "v3.2.1", "Security patch applied",
+            false,
+            false,
+            false
         );
         vm.stopBroadcast();
         console.log("4 service events logged on-chain");
@@ -147,10 +159,9 @@ contract LiveDemo is Script {
 
         // STEP 6: Calculate compliance score
         console.log("STEP 6: Calculating compliance score...");
-        uint8 score = scorer.calculateScore(tokenId);
+        uint256 score = scorer.calculateScoreSimple(tokenId, passport, svcLog);
         console.log("Compliance score:", score);
-        string memory level = score >= 90 ? "GOLD" :
-                              score >= 75 ? "SILVER" : "BRONZE";
+        string memory level = score >= 90 ? "GOLD" : score >= 75 ? "SILVER" : "BRONZE";
         console.log("Certification level:", level);
         console.log("");
 

@@ -85,11 +85,7 @@ contract DeployAll is Script {
         console.log("7. TransferManager:", address(transferMgr));
 
         // 8. ComplianceScorer
-        ComplianceScorer scorer =
-            new ComplianceScorer(
-                address(serviceLog),
-                address(passport)
-            );
+        ComplianceScorer scorer = new ComplianceScorer(address(passport), address(serviceLog));
         console.log("8. ComplianceScorer:", address(scorer));
 
         // 9. CertificationSBT
@@ -98,7 +94,8 @@ contract DeployAll is Script {
                 address(registry),
                 address(roleManager),
                 address(scorer),
-                address(passport)
+                address(passport),
+                address(serviceLog)
             );
         console.log("9. CertificationSBT:", address(certSBT));
 

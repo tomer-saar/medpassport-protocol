@@ -73,14 +73,13 @@ contract ComplianceTest is Test {
         transferMgr   = new TransferManager(
             address(registry), address(roleManager), address(passport)
         );
-        scorer        = new ComplianceScorer(
-            address(serviceLog), address(passport)
-        );
+        scorer        = new ComplianceScorer(address(passport), address(serviceLog));
         certSBT       = new CertificationSBT(
             address(registry),
             address(roleManager),
             address(scorer),
-            address(passport)
+            address(passport),
+            address(serviceLog)
         );
 
         // Grant credentials
@@ -141,7 +140,10 @@ contract ComplianceTest is Test {
         serviceLog.logEvent(
             tokenId,
             DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
-            hash, "QmPMReport", passed, "", "PM event"
+            hash, "QmPMReport", passed, "", "PM event",
+            false,
+            false,
+            false
         );
     }
 
@@ -153,7 +155,10 @@ contract ComplianceTest is Test {
         serviceLog.logEvent(
             tokenId,
             DeviceTypes.EventType.CALIBRATION,
-            hash, "QmCalReport", passed, "", "Calibration event"
+            hash, "QmCalReport", passed, "", "Calibration event",
+            false,
+            false,
+            false
         );
     }
 
@@ -165,7 +170,10 @@ contract ComplianceTest is Test {
         serviceLog.logEvent(
             tokenId,
             DeviceTypes.EventType.INSPECTION,
-            hash, "QmInspReport", passed, "", "Inspection event"
+            hash, "QmInspReport", passed, "", "Inspection event",
+            false,
+            false,
+            false
         );
     }
 
@@ -174,8 +182,9 @@ contract ComplianceTest is Test {
     // ============================================================
 
     function test_Score_ZeroWithNoHistory() public {
+        // DECAY MODEL: new device starts at 100 — no deductions yet
         uint256 tokenId = _mintAndTransferToHospital();
-        assertEq(scorer.calculateScore(tokenId), 0);
+        assertEq(scorer.calculateScoreSimple(tokenId, passport, serviceLog), 100);
     }
 
     function test_Score_PositiveAfterPassedEvents() public {
@@ -184,7 +193,7 @@ contract ComplianceTest is Test {
         _logCalibration(tokenId, true);
         _logInspection(tokenId, true);
 
-        uint8 score = scorer.calculateScore(tokenId);
+        uint256 score = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertGt(score, 0);
         assertLe(score, 100);
         console.log("Score after 3 passing events:", score);
@@ -195,12 +204,12 @@ contract ComplianceTest is Test {
         _logPM(tokenId, true);
         _logCalibration(tokenId, true);
 
-        uint8 scoreBefore = scorer.calculateScore(tokenId);
+        uint256 scoreBefore = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
 
         _logPM(tokenId, false);
         _logCalibration(tokenId, false);
 
-        uint8 scoreAfter = scorer.calculateScore(tokenId);
+        uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertLt(scoreAfter, scoreBefore);
         console.log("Score before failures:", scoreBefore);
         console.log("Score after failures:", scoreAfter);
@@ -212,17 +221,20 @@ contract ComplianceTest is Test {
         _logCalibration(tokenId, true);
         _logInspection(tokenId, true);
 
-        uint8 scoreWithout = scorer.calculateScore(tokenId);
+        uint256 scoreWithout = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
 
         bytes32 hash = keccak256("incident_report");
         vm.prank(serviceOrg);
         serviceLog.logEvent(
             tokenId,
             DeviceTypes.EventType.INCIDENT_REPORT,
-            hash, "QmIncident", false, "", "Adverse event"
+            hash, "QmIncident", false, "", "Adverse event",
+            false,
+            false,
+            false
         );
 
-        uint8 scoreWith = scorer.calculateScore(tokenId);
+        uint256 scoreWith = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertLt(scoreWith, scoreWithout);
         console.log("Score without incident:", scoreWithout);
         console.log("Score with incident:", scoreWith);
@@ -281,13 +293,13 @@ contract ComplianceTest is Test {
         _logPM(tokenId, true);
         _logCalibration(tokenId, true);
 
-        uint8 scoreBefore = scorer.calculateScore(tokenId);
+        uint256 scoreBefore = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertGt(scoreBefore, 0);
 
         vm.prank(regulator);
         passport.activateRecall(tokenId);
 
-        uint8 scoreAfter = scorer.calculateScore(tokenId);
+        uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertEq(scoreAfter, 0);
         console.log("Score before recall:", scoreBefore);
         console.log("Score after recall:", scoreAfter);
@@ -300,7 +312,7 @@ contract ComplianceTest is Test {
         vm.prank(hospital);
         passport.decommissionDevice(tokenId);
 
-        assertEq(scorer.calculateScore(tokenId), 0);
+        assertEq(scorer.calculateScoreSimple(tokenId, passport, serviceLog), 0);
     }
 
     // ============================================================
@@ -318,7 +330,10 @@ contract ComplianceTest is Test {
             tokenId,
             DeviceTypes.EventType.SOFTWARE_UPDATE,
             keccak256("sw_update"), "QmSWUpdate",
-            true, "v3.2.1", "Security patch"
+            true, "v3.2.1", "Security patch",
+            false,
+            false,
+            false
         );
     }
 
@@ -326,7 +341,7 @@ contract ComplianceTest is Test {
         uint256 tokenId = _mintAndTransferToHospital();
         _buildHighScore(tokenId);
 
-        uint8 score = scorer.calculateScore(tokenId);
+        uint256 score = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         console.log("Score before certification:", score);
         assertGe(score, 60);
 
@@ -362,13 +377,14 @@ contract ComplianceTest is Test {
 
     function test_Certification_RejectsLowScore() public {
         uint256 tokenId = _mintAndTransferToHospital();
-        // No service history — score will be 0
-
+        // DECAY MODEL: warp 3 years so all intervals overdue
+        // PM -25, Cal -25, Insp -20, SW -5 = 75 deducted, score=25
+        vm.warp(block.timestamp + 3 * 365 days);
         vm.prank(certifier);
         vm.expectRevert(
             abi.encodeWithSelector(
                 CertificationSBT.ScoreBelowMinimum.selector,
-                0,
+                uint8(25),
                 60
             )
         );
@@ -575,7 +591,7 @@ contract ComplianceTest is Test {
 
         // Step 2: Build service history
         _buildHighScore(tokenId);
-        uint8 score = scorer.calculateScore(tokenId);
+        uint256 score = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         console.log("Step 2: Service history built. Score:", score);
         assertGe(score, 60);
 
@@ -622,7 +638,7 @@ contract ComplianceTest is Test {
         passport.clearRecall(tokenId);
 
         // Score should be positive again
-        uint8 scoreAfterClear = scorer.calculateScore(tokenId);
+        uint256 scoreAfterClear = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertGt(scoreAfterClear, 0);
         console.log("Step 7: Recall cleared. Score:", scoreAfterClear);
         console.log("CERTIFICATION LIFECYCLE TEST PASSED");

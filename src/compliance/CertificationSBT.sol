@@ -7,6 +7,7 @@ import {CredentialRegistry} from "../access/CredentialRegistry.sol";
 import {RoleManager} from "../access/RoleManager.sol";
 import {ComplianceScorer} from "./ComplianceScorer.sol";
 import {DevicePassportNFT} from "../core/DevicePassportNFT.sol";
+import {ServiceLogRegistry} from "../core/ServiceLogRegistry.sol";
 
 /**
  * @title CertificationSBT
@@ -49,7 +50,8 @@ contract CertificationSBT is ERC721 {
     CredentialRegistry public immutable credentialRegistry;
     RoleManager        public immutable roleManager;
     ComplianceScorer   public immutable scorer;
-    DevicePassportNFT  public immutable passportNFT;
+    DevicePassportNFT     public immutable passportNFT;
+    ServiceLogRegistry    public immutable serviceLog;
 
     /// @notice Total certifications ever issued
     uint256 public totalCertifications;
@@ -130,17 +132,20 @@ contract CertificationSBT is ERC721 {
         address _credentialRegistry,
         address _roleManager,
         address _scorer,
-        address _passportNFT
+        address _passportNFT,
+        address _serviceLog
     ) ERC721("MedPassport Certification", "MEDCERT") {
         require(_credentialRegistry != address(0), "Invalid registry");
         require(_roleManager != address(0), "Invalid roleManager");
         require(_scorer != address(0), "Invalid scorer");
         require(_passportNFT != address(0), "Invalid passportNFT");
+        require(_serviceLog != address(0), "Invalid serviceLog");
 
         credentialRegistry = CredentialRegistry(_credentialRegistry);
         roleManager        = RoleManager(_roleManager);
         scorer             = ComplianceScorer(_scorer);
         passportNFT        = DevicePassportNFT(_passportNFT);
+        serviceLog         = ServiceLogRegistry(_serviceLog);
     }
 
     // ============================================================
@@ -184,9 +189,9 @@ contract CertificationSBT is ERC721 {
             revert DeviceIsDecommissioned(deviceTokenId);
 
         // Calculate score on-chain
-        uint8 score = scorer.calculateScore(deviceTokenId);
+        uint256 score = scorer.calculateScoreSimple(deviceTokenId, passportNFT, serviceLog);
         if (score < MIN_SCORE)
-            revert ScoreBelowMinimum(score, MIN_SCORE);
+            revert ScoreBelowMinimum(uint8(score), MIN_SCORE);
 
         // Check no active proposal exists
         if (_activeProposal[deviceTokenId] != bytes32(0)) {
@@ -234,7 +239,7 @@ contract CertificationSBT is ERC721 {
             deviceTokenId,
             msg.sender,
             deviceOwner,
-            score,
+            uint8(score),
             expiresAt,
             block.timestamp
         );
@@ -283,9 +288,9 @@ contract CertificationSBT is ERC721 {
         roleManager.requireActive(msg.sender);
 
         // Recalculate score at confirmation time
-        uint8 score = scorer.calculateScore(proposal.tokenId);
+        uint256 score = scorer.calculateScoreSimple(proposal.tokenId, passportNFT, serviceLog);
         if (score < MIN_SCORE)
-            revert ScoreBelowMinimum(score, MIN_SCORE);
+            revert ScoreBelowMinimum(uint8(score), MIN_SCORE);
 
         // Revoke any existing certification
         uint256 existingCert = activeCertification[proposal.tokenId];
@@ -310,7 +315,7 @@ contract CertificationSBT is ERC721 {
 
         _certifications[certTokenId] = DeviceTypes.Certification({
             deviceTokenId:   proposal.tokenId,
-            complianceScore: score,
+            complianceScore: uint8(score > 100 ? 100 : score),
             issuedAt:        block.timestamp,
             validUntil:      validUntil,
             certifierAddress: proposal.proposer,
@@ -336,7 +341,7 @@ contract CertificationSBT is ERC721 {
             certTokenId,
             proposal.tokenId,
             level,
-            score,
+            uint8(score),
             validUntil,
             proposal.proposer,
             block.timestamp

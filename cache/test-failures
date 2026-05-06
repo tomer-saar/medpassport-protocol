@@ -1,1 +1,1 @@
-test_Transfer_RejectsIfConfirmerIsProposer
+test_Certification_RejectsLowScore

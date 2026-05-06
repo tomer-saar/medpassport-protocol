@@ -136,7 +136,10 @@ contract DevicePassportTest is Test {
             IPFS_CID,
             true,
             "",
-            "Annual PM completed"
+            "Annual PM completed",
+            false,
+            false,
+            false
         );
     }
 
@@ -303,7 +306,10 @@ contract DevicePassportTest is Test {
             IPFS_CID,
             true,
             "v3.2.1",
-            "Security patch"
+            "Security patch",
+            false,
+            false,
+            false
         );
     }
 
@@ -327,7 +333,10 @@ contract DevicePassportTest is Test {
             IPFS_CID,
             true,
             "",
-            "Should be rejected"
+            "Should be rejected",
+            false,
+            false,
+            false
         );
     }
 
@@ -554,7 +563,10 @@ contract DevicePassportTest is Test {
             "QmCalibrationCert",
             true,
             "",
-            "Annual calibration passed"
+            "Annual calibration passed",
+            false,
+            false,
+            false
         );
         assertEq(serviceLog.getEventCount(tokenId), 2);
         console.log("Step 4: Calibration logged");

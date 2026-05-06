@@ -108,6 +108,9 @@ library DeviceTypes {
         bool       passedInspection;
         string     softwareVersion;
         string     notes;
+        bool       hasCompatibleParts;    // non-OEM documented parts used
+        bool       hasUndocumentedParts;  // parts used with no documentation
+        bool       isSeriousIncident;     // for INCIDENT_REPORT: serious vs minor
     }
 
     struct CorrectionRecord {

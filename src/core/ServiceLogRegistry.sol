@@ -122,7 +122,10 @@ contract ServiceLogRegistry {
         string  calldata       ipfsCID,
         bool                   passedInspection,
         string  calldata       softwareVersion,
-        string  calldata       notes
+        string  calldata       notes,
+        bool                   hasCompatibleParts,
+        bool                   hasUndocumentedParts,
+        bool                   isSeriousIncident
     ) external returns (uint256 eventIndex) {
 
         // Check role permission for this event type
@@ -157,9 +160,12 @@ contract ServiceLogRegistry {
             credentialId:     credentialId,
             documentHash:     documentHash,
             ipfsCID:          ipfsCID,
-            passedInspection: passedInspection,
-            softwareVersion:  softwareVersion,
-            notes:            notes
+            passedInspection:     passedInspection,
+            softwareVersion:      softwareVersion,
+            notes:                notes,
+            hasCompatibleParts:   hasCompatibleParts,
+            hasUndocumentedParts: hasUndocumentedParts,
+            isSeriousIncident:    isSeriousIncident
         });
 
         _history[tokenId].push(newEvent);
