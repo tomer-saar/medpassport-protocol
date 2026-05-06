@@ -16,7 +16,7 @@
 
 ## Author's Note
 
-**By [Your Name], PMP | Medical Device Industry Veteran | Blockchain Practitioner**
+**By Tomer Saar, PMP | Medical Device Industry Veteran | Blockchain Practitioner**
 
 After 20 years in the medical device industry — holding leadership roles in R&D, Engineering, and Manufacturing Management for Tier-1 global manufacturers — I came to a conclusion that reshaped how I see the industry I spent my career building:
 
@@ -206,6 +206,25 @@ Not all stakeholders see the same data. MedPassport uses a role-based permission
 | Insurer | Query service history and certification status via premium API |
 | Regulator | View all authorized records, set recall flags, access audit trail |
 | Public / buyer | View device identity, certification status, and recall flags only |
+
+### The Compliance Score — Decay from 100
+
+MedPassport uses a **decay-from-100 scoring model**. A new CE-marked device starts at 100/100 — the most compliant state possible. Deductions are applied when service is overdue, parts are undocumented, or safety complaints are open. Active recall forces the score to zero immediately.
+
+| Component | Max points | Deduction trigger |
+|---|---|---|
+| Calibration compliance | 25 pts | Overdue 0-3mo: -5 / 3-6mo: -15 / 6+mo: -25 |
+| PM compliance | 25 pts | Overdue 0-3mo: -5 / 3-6mo: -15 / 6+mo: -25 |
+| Inspection compliance | 20 pts | Overdue: up to -20 |
+| Software currency | 10 pts | Failed update: -10 / Missing 18+mo: -5 |
+| Parts integrity | 10 pts | Compatible documented: -3 / Undocumented: -10 |
+| Clean complaint record | 10 pts | Open minor: -5 / Open serious: -20 |
+
+**Hard zero conditions:** Active recall / Decommissioned / Certificate expired
+
+Scoring weights are configurable per manufacturer at pilot onboarding — agreed in writing before the pilot starts and locked for the pilot duration.
+
+**Neutral scoring principle:** MedPassport scores compliance — not vendor loyalty. OEM and qualified ISO service both receive full credit for on-time passing events. The OEM advantage is operational (tighter CMMS integration) not algorithmic.
 
 ### The Certification Attestation
 
@@ -502,6 +521,18 @@ First cash in        established          Margin               Ecosystem
                                           expansion            multiplier
 ```
 
+### Pricing Model — Wave 1
+
+| Tier | Fleet size | Annual fee | Onboarding fee |
+|---|---|---|---|
+| Pilot | Up to 50 devices | Free (90 days) | $5,000 |
+| Starter | Up to 100 devices | $12,000/yr | $5,000 |
+| Growth | 101-500 devices | $35,000/yr | $10,000 |
+| Enterprise | 501-2,000 devices | $80,000/yr | $20,000 |
+| Global | 2,000+ devices | Custom | Custom |
+
+The pilot is free for 90 days to remove adoption risk. The onboarding fee qualifies serious pilot partners and covers integration work. The subscription does not begin unless agreed pilot outcomes are met.
+
 ### What Is Deliberately Avoided in v1
 
 **No per-event transaction fees.** Enterprise healthcare buyers prefer predictable subscription or contract pricing over variable metering. Per-event fees are easy to explain in a Web3 context — they are difficult to sell to hospital procurement teams.
@@ -553,13 +584,16 @@ First cash in        established          Margin               Ecosystem
 ### Phase 1 — Foundation *(Q2–Q3 2026)*
 > Build the core protocol and make it publicly available for review and contribution
 
-- [ ] Core smart contracts deployed on Polygon Amoy testnet
-- [ ] Device identity token with UDI anchoring
-- [ ] Service log registry with standardized event types
-- [ ] Certification attestation mechanism with governance rules
-- [ ] GitHub repository with full documentation and whitepaper
-- [ ] Basic web interface for passport viewing and verification
-- [ ] GS1 UDI format validation at minting
+- [x] Core smart contracts — 10 contracts · 67 tests passing · CI green
+- [x] Device identity token with UDI anchoring and GS1 format validation
+- [x] Service log registry — 10 event types · parts and incident integrity flags
+- [x] Certification attestation — Bronze/Silver/Gold · ERC-5192 soulbound
+- [x] ComplianceScorer v2 — decay-from-100 model · configurable per manufacturer
+- [x] GitHub repository — full documentation · whitepaper · MIT license
+- [x] Live GUDID bridge — AccessGUDID API verified · real device confirmed
+- [x] Landing page — live at tomer-saar.github.io/medpassport-protocol
+- [ ] Polygon Amoy testnet deployment — in progress
+- [ ] Demo page — device registration flow · compliance score animation
 - [ ] QR code passport viewer — public verification without login
 
 ### Phase 2 — Integration *(Q4 2026 – Q1 2027)*
