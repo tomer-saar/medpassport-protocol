@@ -43,9 +43,10 @@ I am currently deepening my blockchain expertise to build this. The problem is r
 - [7. Target Customers and ROI](#7-target-customers-and-roi)
 - [8. What MedPassport Is Not](#8-what-medpassport-is-not)
 - [9. Business Model](#9-business-model)
-- [10. Use Cases](#10-use-cases)
-- [11. Roadmap](#11-roadmap)
-- [12. References](#12-references)
+- [10. Competitive Positioning](#10-competitive-positioning)
+- [11. Use Cases](#11-use-cases)
+- [12. Roadmap](#12-roadmap)
+- [13. References](#13-references)
 
 ---
 
@@ -64,6 +65,9 @@ As a device moves from manufacturer to distributor to hospital to service provid
 | **Immutable device identity** | A permanent record anchored to a unique on-chain token — duplicate identity conflicts become detectable and far harder to introduce silently |
 | **Verifiable service timeline** | Every service event, calibration, part replacement, and software update recorded and shared across authorized parties |
 | **Compliance evidence layer** | Audit-ready records that materially reduce the time and effort required to assemble regulatory evidence |
+
+**The four boundaries where existing systems fail:**
+Modern Class IIb and III devices maintain continuous cloud connectivity that works well within its boundary. MedPassport covers the four boundaries where cloud stops: devices older than ~15 years with no cloud interface; devices sold to secondary buyers whose cloud connection is severed at contract expiry; third-party ISO service events that never enter the manufacturer cloud; and cloud data the manufacturer controls that a notified body cannot independently verify.
 
 **The commercial model is straightforward:** MedPassport is free and open as a protocol. Revenue comes from the managed enterprise network — hosted infrastructure, compliance dashboards, integration services, and certification fees — built on top of it.
 
@@ -299,7 +303,7 @@ The EU Medical Device Regulation (2017/745) and In Vitro Diagnostic Regulation (
 
 #### EUDAMED — Mandatory from 28 May 2026
 
-Commission Decision EU 2025/2371, published 27 November 2025, declared the full functionality of the first four EUDAMED modules. From 28 May 2026 — four weeks from the publication date of this whitepaper — the following are mandatory for all manufacturers placing devices on the EU market:
+Commission Decision EU 2025/2371, published 27 November 2025, declared the full functionality of the first four EUDAMED modules. From 28 May 2026 — now imminent at the time of this writing — the following are mandatory for all manufacturers placing devices on the EU market:
 
 | EUDAMED Module | Obligation from 28 May 2026 | MedPassport relationship |
 |---|---|---|
@@ -402,7 +406,7 @@ Before a device passport is minted, the protocol verifies the UDI exists in the 
 | **GUDID bridge** | US | FDA AccessGUDID public API | None — fully public | UDI-DI exists and device class matches |
 | **Both bridges** | Dual market | Both above | EUDAMED auth + public GUDID | Verified in both registries before minting |
 
-The GUDID bridge is simpler to implement because AccessGUDID requires no authentication and provides a clean REST endpoint. A single GET request to the FDA's public API verifies a device before minting is permitted.
+The GUDID bridge is live. AccessGUDID requires no authentication and provides a clean REST endpoint. A single GET request to the FDA's public API verifies a device before minting is permitted — implemented and verified against Abbott Vascular XIENCE ALPINE, Class III.
 
 #### What requires no change for dual-market deployment
 
@@ -429,12 +433,32 @@ The GUDID bridge is simpler to implement because AccessGUDID requires no authent
 
 Manufacturers face the strongest regulatory pressure, carry the greatest recall risk, and have the clearest financial exposure when device identity and history break down. MedPassport gives manufacturers something no internal QMS system can provide: a device identity that survives the boundary of their own organization.
 
+**Wave 1 buyer map:**
+- **Champion:** VP Regulatory Affairs — owns PSUR and FSCA obligations, builds the internal business case
+- **Co-champion:** VP Service / Field Service Operations — owns FSCA execution and recall response
+- **Decision maker:** COO at a mid-size manufacturer ($500M-$2B revenue) — signs after internal proposal from both champions
+- **Challenger:** IT / CTO — engaged after the business decision, not before; budget is RA/Quality opex not IT capex
+
+**Ideal Wave 1 pilot partner:** EU-headquartered Class IIb/III manufacturer, 500-5,000 device fleet, using ServiceMax or Infor EAM, facing EUDAMED legacy device deadline November 2026.
+
 | Pain | MedPassport addresses |
 |---|---|
 | Recall traceability — manual effort across fragmented downstream holders | Shared ledger materially reduces reliance on downstream voluntary reporting |
 | Device identity integrity during large-scale rework | On-chain token conflicts are detectable; silent overwrites are not possible |
 | Component provenance gaps in DHR | Supplier attestations logged at unit level; process changes are traceable |
-| Audit preparation — weeks of record collection | Structured evidence layer built continuously, not assembled under pressure |
+| Audit preparation — 3-10 working days per cycle | Structured evidence layer built continuously, not assembled under pressure |
+| 3rd party ISO service events invisible to manufacturer cloud | ISO events captured on same ledger as OEM events |
+| PSUR evidence gaps for legacy and lapsed-contract devices | Continuous evidence regardless of contract status |
+
+**Wave 1 pilot success metrics (9-12 months):**
+
+| Metric | Target |
+|---|---|
+| FSCA identification time | <4 hours for 100% of pilot fleet |
+| Audit prep time reduction | >=30% vs baseline |
+| Data completeness | >=90% of CMMS work orders + >=40 events |
+| Zero workflow addition | 0 new manual tasks for field staff |
+| Refurbisher value perception | Positive written assessment |
 
 ---
 
@@ -481,6 +505,9 @@ CMMS tools — ServiceMax, Nuvolu, Infor EAM — manage work orders, planned mai
 
 **MedPassport is not a supply chain execution platform.**
 It does not manage procurement, logistics, or inventory planning. Supply chain events can be attested against the device passport — but MedPassport does not run the supply chain.
+
+**MedPassport is not an OEM enforcement tool.**
+The compliance score reflects actual device condition — not vendor loyalty. An OEM technician and a qualified ISO technician both receive full credit for a passing PM event completed on time. The OEM operational advantage is real but is not baked into the algorithm. Neutrality is the source of MedPassport trust across all parties simultaneously.
 
 ---
 
@@ -541,7 +568,29 @@ The pilot is free for 90 days to remove adoption risk. The onboarding fee qualif
 
 ---
 
-## 10. Use Cases
+## 10. Competitive Positioning
+
+No existing platform solves the cross-organizational medical device lifecycle evidence problem.
+
+| Capability | VeChain DPP | ServiceMax / PTC | MedPassport |
+|---|---|---|---|
+| Cross-organizational evidence | Partial | No — single org only | Yes — core design |
+| MDR PMS / PSUR alignment | No | No | Yes — built-in |
+| FSCA execution support | No | Partial | Yes — built-in |
+| Neutral scoring (not OEM-biased) | N/A | N/A | Yes — Product A |
+| Open source | Partial | No | Yes — MIT |
+| Zero-PII on-chain | Yes | N/A | Yes |
+| Works without IT integration | No | No | Yes — barcode fallback |
+
+**VeChain** is the closest architectural comparable — consortium blockchain, device-level DPP, B2B SaaS. The critical gap: not built for MDR PMS, PSUR, or FSCA execution. No EUDAMED or QMSR regulatory alignment.
+
+**PTC / ServiceMax** spent $1.46 billion acquiring ServiceMax to own the device lifecycle data layer. Their digital thread works within one organization using the full PTC stack. It breaks at organizational boundaries because competing entities do not share systems. MedPassport is additive to ServiceMax — it makes ServiceMax data independently verifiable and carries it across the boundary ServiceMax cannot cross.
+
+**The defensible moat:** PTC can build a scoring algorithm. They cannot build neutral infrastructure that competing parties trust simultaneously.
+
+---
+
+## 11. Use Cases
 
 ### Use Case 1 — The Manufacturer: Closing the Recall Gap
 
@@ -579,7 +628,7 @@ The pilot is free for 90 days to remove adoption risk. The onboarding fee qualif
 
 ---
 
-## 11. Roadmap
+## 12. Roadmap
 
 ### Phase 1 — Foundation *(Q2–Q3 2026)*
 > Build the core protocol and make it publicly available for review and contribution
@@ -600,11 +649,11 @@ The pilot is free for 90 days to remove adoption risk. The onboarding fee qualif
 > Connect MedPassport to the systems manufacturers and hospitals already use
 
 - [ ] EUDAMED API bridge — verify Basic UDI-DI before EU passport minting
-- [ ] GUDID bridge — verify UDI-DI via FDA AccessGUDID before US passport minting
 - [ ] IPFS / Arweave document storage for service reports and certificates
 - [ ] CMMS adapter — pilot integration with ServiceMax or Infor EAM
-- [ ] Polygon mainnet deployment
-- [ ] First paid pilot — EU refurbished CT scanner workflow
+- [ ] Polygon Amoy testnet deployment
+- [ ] Demo page — live device registration, animated compliance score, Polygonscan link
+- [ ] First paid pilot — Class IIb/III device fleet, 2-3 hospitals, 1 refurbisher
 
 ### Phase 3 — Dual-Market and Ecosystem *(2027)*
 > Expand to US market and build the commercial network
@@ -630,7 +679,7 @@ The pilot is free for 90 days to remove adoption risk. The onboarding fee qualif
 
 ---
 
-## 12. References
+## 13. References
 
 1. ISO 13485:2016 — Medical devices — Quality management systems — Requirements for regulatory purposes
 2. ISO/IEC 15459:2015 — Information technology — Automatic identification and data capture — Unique identification
