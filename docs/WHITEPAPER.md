@@ -1,7 +1,7 @@
 <div align="center">
 
 # MedPassport Protocol
-## Whitepaper v1.2
+## Whitepaper v1.3
 
 **A Blockchain-Based Digital Product Passport for the Medical Device Industry**
 
@@ -54,7 +54,7 @@ I am currently deepening my blockchain expertise to build this. The problem is r
 
 The medical device industry is world-class at building hardware. It has not kept pace on data integrity.
 
-As a device moves from manufacturer to distributor to hospital to service provider to secondary market, its critical records — the Device History Record, calibration certificates, service logs, configuration history, component provenance — are scattered across incompatible systems, stored in local databases, or simply lost. This is not a minor inconvenience. It is a structural vulnerability that has harmed patients, stalled recalls, and suppressed the value of the refurbished device market, estimated at $16.8 billion globally (Grand View Research, 2024).
+As a device moves from manufacturer to distributor to hospital to service provider to secondary market, its critical records — the Device History Record, calibration certificates, service logs, configuration history, component provenance — are scattered across incompatible systems, stored in local databases, or simply lost. This is not a minor inconvenience. It is a structural vulnerability that has harmed patients, stalled recalls, and suppressed the value of the refurbished device market, estimated at $9 billion globally for refurbished devices (Grand View Research, 2024), with the broader medical device service market exceeding $50 billion annually.
 
 **MedPassport is an open-source blockchain protocol that assigns every medical device a permanent, tamper-evident Digital Product Passport (DPP).** It creates a shared, tamper-evident source of lifecycle evidence — accessible to authorized stakeholders according to role-based permissions — that travels with the device for its entire operational life.
 
@@ -547,6 +547,8 @@ First cash in        established          Margin               Ecosystem
 
 ### Pricing Model — Wave 1
 
+Pricing is indicative at this stage and will be refined with Wave 1 pilot partners based on integration scope and fleet size. Enterprise pricing is available on request.
+
 | Tier | Fleet size | Annual fee | Onboarding fee |
 |---|---|---|---|
 | Pilot | Up to 50 devices | Free (90 days) | $5,000 |
@@ -651,6 +653,9 @@ No existing platform solves the cross-organizational medical device lifecycle ev
 - [ ] Polygon Amoy testnet deployment
 - [ ] Demo page — live device registration, animated compliance score, Polygonscan link
 - [ ] First paid pilot — Class IIb/III device fleet, 2-3 hospitals, 1 refurbisher
+- [ ] Multi-task transactions (MTT) — batch PM + calibration + SW update into single on-chain transaction; reduces gas costs 60-70% for multi-event service visits
+- [ ] MedPassport Studio — low-code CMMS field mapper (built AFTER first real field mapping session with pilot partner provides actual field names)
+- [ ] Notified body read-only audit portal — dedicated query interface for NB observers; first step is getting one NB as pilot observer
 
 ### Phase 3 — Dual-Market and Ecosystem *(2027)*
 > Expand to US market and build the commercial network
@@ -664,14 +669,18 @@ No existing platform solves the cross-organizational medical device lifecycle ev
 - [ ] EUDAMED Vigilance module bridge — structured PMS data feed (mandatory mid-2027)
 - [ ] Automated recall notification via on-chain event monitoring
 - [ ] First enterprise SaaS contracts
+- [ ] Notified body digital certificate interface — after NB observer relationship established and EU guidance on MDR digital certificates clarifies
+- [ ] DiscrepancyRegistry.sol — gap attestation contract for unauthorized intervention detection via broken chain principle
+- [ ] Authorized Service Partner credential tier — ISO technicians pay annual credential fee; hospital filters by tier; OEM defines authorized sub-network
+- [ ] Gray market territory alert dashboard — manufacturer-facing jurisdiction transfer monitoring
 
 ### Phase 4 — Standardization *(2027–2028)*
 > Position MedPassport as a reference implementation for the industry
 
-- [ ] EU ESPR medical device delegated act monitoring and alignment
+- [ ] EU ESPR medical device delegated act alignment — sustainability fields added ONLY when medical device delegated acts finalized (Q4 2026-Q1 2027); architecture already DPP-ready
 - [ ] ISO/TC 210 dialogue — quality management for medical devices
 - [ ] Notified body engagement for certifier role governance
-- [ ] OPC-UA IoT connector — automated device telemetry attestation
+- [ ] OPC-UA IoT connector — automated device telemetry attestation for connected Class IIb/III devices (IoT device self-reporting capability)
 - [ ] Academic publication of protocol design and field outcomes
 
 ---
