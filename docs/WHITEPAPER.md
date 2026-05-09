@@ -434,10 +434,7 @@ The GUDID bridge is live. AccessGUDID requires no authentication and provides a 
 Manufacturers face the strongest regulatory pressure, carry the greatest recall risk, and have the clearest financial exposure when device identity and history break down. MedPassport gives manufacturers something no internal QMS system can provide: a device identity that survives the boundary of their own organization.
 
 **Wave 1 buyer map:**
-- **Champion:** VP Regulatory Affairs — owns PSUR and FSCA obligations, builds the internal business case
-- **Co-champion:** VP Service / Field Service Operations — owns FSCA execution and recall response
-- **Decision maker:** COO at a mid-size manufacturer ($500M-$2B revenue) — signs after internal proposal from both champions
-- **Challenger:** IT / CTO — engaged after the business decision, not before; budget is RA/Quality opex not IT capex
+The buying decision is driven by regulatory and service leadership, with final approval at COO level. Detailed buyer personas, objection handling scripts, and sales process guidance are available in the Enterprise Addendum (available to qualified enterprise contacts on request).
 
 **Ideal Wave 1 pilot partner:** EU-headquartered Class IIb/III manufacturer, 500-5,000 device fleet, using ServiceMax or Infor EAM, facing EUDAMED legacy device deadline November 2026.
 
