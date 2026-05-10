@@ -306,7 +306,7 @@ forge build
 forge test
 ```
 
-Expected output: `67 tests passing · 0 failed`
+Expected output: `74 tests passing · 0 failed`
 
 ---
 
@@ -315,7 +315,7 @@ Expected output: `67 tests passing · 0 failed`
 - [x] **Sprint 0** — Protocol design documents · axioms · event taxonomy · sequence diagrams
 - [x] **Sprint 1** — Identity and governance · CredentialRegistry · RoleManager · MigrationGovernance
 - [x] **Sprint 2** — Core lifecycle · DevicePassportNFT · ServiceLogRegistry · CorrectionRegistry · TransferManager
-- [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT · 67 tests passing
+- [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT · 74 tests passing
 - [x] **Sprint 4** — Deployment scripts · live demo · CT scanner pilot verified on-chain
 - [x] **Sprint 5** — Live GUDID bridge · AccessGUDID API verified · dual-market UDI fields
 - [x] **Sprint 6** — ComplianceScorer v2 decay model · configurable weights · ServiceEvent integrity flags
