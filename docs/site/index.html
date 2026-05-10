@@ -641,7 +641,7 @@
 <div style="background:var(--white);">
   <div class="hero-section">
     <div class="hero-content">
-      <div class="hero-eyebrow">Open Protocol · Shared Truth Infrastructure</div>
+      <div class="hero-eyebrow">Open Protocol · Class IIb/III Medical Devices · EU MDR + FDA QMSR</div>
 
       <blockquote class="hero-quote">
         "The greatest risk to a medical device isn't always mechanical. It's informational."
@@ -650,24 +650,26 @@
 
       <h1>Closing <em>the Information Gap</em> in medical device lifecycles</h1>
       <p class="hero-sub">
-        MedPassport is an open-source Shared Truth Infrastructure based on
-        Distributed Ledger Technology (DLT) — assigning every medical device
-        a tamper-evident Digital Product Passport that survives every
-        organizational handoff. No crypto wallets for enterprise users.
-        No patient data on-chain. No changes to how field technicians work.
+        When a medical device leaves the manufacturer's direct control, the
+        compliance data trail fragments — across distributors, hospitals, ISO
+        service organizations, and secondary buyers. Every notified body audit
+        and FSCA becomes a costly manual reconstruction exercise.
+        MedPassport creates a permanent, independently verifiable lifecycle
+        record that travels with the device across every organizational boundary.
+        No crypto wallets. No patient data on-chain. No changes to how field technicians work.
       </p>
       <div class="hero-actions">
-        <a href="#verify" class="btn-primary">Verify a Device →</a>
+        <a href="demo.html" class="btn-primary">See How It Works — 5 min demo →</a>
         <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary">Read the Whitepaper ↗</a>
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
-          <div class="hero-stat-value">$9B</div>
+          <div class="hero-stat-value">$9B+</div>
           <div class="hero-stat-label">Refurbished device market</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-value">EU + US</div>
-          <div class="hero-stat-label">Dual-market ready</div>
+          <div class="hero-stat-value">67</div>
+          <div class="hero-stat-label">Tests passing · CI green</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-value">Zero PII</div>
@@ -766,7 +768,7 @@
           makes evidence-based resale pricing possible.
         </div>
         <div class="pillar-contracts">
-          <span class="pillar-contract">ComplianceScorer.sol — Weighted 0–100</span>
+          <span class="pillar-contract">ComplianceScorer.sol — Decay-from-100 model</span>
           <span class="pillar-contract">CertificationSBT.sol — ERC-5192 Soulbound</span>
         </div>
       </div>
@@ -834,9 +836,9 @@
     </p>
     <div class="problem-grid">
       <div class="problem-card">
-        <div class="problem-number">15–25%</div>
-        <div class="problem-title">Recalls that never reach affected devices</div>
-        <div class="problem-desc">Manufacturers depend on voluntary downstream reporting. When data breaks down at handoffs, recall execution is incomplete — leaving patients at risk and manufacturers liable.</div>
+        <div class="problem-number">Days–weeks</div>
+        <div class="problem-title">To locate affected devices during an FSCA</div>
+        <div class="problem-desc">Manufacturers depend on voluntary downstream reporting. When a device has changed hands or been serviced by an ISO, there is no shared trail to follow — each organizational boundary must be crossed manually.</div>
       </div>
       <div class="problem-card">
         <div class="problem-number">30–50%</div>
@@ -844,14 +846,49 @@
         <div class="problem-desc">Refurbished devices sell far below their real value because buyers cannot independently verify what happened to them. Verified history converts this discount into negotiating leverage.</div>
       </div>
       <div class="problem-card">
-        <div class="problem-number">3–8</div>
-        <div class="problem-title">Disconnected systems to assemble audit evidence</div>
-        <div class="problem-desc">Audit preparation takes days because evidence lives across ERP, CMMS, QMS, email, and paper records — assembled under pressure when a notified body arrives unannounced.</div>
+        <div class="problem-number">4</div>
+        <div class="problem-title">Organizational boundaries where cloud platforms go silent</div>
+        <div class="problem-desc">Manufacturer cloud stops at contract expiry, device age, 3rd party service, and regulatory independence. No single system carries evidence across all four of these boundaries without MedPassport.</div>
       </div>
       <div class="problem-card">
-        <div class="problem-number">30–90</div>
-        <div class="problem-title">Days to resolve warranty disputes</div>
-        <div class="problem-desc">Both parties reconstruct history from competing paper records. A shared evidence layer — where both parties access the same immutable record — makes disputes resolvable in hours, not months.</div>
+        <div class="problem-number">3–10 days</div>
+        <div class="problem-title">Audit preparation per notified body cycle</div>
+        <div class="problem-desc">Evidence lives across ERP, CMMS, QMS, email chains, and paper records — assembled under pressure when an inspector arrives. A continuously-built evidence layer replaces reconstruction with a dashboard query.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Four Cloud Boundaries ── -->
+<section style="background:var(--white);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);">
+  <div class="section-inner">
+    <p class="section-label">The Structural Gap</p>
+    <h2>Where existing systems stop — and MedPassport begins</h2>
+    <p class="section-sub">
+      Modern Class IIb/III devices maintain continuous cloud connectivity.
+      That investment works well within its boundary.
+      MedPassport covers the four boundaries where cloud stops.
+    </p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-number">1</div>
+        <div class="problem-title">Device age</div>
+        <div class="problem-desc">Older equipment, portable devices (ultrasound, monitors), and devices never connected to vendor networks have no remote data interface. Service records exist on paper or in local systems only. MedPassport registers these via barcode scan at the device.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">2</div>
+        <div class="problem-title">Ownership transfer</div>
+        <div class="problem-desc">When a device is sold to a secondary buyer, manufacturer cloud visibility typically ends at contract expiry. MDR Art. 83 PMS obligations do not end — but the evidence trail does.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">3</div>
+        <div class="problem-title">3rd party service</div>
+        <div class="problem-desc">When a hospital uses an ISO technician instead of the OEM, that service data stays in the ISO's own system — invisible to the manufacturer. Calibrations, PM events, and part replacements leave no shared trail.</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-number">4</div>
+        <div class="problem-title">Regulatory independence</div>
+        <div class="problem-desc">Manufacturer cloud data is controlled by the manufacturer. A notified body cannot independently verify it was not modified after the fact. Tamper-evident on-chain attestations carry higher regulatory weight than self-reported records.</div>
       </div>
     </div>
   </div>
@@ -896,8 +933,8 @@
         <div class="step-number">4</div>
         <div class="step-content">
           <div class="step-title">Compliance score calculated on-chain from service history</div>
-          <div class="step-desc">A weighted algorithm reads the full service history and produces a 0–100 compliance score. Calibration, preventive maintenance, inspection, and software currency each carry defined weights. Incident reports trigger automatic deductions. Recall flags force score to zero.</div>
-          <span class="step-tag">ComplianceScorer.sol · Weighted 0–100</span>
+          <div class="step-desc">A decay-from-100 model reads the full service history. A new CE-marked device starts at 100/100 — the most compliant state. Deductions are applied when service is overdue, parts are undocumented, or complaints are open. Active recall forces the score to zero immediately.</div>
+          <span class="step-tag">ComplianceScorer.sol · Decay-from-100 · Configurable per manufacturer</span>
         </div>
       </div>
       <div class="step">
