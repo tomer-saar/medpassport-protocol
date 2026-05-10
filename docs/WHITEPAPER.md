@@ -54,7 +54,7 @@ I am currently deepening my blockchain expertise to build this. The problem is r
 
 The medical device industry is world-class at building hardware. It has not kept pace on data integrity.
 
-As a device moves from manufacturer to distributor to hospital to service provider to secondary market, its critical records — the Device History Record, calibration certificates, service logs, configuration history, component provenance — are scattered across incompatible systems, stored in local databases, or simply lost. This is not a minor inconvenience. It is a structural vulnerability that has harmed patients, stalled recalls, and suppressed the value of the refurbished device market, estimated at $9 billion globally for refurbished devices (Grand View Research, 2024), with the broader medical device service market exceeding $50 billion annually.
+As a device moves from manufacturer to distributor to hospital to service provider to secondary market, its critical records — the Device History Record, calibration certificates, service logs, configuration history, component provenance — are scattered across incompatible systems, stored in local databases, or simply lost. This is not a minor inconvenience. It is a structural vulnerability that has harmed patients, stalled recalls, and suppressed the value of the refurbished device market, estimated at $20-22 billion globally in 2026 (Mordor Intelligence: $20.89B; Grand View Research: $23.61B; Fortune Business Insights: $15.73B — variance reflects differing scope definitions). The non-OEM independent refurbisher segment alone represents approximately $7.5 billion (Mordor Intelligence, 2024).
 
 **MedPassport is an open-source blockchain protocol that assigns every medical device a permanent, tamper-evident Digital Product Passport (DPP).** It creates a shared, tamper-evident source of lifecycle evidence — accessible to authorized stakeholders according to role-based permissions — that travels with the device for its entire operational life.
 
@@ -315,6 +315,9 @@ Commission Decision EU 2025/2371, published 27 November 2025, declared the full 
 **What EUDAMED does not do — and MedPassport does:**
 EUDAMED is a registration and static device database. It records that a device exists and is certified. It does not record what happens to a device after it leaves the manufacturer — no service history, no ownership transfers, no calibration records, no second-hand transaction evidence. MedPassport provides exactly this lifecycle continuity layer. The two systems are complementary by design.
 
+**EU Implementing Regulation 2026/977 — adopted 4 May 2026:**
+Published in the Official Journal of the EU on 5 May 2026. Establishes binding uniform quality management and procedural requirements for notified bodies under MDR and IVDR — including maximum timelines for conformity assessment activities and mandatory transparency on quotations. Enters into force 25 May 2026, applies from 25 February 2027. For manufacturers, this increases what notified bodies must demonstrate and document. For MedPassport, this sharpens the value of pre-packaged tamper-evident compliance documentation that reduces NB review burden.
+
 **The EUDAMED roadmap beyond 2026:**
 The Vigilance module — covering post-market surveillance, incident reports, and periodic safety update reports — is expected to become mandatory around mid-2027. When it does, the structured service event data that MedPassport continuously captures becomes the primary feed for a manufacturer's EUDAMED vigilance submissions. MedPassport is being built now specifically to support this workflow when it becomes mandatory.
 
@@ -440,7 +443,7 @@ The buying decision is driven by regulatory and service leadership, with final a
 
 | Pain | MedPassport addresses |
 |---|---|
-| Recall traceability — manual effort across fragmented downstream holders | Shared ledger materially reduces reliance on downstream voluntary reporting |
+| FSCA execution across organizational boundaries — no published benchmark exists for Class IIb reach rates; Wave 1 pilot produces the first measured data point | Shared ledger locates every registered device regardless of ownership history or service provider |
 | Device identity integrity during large-scale rework | On-chain token conflicts are detectable; silent overwrites are not possible |
 | Component provenance gaps in DHR | Supplier attestations logged at unit level; process changes are traceable |
 | Audit preparation — 3-10 working days per cycle | Structured evidence layer built continuously, not assembled under pressure |
@@ -462,6 +465,8 @@ The buying decision is driven by regulatory and service leadership, with final a
 ### Wave 2 — The Reseller and Refurbisher
 
 The reseller's value proposition depends on buyer confidence. Today that confidence is purchased with a discount — typically 30 to 50 percent below equivalent new-device pricing for a device whose history cannot be independently verified. MedPassport converts verified history into a negotiating asset.
+
+OEM-certified refurbishers held 64.56% of the global refurbished device market in 2024 (Mordor Intelligence), commanding price premiums through proprietary documentation and factory parts. The remaining 35.44% — approximately $7.5 billion — is served by independent refurbishers growing at 10.78% CAGR, yet commercially constrained by the assurance gap their buyers face. MedPassport closes this gap without requiring OEM affiliation.
 
 | Pain | MedPassport addresses |
 |---|---|
@@ -706,6 +711,8 @@ No existing platform solves the cross-organizational medical device lifecycle ev
 17. FDA Recall Database — Sage Products Urine Management System, Recall Z-2474-2023 (2023)
 18. Grand View Research — Digital Product Passport Market Size & Forecast, 2024-2030 (2024)
 19. Grand View Research — Refurbished Medical Equipment Market Analysis (2024)
+20. Mordor Intelligence — Refurbished Medical Devices Market Size & Share Analysis (2024)
+21. Commission Implementing Regulation (EU) 2026/977 — Uniform quality management and procedural requirements for notified bodies under MDR and IVDR, OJ L, 5 May 2026
 
 ---
 
