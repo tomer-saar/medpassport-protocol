@@ -84,7 +84,7 @@ forge build
 forge test
 forge test --summary
 
-Status: 67 tests — 67 passing — 0 failing
+Status: 74 tests — 74 passing — 0 failing
   CredentialRegistryTest: 22
   DevicePassportTest: 24
   ComplianceTest: 21
@@ -153,4 +153,4 @@ git push origin main
 CI runs forge test on every push. Always run forge test before committing.
 Never push broken tests.
 
-Last updated: May 2026 · 67 tests passing · MIT License
+Last updated: May 2026 · 74 tests passing · MIT License
