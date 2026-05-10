@@ -643,4 +643,182 @@ contract ComplianceTest is Test {
         console.log("Step 7: Recall cleared. Score:", scoreAfterClear);
         console.log("CERTIFICATION LIFECYCLE TEST PASSED");
     }
+    function _mintAndTransferSecond()
+        internal returns (uint256 tokenId)
+    {
+        vm.prank(manufacturer);
+        tokenId = passport.mintDevicePassport(
+            manufacturer, "00844588003288/LOT2024-002/SN00999",
+            DeviceTypes.DeviceClass.CLASS_IIB,
+            MODEL, METADATA,
+            true
+        );
+        vm.prank(manufacturer);
+        passport.approve(address(transferMgr), tokenId);
+        vm.prank(manufacturer);
+        bytes32 proposal = transferMgr.proposeTransfer(
+            tokenId, hospital, keccak256("purchase_agreement_2")
+        );
+        vm.prank(hospital);
+        transferMgr.confirmTransfer(proposal);
+    }
+
+    // ============================================================
+    //  8. INTEGRITY FLAG SCORING — Sprint 6 additions
+    // ============================================================
+
+    function test_Score_DeductionForUndocumentedParts() public {
+        uint256 tokenId = _mintAndTransferToHospital();
+        _logPM(tokenId, true);
+        _logCalibration(tokenId, true);
+        uint256 scoreBefore = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        bytes32 hash = keccak256("pm_undocumented_parts");
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            hash, "QmUndocParts", true, "", "PM with undocumented parts",
+            false, true, false  // hasUndocumentedParts = true
+        );
+        uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertLt(scoreAfter, scoreBefore);
+        console.log("Score before undocumented parts:", scoreBefore);
+        console.log("Score after undocumented parts:", scoreAfter);
+    }
+
+    function test_Score_DeductionForCompatibleParts() public {
+        uint256 tokenId = _mintAndTransferToHospital();
+        _logPM(tokenId, true);
+        uint256 scoreBefore = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            keccak256("pm_compat"), "QmCompatParts", true, "", "PM with compatible parts",
+            true, false, false  // hasCompatibleParts = true
+        );
+        uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertLt(scoreAfter, scoreBefore);
+        assertGt(scoreAfter, scoreBefore - 10); // less penalty than undocumented
+        console.log("Score before compatible parts:", scoreBefore);
+        console.log("Score after compatible parts:", scoreAfter);
+    }
+
+    function test_Score_UndocumentedPartsWorseThanCompatible() public {
+        uint256 tokenId1 = _mintAndTransferToHospital();
+        uint256 tokenId2 = _mintAndTransferSecond();
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId1, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            keccak256("pm_compat2"), "QmC2", true, "", "Compatible parts",
+            true, false, false
+        );
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId2, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            keccak256("pm_undoc2"), "QmU2", true, "", "Undocumented parts",
+            false, true, false
+        );
+        uint256 scoreCompat = scorer.calculateScoreSimple(tokenId1, passport, serviceLog);
+        uint256 scoreUndoc  = scorer.calculateScoreSimple(tokenId2, passport, serviceLog);
+        assertGt(scoreCompat, scoreUndoc);
+        console.log("Score with compatible parts:", scoreCompat);
+        console.log("Score with undocumented parts:", scoreUndoc);
+    }
+
+    function test_Score_DeductionForSeriousIncident() public {
+        uint256 tokenId = _mintAndTransferToHospital();
+        _logPM(tokenId, true);
+        _logCalibration(tokenId, true);
+        _logInspection(tokenId, true);
+        uint256 scoreBefore = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId, DeviceTypes.EventType.INCIDENT_REPORT,
+            keccak256("serious_inc"), "QmSerious",
+            false, "", "Serious adverse event",
+            false, false, true  // isSeriousIncident = true
+        );
+        uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertLt(scoreAfter, scoreBefore);
+        console.log("Score before serious incident:", scoreBefore);
+        console.log("Score after serious incident:", scoreAfter);
+    }
+
+    function test_Score_SeriousIncidentWorseThanMinor() public {
+        uint256 tokenId1 = _mintAndTransferToHospital();
+        uint256 tokenId2 = _mintAndTransferSecond();
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId1, DeviceTypes.EventType.INCIDENT_REPORT,
+            keccak256("minor_inc"), "QmMinor",
+            false, "", "Minor incident",
+            false, false, false  // isSeriousIncident = false
+        );
+        vm.prank(serviceOrg);
+        serviceLog.logEvent(
+            tokenId2, DeviceTypes.EventType.INCIDENT_REPORT,
+            keccak256("serious_inc2"), "QmSerious2",
+            false, "", "Serious incident",
+            false, false, true  // isSeriousIncident = true
+        );
+        uint256 scoreMinor   = scorer.calculateScoreSimple(tokenId1, passport, serviceLog);
+        uint256 scoreSerious = scorer.calculateScoreSimple(tokenId2, passport, serviceLog);
+        assertGt(scoreMinor, scoreSerious);
+        console.log("Score after minor incident:", scoreMinor);
+        console.log("Score after serious incident:", scoreSerious);
+    }
+
+    // ============================================================
+    //  9. SCORE RECOVERY AFTER CORRECTIVE ACTION
+    // ============================================================
+
+    function test_Score_RecoveryAfterPM() public {
+        // Demonstrates score recovery after corrective maintenance.
+        // This is the incentive alignment argument: the score recovers
+        // when the device is brought back into compliance.
+        uint256 tokenId = _mintAndTransferToHospital();
+
+        // New device starts at 100
+        uint256 scoreNew = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertEq(scoreNew, 100);
+        console.log("Score at manufacture:", scoreNew);
+
+        // Warp 15 months — PM is overdue (interval = 12 months)
+        vm.warp(block.timestamp + 455 days);
+        uint256 scoreOverdue = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertLt(scoreOverdue, scoreNew);
+        console.log("Score after PM overdue 15 months:", scoreOverdue);
+
+        // Perform PM — score should recover
+        _logPM(tokenId, true);
+        uint256 scoreAfterPM = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertGt(scoreAfterPM, scoreOverdue);
+        assertGe(scoreAfterPM, 50); // PM deduction removed; cal+insp still overdue
+        console.log("Score after PM performed:", scoreAfterPM);
+        console.log("Recovery delta:", scoreAfterPM - scoreOverdue);
+        console.log("SCORE RECOVERY TEST PASSED");
+    }
+
+    function test_Score_FullRecoveryAfterAllService() public {
+        // All service components overdue then brought up to date.
+        // Score should recover to Gold territory (>=90).
+        uint256 tokenId = _mintAndTransferToHospital();
+
+        // Warp 18 months — all intervals overdue
+        vm.warp(block.timestamp + 548 days);
+        uint256 scoreOverdue = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertLt(scoreOverdue, 80);
+        console.log("Score when all service overdue:", scoreOverdue);
+
+        // Perform all service types
+        _logPM(tokenId, true);
+        _logCalibration(tokenId, true);
+        _logInspection(tokenId, true);
+
+        uint256 scoreRecovered = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
+        assertGt(scoreRecovered, scoreOverdue);
+        assertGe(scoreRecovered, 90);
+        console.log("Score after all service:", scoreRecovered);
+        console.log("Full recovery delta:", scoreRecovered - scoreOverdue);
+    }
+
 }
