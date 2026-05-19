@@ -1191,6 +1191,7 @@ const DEMO_DEVICES = {
     certLevel: 'SILVER',
     certScore: 82,
     certExpiry: '2026-12-31',
+    scoreNote: 'Annual inspection overdue by 2 months. Complete inspection to recover score to Gold.',
     recallActive: false,
     tokenId: 2,
     events: [
@@ -1198,6 +1199,7 @@ const DEMO_DEVICES = {
       { type: 'TRANSFER', desc: 'Ownership transferred to City Medical Center — dual-signed', date: '2023-12-01', status: 'Dual-signed' },
       { type: 'PM', desc: 'Scheduled PM — minor wear noted and corrected', date: '2024-11-15', status: 'Passed' },
       { type: 'CALIBRATION', desc: 'Flow rate calibration — within tolerance', date: '2024-11-15', status: 'Passed' },
+      { type: 'OVERDUE', desc: 'Annual inspection overdue by 2 months — not yet completed. Deduction applied: -18 pts (inspection compliance component). Schedule inspection to recover score. CorrectionRegistry available if technician data error.', date: '2025-03-01', status: '⚠ Overdue' },
     ]
   },
   RECALL: {
@@ -1283,6 +1285,7 @@ function renderPassport(device) {
       </span>
     </div>`).join('');
 
+  const noteHTML = device.scoreNote ? \`<div style='background:#FDF3E0;border:1px solid #F0D898;border-radius:6px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#7A5500;'><strong>Why Silver?</strong> \${device.scoreNote} Once resolved, score recovers automatically. Use CorrectionRegistry if the gap was due to a data entry error.</div>\` : '';
   const recallHTML = device.recallActive
     ? `<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--red);font-weight:500;background:#FBE8E8;border:1px solid #E8B0B0;border-radius:4px;padding:12px 16px;margin-bottom:20px;">
         <span>⚠</span> Active Field Safety Corrective Action — Do not use pending resolution
@@ -1329,7 +1332,7 @@ function renderPassport(device) {
         <div class="result-status-label">Recall Status</div>
       </div>
     </div>
-    ${recallHTML}
+    ${noteHTML}${recallHTML}
     ${certHTML}
     <div class="result-section-title">Service History — On-Chain Attestations</div>
     <div class="result-events">${eventsHTML}</div>
