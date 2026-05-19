@@ -66,7 +66,7 @@ boundaries. **MedPassport covers the four structural gaps this creates.**
 | Gap | The structural problem | Compliance consequence |
 |---|---|---|
 | **A — Offline / disconnected devices** | Many high-risk devices operate without continuous network connectivity (cybersecurity policy or infrastructure constraints). Service records are managed manually in local Excel files with no independent verification or unique link to the physical device identifier. | No regulatory-grade evidence trail for a significant portion of the deployed fleet. PSUR evidence gaps. FSCA notifications cannot reach affected units reliably. |
-| **B — Ownership transfer breaks the chain** | When a device is sold to a secondary buyer or transferred to a distributor, the manufacturer's cloud connection is severed. MDR Art. 83 PMS obligations continue for decades — but the manufacturer loses all visibility into the device's location, software status, and safety compliance. | PMS evidence gaps for devices no longer under direct service contract but still in clinical use. Manufacturer cannot demonstrate lifecycle compliance to a notified body for transferred devices. |
+| **B — Ownership transfer breaks the chain** | When a device is sold to a secondary buyer or transferred to a distributor, the manufacturer's cloud connection is severed. Under EU MDR Art. 83, PMS obligations continue throughout the device's declared lifetime — regardless of ownership or contract status. Under FDA QMSR, MDR complaint reporting (21 CFR Part 803) and CAPA trend analysis obligations continue. | EU: PSUR evidence gaps for all transferred devices — a structural compliance breach. US: incomplete CAPA trend data and potential MDR reporting gaps for incidents involving transferred devices. |
 | **C — ISO service dead zone and warranty loss** | A significant share of service contracts are performed by independent service organizations (ISOs). Their service data, component versions, and software states never reach the manufacturer. The manufacturer cannot produce a complete PSUR — and loses the ability to enforce warranty terms against improper service, non-OEM parts, or failure to install critical cybersecurity patches. | Incomplete PMS and PSUR evidence. Cannot verify 3rd party service quality. Manufacturer warranty protection lost. No proof that critical cybersecurity updates were installed on specific devices. |
 | **D — Absence of independent evidence** | Technical and regulatory data stored only in the manufacturer's or hospital's internal systems is not considered independent third-party evidence. A notified body requires immutable, tamper-evident records not controlled by any commercially interested party. | Self-reported evidence carries lower regulatory weight. MedPassport creates tamper-evident records that no single party — including the manufacturer — can alter after writing. |
 
@@ -262,7 +262,7 @@ enterprise onboarding.
 | **EU MDR 2017/745** | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 Incident reporting |
 | **EUDAMED** | EU | Mandatory from 28 May 2026 · UDI registration · Actor registration |
 | **EU ESPR 2024/1781** | EU | DPP-ready architecture · JRC methodology aligned |
-| **FDA QMSR 21 CFR 820** | US | §820.10 UDI · §820.35 Records · §820.65 Traceability · §820.200 Servicing |
+| **FDA QMSR 21 CFR 820** | US | §820.10 UDI · §820.35 Records · §820.65 Traceability · §820.100 CAPA trend analysis · §820.200 Servicing (where specified) · 21 CFR Part 803 MDR complaint reporting |
 | **FDA GUDID** | US | Live UDI-DI validation bridge — AccessGUDID API verified |
 | **21 CFR Part 11** | US | Audit trail · unique identification · record retrieval |
 
@@ -276,8 +276,7 @@ enterprise onboarding.
 | 🇺🇸 US | FDA GUDID — QMSR in effect February 2026 | ✅ Live GUDID bridge · AccessGUDID API verified |
 | 🌐 Both | Single deployment, dual validation at mint | ✅ Dual UDI fields · jurisdiction flagging complete |
 
-FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through MedPassport
-delivers 80% of US QMSR compliance automatically.
+FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through MedPassport delivers 80% of US QMSR compliance automatically — specifically through CAPA trend analysis (§820.100), complaint reporting completeness (21 CFR Part 803), and UDI traceability (21 CFR Part 830), all of which require cross-organizational service evidence that MedPassport provides.
 
 > *Enterprise Addendum (pricing, ROI analysis, pilot definition) available on request —
 > [LinkedIn](https://www.linkedin.com/in/tomer-saar/)*
