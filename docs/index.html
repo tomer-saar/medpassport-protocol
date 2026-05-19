@@ -661,8 +661,9 @@
         No patient data on-chain. No changes to how field technicians work.
       </p>
       <div class="hero-actions">
-        <a href="#verify" class="btn-primary">Verify a Device →</a>
-        <a href="demo-v2.html" class="btn-secondary">Role-Based Demo — 5 roles · vault · FSCA →</a>
+        <a href="demo-v2.html" class="btn-primary">Interactive Role-Based Demo →</a>
+        <a href="#verify" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">Verify a Device →</a>
+        <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">Technical Overview & Whitepaper ↗</a>
         <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary">Technical Overview & Whitepaper ↗</a>
       </div>
       <div class="hero-stats">
@@ -690,7 +691,7 @@
         <div class="passport-preview-body">
           <div class="passport-field">
             <span class="passport-field-label">UDI</span>
-            <span class="passport-field-value" style="font-size:11px;">00844588003288/LOT2026-001</span>
+            <span class="passport-field-value" style="font-size:11px;">00844588003288/LOT2023-Q1</span>
           </div>
           <div class="passport-field">
             <span class="passport-field-label">Device</span>
@@ -892,9 +893,9 @@
       <div class="step">
         <div class="step-number">3</div>
         <div class="step-content">
-          <div class="step-title">Service events logged automatically from existing systems</div>
-          <div class="step-desc">The protocol polls ServiceMax and Infor EAM for closed work orders and writes signed attestations on-chain automatically. PM, calibration, software updates, inspections — all captured without a field technician taking a single additional step.</div>
-          <span class="step-tag">ServiceLogRegistry.sol · Headless CMMS integration</span>
+          <div class="step-title">Service events logged — automatically or by barcode scan</div>
+          <div class="step-desc"><strong>Path A (automated):</strong> The protocol reads closed work orders from ServiceMax and Infor EAM automatically — zero additional steps for field technicians. <strong>Path B (barcode):</strong> Sites without CMMS use a mobile barcode scan and a 60-second structured form. Both paths produce identical on-chain attestations. Offline-to-Online sync supported.</div>
+          <span class="step-tag">ServiceLogRegistry.sol · Path A: Headless CMMS · Path B: Barcode + mobile</span>
         </div>
       </div>
       <div class="step">
@@ -923,7 +924,7 @@
     <p class="section-label">Regulatory Alignment</p>
     <h2>Built for the regulations that matter now</h2>
     <p class="section-sub">
-      EUDAMED mandatory from 28 May 2026. FDA QMSR in effect February 2026.
+      EUDAMED mandatory 28 May 2026 (EU Decision 2025/2371). FDA QMSR in effect February 2026.
       One protocol. Both markets. Because FDA QMSR incorporates ISO 13485 by
       reference, EU compliance delivers 80% of US compliance automatically.
     </p>
@@ -932,7 +933,7 @@
         <div class="reg-flag">🇪🇺</div>
         <div class="reg-title">EU Market</div>
         <div class="reg-name">MDR + EUDAMED + ESPR</div>
-        <div class="reg-desc">Four EUDAMED modules mandatory from 28 May 2026. MedPassport UDI anchors to the same UDI in EUDAMED. DPP-ready architecture aligned with the JRC March 2026 methodology for future medical device delegated acts.</div>
+        <div class="reg-desc">Four EUDAMED modules mandatory from 28 May 2026 (EU Decision 2025/2371). Legacy device registration deadline: 27 November 2026. MedPassport UDI anchors to the same UDI in EUDAMED. DPP-ready architecture aligned with the JRC March 2026 methodology for future medical device delegated acts.</div>
         <div class="reg-status">● EUDAMED bridge — Phase 2 roadmap</div>
       </div>
       <div class="reg-card">
@@ -958,12 +959,13 @@
 <section class="viewer-section" id="verify" style="padding:80px 48px;">
   <div class="section-inner">
     <p class="section-label">Device Passport Viewer</p>
-    <h2>Verify any registered device</h2>
+    <h2>Explore the full interactive demo</h2>
     <p class="section-sub">
-      Enter a UDI to view the device passport — provenance, service history,
-      compliance score, certification status, and recall flag.
-      No account, no wallet, no login required.
+      Try the role-based demo — switch between manufacturer, hospital, ISO, refurbisher, and regulator to see how the same passport looks from every stakeholder's perspective. Or enter a UDI below.
     </p>
+    <div style="margin-bottom:24px;text-align:center;">
+      <a href="demo-v2.html" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;padding:12px 28px;">Try Role-Based Demo — 5 roles · vault · FSCA →</a>
+    </div>
     <div class="viewer-wrapper">
       <div class="viewer-card">
         <div class="viewer-header">
@@ -977,7 +979,7 @@
           <label class="viewer-input-label" for="udi-input">Unique Device Identifier (UDI)</label>
           <div class="viewer-input-row">
             <input type="text" id="udi-input" class="viewer-input"
-              placeholder="e.g. 00844588003288/LOT2026-001/SN00432"
+              placeholder="e.g. 00844588003288/LOT2023-Q1/SN00432"
               autocomplete="off" spellcheck="false" />
             <button class="viewer-btn" onclick="lookupPassport()">Verify →</button>
           </div>
@@ -1022,7 +1024,7 @@
         <div class="audience-role">Wave 2 — Earliest ROI</div>
         <div class="audience-title">The Refurbisher converts the Trust Tax into a negotiating asset</div>
         <div class="audience-desc">Certified refurbishers are where MedPassport delivers the most immediate, measurable return. A 30–50% trust discount — eliminated. A Gold-certified high-value device — imaging system, ventilator, surgical robot, infusion pump — with a verified service history commands a fundamentally different conversation than one with paper records.</div>
-        <div class="audience-metric">→ $9B refurbished device market</div>
+        <div class="audience-metric">→ $21B refurbished device market · 9–11% CAGR</div>
         <div class="audience-roi">ROI: 30–50% trust discount converted to evidence-based pricing. Asset value protected for secondary markets.</div>
       </div>
       <div class="audience-card">
@@ -1045,9 +1047,7 @@
         <p class="section-label">Ecosystem & Pilots</p>
         <h2>Wave 1 Enterprise Rollout — currently selecting partners</h2>
         <p class="section-sub">
-          The v1 pilot is defined. We are currently in conversation with
-          qualified partners who meet the criteria for the first enterprise
-          deployment.
+          Two parallel entry points. <strong>Fast lane (4–8 weeks):</strong> Certified independent refurbishers of Class IIb imaging equipment — immediate measurable ROI. <strong>OEM track:</strong> Mid-size EU/US manufacturer with active PSUR obligations and ServiceMax or Infor EAM.
         </p>
         <div class="pilots-criteria">
           <div class="pilots-criterion">
@@ -1060,8 +1060,8 @@
           <div class="pilots-criterion">
             <div class="pilots-criterion-icon">🔧</div>
             <div>
-              <div class="pilots-criterion-title">Existing CMMS infrastructure</div>
-              <div class="pilots-criterion-text">ServiceMax, Infor EAM, or equivalent CMMS in active use for work order management across the device fleet.</div>
+              <div class="pilots-criterion-title">CMMS or barcode-ready operations</div>
+              <div class="pilots-criterion-text">ServiceMax or Infor EAM preferred for automated Path A integration. Path B barcode fallback available for partners without CMMS — no IT integration required to start.</div>
             </div>
           </div>
           <div class="pilots-criterion">
@@ -1098,8 +1098,8 @@
           <div class="pilots-wave">
             <div class="pilots-wave-num">3</div>
             <div>
-              <div class="pilots-wave-title">Success metrics</div>
-              <div class="pilots-wave-desc">Four measurable outcomes: recall reach rate, audit preparation time, resale price delta, service dispute resolution time.</div>
+              <div class="pilots-wave-title">Success metrics (Wave 1 KPIs)</div>
+              <div class="pilots-wave-desc">FSCA identification &lt;4 hours for 100% of fleet · Work order capture ≥95% · Audit prep reduction ≥30% · Zero additional workflow steps · ComplianceScorer calibrated against real field data.</div>
               <div class="pilots-wave-status">→ 9–12 month timeline</div>
             </div>
           </div>
@@ -1154,7 +1154,7 @@
 <script>
 const DEMO_DEVICES = {
   CT: {
-    udi: '00844588003288/LOT2026-001/SN00432',
+    udi: '00844588003288/LOT2023-Q1/SN00432',
     name: 'CardioScan Pro 3000',
     manufacturer: 'MedDevice GmbH',
     deviceClass: 'Class IIb — Diagnostic Imaging',
