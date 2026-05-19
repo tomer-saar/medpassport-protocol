@@ -35,66 +35,66 @@ organizational boundaries.
 
 ## The Problem in Three Paragraphs
 
-**The regulatory pressure:** MDR post-market surveillance, EUDAMED traceability,
-QMSR service records, and emerging Digital Product Passport requirements all demand
-device-level evidence that persists across ownership transfers, service providers,
-and decades of operational life.
+**The regulatory pressure:** MDR post-market surveillance, EUDAMED traceability (mandatory
+May 2026, EU Decision 2025/2371), QMSR service records, and emerging Digital Product Passport
+requirements all demand device-level evidence that persists across ownership transfers,
+service providers, and decades of operational life.
 
-**The architectural gap:** No existing system can create a neutral, tamper-evident
-record that manufacturers, hospitals, refurbishers, and regulators all trust —
-without ceding control to a single vendor or database operator. Proprietary cloud
-platforms stop at the contract boundary. CMMS systems stop at the organizational
-boundary. EUDAMED records that a device exists. None of them record what happens
-to the device after it leaves the manufacturer's direct control.
+**The architectural gap:** No existing system can create a neutral, tamper-evident record
+that manufacturers, hospitals, refurbishers, and regulators all trust — without ceding
+control to a single vendor or database operator. Proprietary cloud platforms stop at the
+contract boundary. CMMS systems stop at the organizational boundary. EUDAMED records that
+a device exists. None of them record what happens to the device after it leaves the
+manufacturer's direct control.
 
-**MedPassport's answer:** An open protocol (MIT licensed) with a paid managed
-network that turns regulatory-mandated device identity (UDI) into a cryptographic
-passport — carrying signed attestations from every actor who touches the device,
-from factory floor to second life.
+**MedPassport's answer:** An open protocol (MIT licensed) that turns regulatory-mandated
+device identity (UDI) into a cryptographic passport — carrying signed attestations from
+every actor who touches the device, from factory floor to second life.
 
 ---
 
-## The Four Gaps in Detail
+## The Four Structural Gaps
 
-Modern Class IIb and III devices maintain continuous cloud connectivity — giving
-manufacturers real-time status, remote software tracking, and direct service dispatch.
-That investment works well within its boundary. **MedPassport covers the four
-boundaries where cloud stops.**
+High-risk medical devices (Class IIb/III — CT, MRI, EEG, cardiology) operate under
+strict regulation but are managed across a fragmented chain:
+**OEM → distributor → hospital → ISO service lab → refurbisher → secondary buyer.**
+At every organizational handoff, existing systems (CMMS, ERP, QMS) lose continuity.
+The failure is not technological — it is architectural: every system serves a single
+organization and cannot carry compliance and safety evidence across organizational
+boundaries. **MedPassport covers the four structural gaps this creates.**
 
-| Boundary | Where cloud stops | Compliance consequence |
+| Gap | The structural problem | Compliance consequence |
 |---|---|---|
-| **1 — Device age** | Devices older than ~15 years have no cloud interface. Legacy fleet is a complete blind spot yet still subject to MDR PMS obligations. | PSUR evidence gaps. FSCA cannot reach affected units without manual distributor chains. |
-| **2 — Ownership transfer** | When a device is sold to a secondary buyer, the cloud connection is severed. Warranty expires, contract ends, new owner does not renew. | PMS evidence gaps for devices no longer under service contract but still in clinical use. MDR Art. 83 obligations do not end at contract expiry. |
-| **3 — 3rd party service** | When a hospital engages an ISO instead of the OEM team, that service data never enters the manufacturer's cloud. Calibrations, PM events, and parts replacements are invisible. | Cannot verify quality of 3rd party service. Incomplete PMS evidence. Inability to demonstrate full lifecycle compliance to a notified body. |
-| **4 — Regulatory independence** | Cloud data is controlled by the manufacturer. A notified body cannot independently verify it has not been modified after the fact. | Self-reported evidence carries lower regulatory weight. MedPassport creates tamper-evident records that no single party — including the manufacturer — can alter after writing. |
+| **A — Offline / disconnected devices** | Many high-risk devices operate without continuous network connectivity (cybersecurity policy or infrastructure constraints). Service records are managed manually in local Excel files with no independent verification or unique link to the physical device identifier. | No regulatory-grade evidence trail for a significant portion of the deployed fleet. PSUR evidence gaps. FSCA notifications cannot reach affected units reliably. |
+| **B — Ownership transfer breaks the chain** | When a device is sold to a secondary buyer or transferred to a distributor, the manufacturer's cloud connection is severed. MDR Art. 83 PMS obligations continue for decades — but the manufacturer loses all visibility into the device's location, software status, and safety compliance. | PMS evidence gaps for devices no longer under direct service contract but still in clinical use. Manufacturer cannot demonstrate lifecycle compliance to a notified body for transferred devices. |
+| **C — ISO service dead zone and warranty loss** | A significant share of service contracts are performed by independent service organizations (ISOs). Their service data, component versions, and software states never reach the manufacturer. The manufacturer cannot produce a complete PSUR — and loses the ability to enforce warranty terms against improper service, non-OEM parts, or failure to install critical cybersecurity patches. | Incomplete PMS and PSUR evidence. Cannot verify 3rd party service quality. Manufacturer warranty protection lost. No proof that critical cybersecurity updates were installed on specific devices. |
+| **D — Absence of independent evidence** | Technical and regulatory data stored only in the manufacturer's or hospital's internal systems is not considered independent third-party evidence. A notified body requires immutable, tamper-evident records not controlled by any commercially interested party. | Self-reported evidence carries lower regulatory weight. MedPassport creates tamper-evident records that no single party — including the manufacturer — can alter after writing. |
 
 ---
 
-## Why This Matters Now — Investor View
+## Why This Matters Now
 
 ### Regulatory Tailwinds
 
-- **EUDAMED mandatory 28 May 2026:** All MDR/IVDR devices must be registered with UDI; legacy devices by 27 Nov 2026. Manufacturers must operationalize device-level identity infrastructure anyway — MedPassport turns that compliance cost into a strategic asset.
-- **QMSR enforcement 2 Feb 2026:** FDA's alignment with ISO 13485 makes service and complaint traceability central to US QMS inspections. EU compliance through MedPassport delivers 80% of QMSR compliance automatically.
-- **EU Digital Product Passport (ESPR):** Medical device delegated acts expected Q4 2026–Q1 2027 will require lifecycle transparency fields MedPassport already captures.
+- **EUDAMED mandatory 28 May 2026 (EU Decision 2025/2371):** All MDR/IVDR devices
+  must be registered with UDI. Registration confirms a device exists — PMS and PSUR
+  evidence obligations continue after registration.
+- **QMSR enforcement Feb 2026:** FDA's alignment with ISO 13485 makes service and
+  complaint traceability central to US QMS inspections. EU compliance through
+  MedPassport delivers 80% of QMSR compliance automatically.
+- **EU Digital Product Passport (ESPR 2024/1781):** Medical device delegated acts
+  expected Q4 2026–Q1 2027 will require lifecycle transparency fields MedPassport
+  already captures.
 
 ### Market Dynamics
 
-- **$9B+ refurbished medical device market** (Grand View Research, 2024) where 30–50% price discount is applied to devices with unverifiable service history — a discount MedPassport eliminates with verified records.
-- **$50B+ total medical device service market** (OEM + independent service) with zero neutral evidence standard across organizational boundaries.
-- **Post-market surveillance pain:** Every Class IIb/III manufacturer faces annual PSUR and PMS plan requirements with fragmented data sources across disconnected systems.
-
-### Competitive Moat
-
-- **Network effect:** Value increases with each additional stakeholder — hospital, refurbisher, ISO — creating cross-side network dynamics no single-vendor platform can replicate.
-- **Governance model:** Open protocol removes the "who controls the database?" objection that kills centralized solutions in multi-party, competitive environments.
-- **Regulatory-native design:** Built explicitly around UDI, MDR vigilance, QMSR traceability, and DPP requirements — not generic blockchain or PLM adapted after the fact.
-
-### Business Model
-
-- **Open protocol (MIT), paid network:** Smart contracts and schemas are open-source. Revenue from managed SaaS, CMMS/QMS integrations, certification services, and premium data API.
-- **Wave 1 customer:** Medical device OEMs (VP Regulatory + VP Service) under MDR/QMSR compliance pressure — annual subscription + onboarding fee based on fleet size.
-- **Wave 2+:** Hospitals, refurbishers, insurers, and regulators as network participants and data consumers.
+- **$21B refurbished medical device market** (2026, 9–11% CAGR) where 30–50% price
+  discount is applied to devices with unverifiable service history.
+- **$50B+ total medical device service market** (OEM + independent service) with zero
+  neutral evidence standard across organizational boundaries.
+- **Distributor legal exposure:** Local distributors face significant liability in FSCA
+  events without tamper-evident proof they fulfilled their duty to transmit regulatory
+  notifications.
 
 ---
 
@@ -105,9 +105,10 @@ boundaries where cloud stops.**
 | **Zero-PII on-chain** | Only hashes, attestations, UDI identifiers, and organizational credentials reach the ledger. No PII or PHI is architecturally possible on-chain. |
 | **Append-only integrity** | Events are signed attestations. Nothing is deleted or overwritten. Corrections append a superseding record — the full audit trail is always preserved. |
 | **Headless integration** | Field technicians take zero additional steps. The protocol reads from ServiceMax / Infor EAM work order closures automatically. Barcode scan fallback for non-integrated environments. |
-| **Neutral scoring** | Compliance scores reflect actual device condition — not vendor loyalty. OEM and qualified ISO service both receive full credit for on-time, passing events. The OEM advantage is operational (tighter CMMS integration) not algorithmic. |
+| **Neutral scoring** | Compliance scores reflect actual device condition — not vendor loyalty. OEM and qualified ISO service both receive full credit for on-time, passing events. |
 | **Gasless enterprise UX** | ERC-4337 account abstraction. No enterprise participant manages crypto wallets or native tokens. Costs settle via standard SaaS billing. |
-| **Open protocol, paid network** | Smart contracts and schemas are MIT-licensed. Revenue comes from managed SaaS, integration services, and certification fees built on top. |
+| **Mutual Attestation** | Cross-organizational events require cryptographic consent from all parties involved — no single actor can write to another's device record unilaterally. |
+| **Open protocol, paid network** | Smart contracts and schemas are MIT-licensed. Revenue comes from managed SaaS, integration services, and certification services built on top. |
 
 ---
 
@@ -167,7 +168,7 @@ MedPassport uses a **decay-from-100** scoring model. A new CE-marked device star
 Deductions are applied when service is overdue, parts are undocumented, or complaints are open.
 
 ```
-New device at manufacture:         100/100  (most compliant state)
+New device at manufacture:         100/100
 PM overdue 0-3 months:              95/100  (-5 points)
 PM overdue 3-6 months:              85/100  (-15 points)
 PM overdue 6+ months:               75/100  (-25, full component lost)
@@ -182,18 +183,15 @@ Component weights (default — configurable per manufacturer):
   Clean complaint record:    10 pts
 
 Certification thresholds:
-  GOLD:   90-100  (device maintained to spec)
-  SILVER: 75-89   (minor deviations)
-  BRONZE: 60-74   (certifiable, attention needed)
+  GOLD:   90-100
+  SILVER: 75-89
+  BRONZE: 60-74
   Below 60: Not certifiable
 ```
 
 ---
 
 ## Wave 1 Pilot — Class IIb/III Medical Devices
-
-The Wave 1 pilot targets a single OEM manufacturer with a Class IIb/III device fleet,
-2–3 hospitals, and 1 certified refurbisher participating as a transfer recipient.
 
 **Six lifecycle event types:**
 
@@ -204,22 +202,23 @@ The Wave 1 pilot targets a single OEM manufacturer with a Class IIb/III device f
 | `CalibrationEvent` | CMMS attachment + PDF hash | Manual upload via mobile app |
 | `ComplaintEvent` | QMS complaint module (two-phase) | Manual entry by RA team |
 | `FSCAEvent` | QMS FSCA tracking + CMMS | Dashboard entry |
-| `RefurbishmentEvent` | Refurbisher QMS (Wave 2) | Wave 2 only |
+| `RefurbishmentEvent` | Refurbisher QMS | Wave 2 |
 
 **Two data collection paths:**
 - **Path A:** CMMS API reads closed work orders automatically — zero technician action required
-- **Path B:** Barcode scan + structured form — 60 seconds per event, no IT integration needed
+- **Path B:** Barcode scan + structured form — 60 seconds per event, no IT integration needed.
+  Includes Offline-to-Online sync for sites without continuous connectivity.
 
 **Wave 1 success metrics (9–12 month pilot):**
 
-| Metric | Target | Method |
-|---|---|---|
-| FSCA identification time | <4 hours for 100% of fleet | Simulated FSCA at month 9 — full execution loop |
-| Audit prep reduction | ≥30% vs baseline | Compare hours before/after for annual audit cycle |
-| Data completeness | ≥90% of work orders + ≥40 events | CMMS reconciliation audit |
-| Cross-org participation | 100% dual-signature compliance | All transfers cryptographically signed |
-| Zero workflow addition | 0 new manual tasks | Monthly survey at months 3, 6, 9 |
-| Refurbisher value perception | Positive written assessment | Structured questionnaire at pilot end |
+| Metric | Target |
+|---|---|
+| FSCA identification time | <4 hours for 100% of pilot fleet |
+| Work order capture rate | ≥95% of closed work orders captured automatically |
+| Audit prep reduction | ≥30% reduction vs baseline |
+| Data completeness | ≥90% of work orders + ≥40 events |
+| Cross-org participation | 100% dual-signature compliance on all transfers |
+| Zero workflow addition | 0 new manual tasks for field technicians |
 
 ---
 
@@ -261,7 +260,7 @@ enterprise onboarding.
 |---|---|---|
 | **ISO 13485:2016** | Global | §7.5.8 Traceability · §8.2.1 Feedback · §8.3 Nonconforming product |
 | **EU MDR 2017/745** | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 Incident reporting |
-| **EUDAMED** | EU | 4 modules mandatory 28 May 2026 · UDI registration · Actor registration |
+| **EUDAMED** | EU | Mandatory from 28 May 2026 · UDI registration · Actor registration |
 | **EU ESPR 2024/1781** | EU | DPP-ready architecture · JRC methodology aligned |
 | **FDA QMSR 21 CFR 820** | US | §820.10 UDI · §820.35 Records · §820.65 Traceability · §820.200 Servicing |
 | **FDA GUDID** | US | Live UDI-DI validation bridge — AccessGUDID API verified |
@@ -273,14 +272,30 @@ enterprise onboarding.
 
 | Market | Registry | Status |
 |---|---|---|
-| 🇪🇺 EU | EUDAMED — 4 modules mandatory from 28 May 2026 | ✅ Architecture complete · EUDAMED bridge Phase 2 |
+| 🇪🇺 EU | EUDAMED — mandatory from 28 May 2026 | ✅ Architecture complete · EUDAMED bridge Phase 2 |
 | 🇺🇸 US | FDA GUDID — QMSR in effect February 2026 | ✅ Live GUDID bridge · AccessGUDID API verified |
 | 🌐 Both | Single deployment, dual validation at mint | ✅ Dual UDI fields · jurisdiction flagging complete |
 
 FDA's QMSR incorporates ISO 13485:2016 by reference. EU compliance through MedPassport
 delivers 80% of US QMSR compliance automatically.
 
-> *Enterprise Addendum available on request — [LinkedIn](https://www.linkedin.com/in/tomer-saar/)*
+> *Enterprise Addendum (pricing, ROI analysis, pilot definition) available on request —
+> [LinkedIn](https://www.linkedin.com/in/tomer-saar/)*
+
+---
+
+## Competitive Positioning
+
+| Capability | VeChain DPP | ServiceMax / PTC | MedPassport |
+|---|---|---|---|
+| Cross-organizational evidence | Partial | No — single org only | ✅ Core design |
+| MDR PMS / PSUR alignment | No | No | ✅ Built-in |
+| FSCA execution support | No | Partial | ✅ Built-in |
+| Neutral scoring (not OEM-biased) | N/A | N/A | ✅ Core design |
+| Open source | Partial | No | ✅ MIT |
+| Zero-PII on-chain | Yes | N/A | ✅ Yes |
+| Works without IT integration | No | No | ✅ Barcode fallback |
+| Dual-signature cross-org events | No | No | ✅ Core design |
 
 ---
 
@@ -288,9 +303,10 @@ delivers 80% of US QMSR compliance automatically.
 
 | Document | Description |
 |---|---|
-| [Whitepaper v1.2](docs/WHITEPAPER.md) | Full protocol whitepaper — problem, solution, regulatory framework, dual-market readiness |
+| [Whitepaper](docs/WHITEPAPER.md) | Protocol overview — problem, solution, regulatory framework, dual-market readiness |
 | [ADR-000 Protocol Axioms](docs/adrs/ADR-000-protocol-axioms.md) | The five constitutional rules every contract must uphold |
 | [ADR-001 Credential States](docs/adrs/ADR-001-credential-states.md) | Role matrix and credential state transitions |
+| [ADR-010 VeChain Learnings](docs/adrs/ADR-010-vechain-competitive-learnings.md) | Protocol enhancements: batch transactions + Studio portal |
 | [Event Taxonomy](docs/event-model/EVENT-TAXONOMY.md) | All event types, write authority, and edge cases |
 | [Sequence Diagrams](docs/architecture/SEQUENCE-DIAGRAMS.md) | Step-by-step flows for ownership transfer and certification |
 
@@ -312,16 +328,18 @@ Expected output: `74 tests passing · 0 failed`
 
 ## 🗺️ Roadmap
 
-- [x] **Sprint 0** — Protocol design documents · axioms · event taxonomy · sequence diagrams
+- [x] **Sprint 0** — Protocol design · axioms · event taxonomy · sequence diagrams
 - [x] **Sprint 1** — Identity and governance · CredentialRegistry · RoleManager · MigrationGovernance
 - [x] **Sprint 2** — Core lifecycle · DevicePassportNFT · ServiceLogRegistry · CorrectionRegistry · TransferManager
 - [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT · 74 tests passing
 - [x] **Sprint 4** — Deployment scripts · live demo · CT scanner pilot verified on-chain
 - [x] **Sprint 5** — Live GUDID bridge · AccessGUDID API verified · dual-market UDI fields
 - [x] **Sprint 6** — ComplianceScorer v2 decay model · configurable weights · ServiceEvent integrity flags
-- [ ] **Phase 2** — EUDAMED bridge · CMMS adapter · IPFS storage · Polygon testnet deployment · demo page
-- [ ] **Phase 3** — Dual-market onboarding · managed SaaS · insurer API · EUDAMED Vigilance feed
-- [ ] **Phase 4** — ESPR medical device delegated act · OPC-UA IoT connector · academic publication
+- [ ] **Phase 2 / Sprint 7 (active)** — Polygon Amoy testnet · IPFS vault · ERC-4337 Paymaster · preliminary security audit · `batchLog()` · Path B barcode UI
+- [ ] **Phase 2 / Sprint 8** — CMMS Headless Adapter (ServiceMax + Infor EAM) · Offline-to-Online sync · MDR/EUDAMED regulatory deliverable
+- [ ] **Phase 2 / Sprint 9** — Pilot execution · 10–20 Class IIb devices on-chain · ComplianceScorer calibration against real field data
+- [ ] **Phase 2 / Sprint 10** — FSCA simulation · TRL 6 validation · first published FSCA reach rate benchmark
+- [ ] **Phase 3** — MedPassport Studio low-code portal · Vigilance Analytics · dual-market onboarding · insurer API
 
 ---
 
@@ -331,7 +349,7 @@ Expected output: `74 tests passing · 0 failed`
 PASSPORT STATUS - CardioScan Pro 3000
 ======================================
 Token ID:         1
-UDI:              00844588003288/LOT2026-001/SN00432
+UDI:              00844588003288/LOT2023-Q1/SN00432
 Service events:   4 (PM, Calibration, Inspection, SW Update)
 Compliance score: 100 / 100  (decay model — device maintained to spec)
 Certified:        true
@@ -349,34 +367,16 @@ Full workflow verified:
 
 ---
 
-## Competitive Positioning
-
-| Capability | VeChain DPP | ServiceMax / PTC | MedPassport |
-|---|---|---|---|
-| Cross-organizational evidence | Partial | No — single org only | ✅ Core design |
-| MDR PMS / PSUR alignment | No | No | ✅ Built-in |
-| FSCA execution support | No | Partial | ✅ Built-in |
-| Neutral scoring (not OEM-biased) | N/A | N/A | ✅ Product A |
-| Open source | Partial | No | ✅ MIT |
-| Zero-PII on-chain | Yes | N/A | ✅ Yes |
-| Works without IT integration | No | No | ✅ Barcode fallback |
-
----
-
 ## Business Model
 
 **Open protocol + paid enterprise network** (HashiCorp / Confluent model)
 
-| Tier | Fleet size | Annual fee | Onboarding |
-|---|---|---|---|
-| Pilot | Up to 50 devices | Free (90 days) | $5,000 |
-| Starter | Up to 100 devices | $12,000/yr | $5,000 |
-| Growth | 101–500 devices | $35,000/yr | $10,000 |
-| Enterprise | 501–2,000 devices | $80,000/yr | $20,000 |
-| Global | 2,000+ devices | Custom | Custom |
+Smart contracts and event schemas are MIT-licensed and free to use. Revenue comes from
+the managed SaaS layer — dashboards, PSUR exports, compliance analytics, and CMMS
+integrations built on top of the open protocol.
 
-No per-event fees. No protocol token. Predictable subscription pricing aligned to
-enterprise healthcare procurement.
+> *Pricing and tier details available in the Enterprise Addendum — request via
+> [LinkedIn](https://www.linkedin.com/in/tomer-saar/)*
 
 ---
 
@@ -385,8 +385,12 @@ enterprise healthcare procurement.
 **Tomer Saar, PMP**
 20+ years in Medical Device Industry
 R&D · Engineering · Manufacturing Management at Tier-1 Global Leaders
+Co-inventor on multiple granted patents in implantable cardiac devices and motion systems
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/tomer-saar/)
+
+**Research Lead & Industry Advisor: Dr. Shlomo Gilat**
+DSc Biomedical Engineering, Technion · 35+ years Class IIb/III · 2 US patents · 22 publications
 
 ---
 
