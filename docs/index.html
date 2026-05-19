@@ -634,7 +634,7 @@
     <li><a href="#pillars">Solution</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#regulatory">Regulatory</a></li>
-    <li><a href="#verify">Verify a Device</a></li>
+    <li><a href="#verify">QR Passport Scan</a></li>
     <li><a href="#pilots">Pilots</a></li>
     <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
     <li><a href="https://www.linkedin.com/in/tomer-saar/" target="_blank" class="nav-cta">Contact</a></li>
@@ -957,7 +957,7 @@
 <div style="height:8px;background:var(--teal);"></div>
 <section class="viewer-section" id="verify" style="padding:80px 48px;">
   <div class="section-inner">
-    <p class="section-label">Device Passport Viewer</p>
+    <p class="section-label">QR Passport Scan Simulation</p>
     <h2>Explore the full interactive demo</h2>
     <p class="section-sub">
       Try the role-based demo — switch between manufacturer, hospital, ISO, refurbisher, and regulator to see how the same passport looks from every stakeholder's perspective. Or enter a UDI below.
@@ -974,19 +974,25 @@
           </div>
           <div style="font-size:28px;">🏥</div>
         </div>
-        <div class="viewer-input-area">
-          <label class="viewer-input-label" for="udi-input">Unique Device Identifier (UDI)</label>
-          <div class="viewer-input-row">
-            <input type="text" id="udi-input" class="viewer-input"
-              placeholder="e.g. 00844588003288/LOT2023-Q1/SN00432"
-              autocomplete="off" spellcheck="false" />
-            <button class="viewer-btn" onclick="lookupPassport()">Verify →</button>
-          </div>
-          <div class="viewer-presets">
-            <span class="viewer-preset" onclick="loadDemo('CT')">▶ CT Scanner — GOLD certified</span>
-            <span class="viewer-preset" onclick="loadDemo('PUMP')">▶ Infusion Pump — SILVER certified</span>
-            <span class="viewer-preset" onclick="loadDemo('RECALL')">▶ Recall scenario — active FSCA</span>
-          </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <button onclick="loadDemo('CT')" id="qbtn-CT" style="flex:1;min-width:150px;background:white;border:2px solid var(--teal);border-radius:10px;padding:14px 16px;cursor:pointer;font-family:inherit;text-align:left;">
+            <div style="font-size:20px;margin-bottom:5px;">&#128247;</div>
+            <div style="font-size:13px;font-weight:500;color:var(--ink);">CT Scanner — GOLD</div>
+            <div style="font-size:11px;color:var(--ink-light);margin-top:2px;">Class IIb · Score 100/100</div>
+          </button>
+          <button onclick="loadDemo('PUMP')" id="qbtn-PUMP" style="flex:1;min-width:150px;background:white;border:2px solid #D0DEDE;border-radius:10px;padding:14px 16px;cursor:pointer;font-family:inherit;text-align:left;">
+            <div style="font-size:20px;margin-bottom:5px;">&#128247;</div>
+            <div style="font-size:13px;font-weight:500;color:var(--ink);">Infusion Pump — SILVER</div>
+            <div style="font-size:11px;color:var(--ink-light);margin-top:2px;">Class IIb · Score 82/100</div>
+          </button>
+          <button onclick="loadDemo('RECALL')" id="qbtn-RECALL" style="flex:1;min-width:150px;background:white;border:2px solid #D0DEDE;border-radius:10px;padding:14px 16px;cursor:pointer;font-family:inherit;text-align:left;">
+            <div style="font-size:20px;margin-bottom:5px;">&#9888;</div>
+            <div style="font-size:13px;font-weight:500;color:#8B2020;">Ventilator — Active FSCA</div>
+            <div style="font-size:11px;color:#8B2020;margin-top:2px;">Class III · Recall active</div>
+          </button>
+        </div>
+        <div style="padding:10px 14px;background:#E6F2F2;border-radius:8px;font-size:12px;color:#004E4E;margin-bottom:14px;">
+          &#128241; Click a device above to simulate a QR scan — exactly what a buyer or auditor sees. No login required.
         </div>
         <div id="passport-empty" class="viewer-empty">
           <div class="viewer-empty-icon">🔍</div>
@@ -1219,7 +1225,15 @@ const DEMO_DEVICES = {
 function loadDemo(type) {
   const device = DEMO_DEVICES[type];
   if (!device) return;
-  document.getElementById('udi-input').value = device.udi;
+  ['CT','PUMP','RECALL'].forEach(function(t) {
+    var b = document.getElementById('qbtn-'+t);
+    if (b) { b.style.borderColor='#D0DEDE'; b.style.background='white'; }
+  });
+  var btn = document.getElementById('qbtn-'+type);
+  if (btn) {
+    btn.style.borderColor = type==='RECALL' ? '#E8B0B0' : 'var(--teal)';
+    btn.style.background  = type==='RECALL' ? '#FBE8E8' : '#E6F2F2';
+  }
   renderPassport(device);
 }
 
