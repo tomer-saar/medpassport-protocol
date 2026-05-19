@@ -60,6 +60,14 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px}
   .page-body{padding:20px 12px 48px}
   #root{padding:14px 12px 18px}
 }
+
+    .tab-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+    .tab-btn{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:8px;border:1.5px solid #D0DEDE;background:white;color:#5A7070;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
+    .tab-btn:hover{border-color:#006B6B;color:#006B6B;background:#E6F2F2}
+    .tab-btn.active{background:#006B6B;color:white;border-color:#006B6B}
+    .tab-btn i{font-size:15px}
+    .tab-section-label{font-size:11px;font-weight:500;color:#006B6B;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;padding:8px 14px;background:#E6F2F2;border-radius:6px;display:block;border-left:3px solid #006B6B}
+    .role-banner{border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -422,10 +430,10 @@ function App(){
       </button>)}
     </div>
 
-    {tab==="timeline"&&<TimelineTab role={role}/>}
-    {tab==="vault"&&<VaultTab role={role}/>}
-    {tab==="safety"&&<SafetyTab role={role}/>}
-    {tab==="permissions"&&<PermissionsTab role={role}/>}
+    {tab==="timeline"&&<div><div className="role-banner" style={{background:ri.color.bg,border:"1px solid "+ri.color.border,color:ri.color.text}}><i className={"ti "+ri.icon} style={{fontSize:16,flexShrink:0}}/><div><strong>Viewing as {ri.label}</strong> — all roles see the same event timeline. Expand any event to see which vault documents your role can access.</div></div><span className="tab-section-label">📋 Device Timeline — Full lifecycle · 9 events · expand each to see role-gated vault documents</span><TimelineTab role={role}/></div>}
+    {tab==="vault"&&<div><span className="tab-section-label">🔒 Document Vault — 14 encrypted documents · access varies by role · hashes always public</span><VaultTab role={role}/></div>}
+    {tab==="safety"&&<div><span className="tab-section-label">⚠️ Safety Events & Compliance Scoring — EU FSCA + FDA MAUDE cross-referenced · score impact shown</span><SafetyTab role={role}/></div>}
+    {tab==="permissions"&&<div><span className="tab-section-label">🔑 Access Permissions — What {ri.label} can read and write on the protocol</span><PermissionsTab role={role}/></div>}
   </div>;
 }
 
