@@ -139,7 +139,8 @@ contract DevicePassportTest is Test {
             "Annual PM completed",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
     }
 
@@ -309,7 +310,8 @@ contract DevicePassportTest is Test {
             "Security patch",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
     }
 
@@ -336,7 +338,8 @@ contract DevicePassportTest is Test {
             "Should be rejected",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
     }
 
@@ -349,6 +352,92 @@ contract DevicePassportTest is Test {
             tokenId, 0,
             keccak256("tampered_document")
         ));
+    }
+
+    function test_SbomHash_StoredCorrectly() public {
+        uint256 tokenId = _mintDevice();
+        bytes32 sbom = keccak256("sbom_v3.2.1_sha256_abcdef");
+
+        vm.prank(manufacturer);
+        serviceLog.logEvent(
+            tokenId,
+            DeviceTypes.EventType.SOFTWARE_UPDATE,
+            DOC_HASH,
+            IPFS_CID,
+            true,
+            "v3.2.1",
+            "Security patch",
+            false,
+            false,
+            false,
+            sbom
+        );
+
+        DeviceTypes.ServiceEvent memory evt = serviceLog.getEvent(tokenId, 0);
+        assertEq(evt.sbomHash, sbom);
+        assertEq(evt.softwareVersion, "v3.2.1");
+    }
+
+    function test_SbomHash_EmptyAllowedOnSoftwareUpdate() public {
+        uint256 tokenId = _mintDevice();
+
+        vm.prank(manufacturer);
+        serviceLog.logEvent(
+            tokenId,
+            DeviceTypes.EventType.SOFTWARE_UPDATE,
+            DOC_HASH,
+            IPFS_CID,
+            true,
+            "v3.1.0",
+            "Minor update",
+            false,
+            false,
+            false,
+            bytes32(0)
+        );
+
+        DeviceTypes.ServiceEvent memory evt = serviceLog.getEvent(tokenId, 0);
+        assertEq(evt.sbomHash, bytes32(0));
+    }
+
+    function test_SbomHash_IndependentPerEvent() public {
+        uint256 tokenId = _mintDevice();
+        bytes32 sbom1 = keccak256("sbom_v3.0.0");
+        bytes32 sbom2 = keccak256("sbom_v3.1.0");
+
+        vm.prank(manufacturer);
+        serviceLog.logEvent(
+            tokenId,
+            DeviceTypes.EventType.SOFTWARE_UPDATE,
+            keccak256("doc_v300"),
+            IPFS_CID,
+            true,
+            "v3.0.0",
+            "Initial release",
+            false,
+            false,
+            false,
+            sbom1
+        );
+
+        vm.prank(manufacturer);
+        serviceLog.logEvent(
+            tokenId,
+            DeviceTypes.EventType.SOFTWARE_UPDATE,
+            keccak256("doc_v310"),
+            IPFS_CID,
+            true,
+            "v3.1.0",
+            "Follow-up patch",
+            false,
+            false,
+            false,
+            sbom2
+        );
+
+        assertEq(serviceLog.getEvent(tokenId, 0).sbomHash, sbom1);
+        assertEq(serviceLog.getEvent(tokenId, 1).sbomHash, sbom2);
+        assertTrue(sbom1 != sbom2);
     }
 
     // ============================================================
@@ -566,7 +655,8 @@ contract DevicePassportTest is Test {
             "Annual calibration passed",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
         assertEq(serviceLog.getEventCount(tokenId), 2);
         console.log("Step 4: Calibration logged");

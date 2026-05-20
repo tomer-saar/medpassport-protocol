@@ -113,6 +113,7 @@ contract ServiceLogRegistry {
      * @param passedInspection Pass or fail outcome where applicable
      * @param softwareVersion  New version string for SOFTWARE_UPDATE events
      * @param notes            Brief on-chain note — max 200 characters
+     * @param sbomHash         keccak256 hash of the SBOM for SOFTWARE_UPDATE events; bytes32(0) otherwise
      * @return eventIndex      Index of this event in the device history
      */
     function logEvent(
@@ -125,7 +126,8 @@ contract ServiceLogRegistry {
         string  calldata       notes,
         bool                   hasCompatibleParts,
         bool                   hasUndocumentedParts,
-        bool                   isSeriousIncident
+        bool                   isSeriousIncident,
+        bytes32                sbomHash
     ) external returns (uint256 eventIndex) {
 
         // Check role permission for this event type
@@ -165,7 +167,8 @@ contract ServiceLogRegistry {
             notes:                notes,
             hasCompatibleParts:   hasCompatibleParts,
             hasUndocumentedParts: hasUndocumentedParts,
-            isSeriousIncident:    isSeriousIncident
+            isSeriousIncident:    isSeriousIncident,
+            sbomHash:             sbomHash
         });
 
         _history[tokenId].push(newEvent);

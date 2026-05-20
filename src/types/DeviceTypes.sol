@@ -111,6 +111,7 @@ library DeviceTypes {
         bool       hasCompatibleParts;    // non-OEM documented parts used
         bool       hasUndocumentedParts;  // parts used with no documentation
         bool       isSeriousIncident;     // for INCIDENT_REPORT: serious vs minor
+        bytes32    sbomHash;              // SBOM hash for SOFTWARE_UPDATE events; bytes32(0) otherwise
     }
 
     struct CorrectionRecord {
