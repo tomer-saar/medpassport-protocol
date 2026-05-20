@@ -67,7 +67,7 @@ boundaries. **MedPassport covers the four structural gaps this creates.**
 |---|---|---|
 | **A — Offline / disconnected devices** | Many high-risk devices operate without continuous network connectivity (cybersecurity policy or infrastructure constraints). Service records are managed manually in local Excel files with no independent verification or unique link to the physical device identifier. | No regulatory-grade evidence trail for a significant portion of the deployed fleet. PSUR evidence gaps. FSCA notifications cannot reach affected units reliably. |
 | **B — Ownership transfer breaks the chain** | When a device is sold to a secondary buyer or transferred to a distributor, the manufacturer's cloud connection is severed. Under EU MDR Art. 83, PMS obligations continue throughout the device's declared lifetime — regardless of ownership or contract status. Under FDA QMSR, MDR complaint reporting (21 CFR Part 803) and CAPA trend analysis obligations continue. | EU: PSUR evidence gaps for all transferred devices — a structural compliance breach. US: incomplete CAPA trend data and potential MDR reporting gaps for incidents involving transferred devices. |
-| **C — ISO service dead zone and warranty loss** | A significant share of service contracts are performed by independent service organizations (ISOs). Their service data, component versions, and software states never reach the manufacturer. The manufacturer cannot produce a complete PSUR — and loses the ability to enforce warranty terms against improper service, non-OEM parts, or failure to install critical cybersecurity patches. | Incomplete PMS and PSUR evidence. Cannot verify 3rd party service quality. Manufacturer warranty protection lost. No proof that critical cybersecurity updates were installed on specific devices. |
+| **C — ISO service dead zone and warranty loss** | A significant share of service contracts are performed by independent service organizations (ISOs). Their service data, component versions, and software states never reach the manufacturer. The manufacturer cannot produce a complete PSUR — and loses the ability to enforce warranty terms against improper service, non-OEM parts, or failure to install critical cybersecurity patches. | Incomplete PMS and PSUR evidence. Cannot verify 3rd party service quality. Manufacturer warranty protection lost. No proof that critical cybersecurity updates were installed on specific devices. FDA SBOM requirement: OEM cannot maintain a current Software Bill of Materials for ISO-serviced or resold devices without cross-organizational service records. |
 | **D — Absence of independent evidence** | Technical and regulatory data stored only in the manufacturer's or hospital's internal systems is not considered independent third-party evidence. A notified body requires immutable, tamper-evident records not controlled by any commercially interested party. | Self-reported evidence carries lower regulatory weight. MedPassport creates tamper-evident records that no single party — including the manufacturer — can alter after writing. |
 
 ---
@@ -76,15 +76,13 @@ boundaries. **MedPassport covers the four structural gaps this creates.**
 
 ### Regulatory Tailwinds
 
-- **EUDAMED mandatory 28 May 2026 (EU Decision 2025/2371):** All MDR/IVDR devices
-  must be registered with UDI. Registration confirms a device exists — PMS and PSUR
-  evidence obligations continue after registration.
+- **EUDAMED mandatory 28 May 2026 (EU Decision 2025/2371):** Four modules active: Actor, UDI/Device, Notified Bodies, Market Surveillance. Registration confirms a device exists — PMS and PSUR evidence obligations continue after registration.
+- **EUDAMED legacy device deadline 28 November 2026:** All devices placed on the EU market before 28 May 2026 and still being sold must be registered by this date.
+- **EUDAMED Vigilance & PMS module — expected Q4 2026 notice → ~Q2 2027 mandatory:** When this module activates, PSURs and serious incident reports must be submitted digitally through EUDAMED. MedPassport is the evidence infrastructure that feeds this submission — cross-organizational, tamper-evident, query-ready.
 - **QMSR enforcement Feb 2026:** FDA's alignment with ISO 13485 makes service and
   complaint traceability central to US QMS inspections. EU compliance through
   MedPassport delivers 80% of QMSR compliance automatically.
-- **EU Digital Product Passport (ESPR 2024/1781):** Medical device delegated acts
-  expected Q4 2026–Q1 2027 will require lifecycle transparency fields MedPassport
-  already captures.
+- **EU Digital Product Passport (ESPR 2024/1781):** No medical device-specific delegated act has been adopted as of May 2026. The JRC methodology was published March 2026 — a precursor to a delegated act, with enforcement realistically 2028-2029. MedPassport architecture is already DPP-aligned. *Note: EU regulatory timelines consistently slip 6-12 months from initial estimates — all indicative dates should be treated as approximate.*
 
 ### Market Dynamics
 

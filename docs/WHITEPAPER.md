@@ -44,10 +44,7 @@ hospitals, independent service organizations, refurbishers, and regulators to wr
 read device lifecycle attestations without depending on a single trusted operator or
 exposing commercially sensitive data.
 
-**The regulatory driver:** EU MDR Art. 83 PMS, PSUR obligations, FSCA execution
-(Art. 87), and EUDAMED mandatory registration (May 2026, EU Decision 2025/2371) all
-require device-level evidence that current systems cannot provide across organizational
-boundaries.
+**The regulatory driver:** EU MDR Art. 83 PMS, PSUR obligations, FSCA execution (Art. 87), and EUDAMED mandatory registration (May 2026, EU Decision 2025/2371) all require device-level evidence that current systems cannot provide across organizational boundaries. The EUDAMED Vigilance & PMS module (expected mandatory ~Q2 2027) will require digital PSUR and serious incident submissions — MedPassport is the evidence infrastructure that feeds this submission.
 
 ---
 
@@ -99,7 +96,7 @@ complaints are open. A device that has gone through an active recall holds **0/1
 |---|---|---|
 | ISO 13485:2016 | Global | §7.5.8 Traceability · §8.2.1 Feedback |
 | EU MDR 2017/745 | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 FSCA |
-| EUDAMED | EU | Mandatory 28 May 2026 · UDI + Actor registration |
+| EUDAMED | EU | 4 modules mandatory 28 May 2026 · Legacy device deadline 28 Nov 2026 · Vigilance & PMS module mandatory ~Q2 2027 (indicative — EU timelines typically slip 6-12 months) |
 | EU ESPR 2024/1781 | EU | DPP-ready architecture |
 | FDA QMSR 21 CFR 820 | US | UDI · Records · Traceability · Servicing |
 | FDA GUDID | US | Live UDI-DI validation bridge |
