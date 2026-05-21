@@ -44,6 +44,24 @@ contract ServiceLogRegistry {
     mapping(uint256 => DeviceTypes.ServiceEvent[]) private _history;
 
     // ============================================================
+    //  STRUCTS
+    // ============================================================
+
+    /// @notice Parameters for a single event within a batchLog() call.
+    struct BatchEventParams {
+        DeviceTypes.EventType eventType;
+        bytes32               documentHash;
+        string                ipfsCID;
+        bool                  passedInspection;
+        string                softwareVersion;
+        string                notes;
+        bool                  hasCompatibleParts;
+        bool                  hasUndocumentedParts;
+        bool                  isSeriousIncident;
+        bytes32               sbomHash;
+    }
+
+    // ============================================================
     //  EVENTS
     // ============================================================
 
@@ -53,6 +71,12 @@ contract ServiceLogRegistry {
         DeviceTypes.EventType indexed eventType,
         address indexed reportedBy,
         bytes32         documentHash,
+        uint256         timestamp
+    );
+
+    event BatchLogged(
+        uint256 indexed tokenId,
+        uint256         count,
         uint256         timestamp
     );
 
@@ -66,6 +90,7 @@ contract ServiceLogRegistry {
     error DeviceHasActiveRecall(uint256 tokenId);
     error EventIndexOutOfBounds(uint256 tokenId, uint256 index);
     error DocumentHashMismatch();
+    error BatchSizeOutOfBounds(uint256 count);
 
     // ============================================================
     //  CONSTRUCTOR
@@ -95,7 +120,7 @@ contract ServiceLogRegistry {
     }
 
     // ============================================================
-    //  CORE FUNCTION — LOG EVENT
+    //  CORE FUNCTIONS — LOG EVENT
     // ============================================================
 
     /**
@@ -129,39 +154,92 @@ contract ServiceLogRegistry {
         bool                   isSeriousIncident,
         bytes32                sbomHash
     ) external returns (uint256 eventIndex) {
+        DeviceTypes.DeviceIdentity memory device = passportNFT.getDevice(tokenId);
+        if (device.decommissioned) revert DeviceIsDecommissioned(tokenId);
+        bytes32 credentialId = credentialRegistry.getCredentialId(msg.sender);
+        return _logEvent(
+            tokenId, eventType, documentHash, ipfsCID, passedInspection,
+            softwareVersion, notes, hasCompatibleParts, hasUndocumentedParts,
+            isSeriousIncident, sbomHash, credentialId
+        );
+    }
 
-        // Check role permission for this event type
+    /**
+     * @notice Record multiple lifecycle events in a single atomic transaction.
+     * @dev Device state and credential ID are fetched once for the entire batch.
+     *      Any single failure reverts all events. Each event still enforces its
+     *      own role permission and document validation rules.
+     *
+     * @param tokenId  Device passport token ID (shared across all events)
+     * @param events   Ordered array of event parameters; min 1, max 10
+     */
+    function batchLog(
+        uint256 tokenId,
+        BatchEventParams[] calldata events
+    ) external {
+        uint256 count = events.length;
+        if (count == 0 || count > 10) revert BatchSizeOutOfBounds(count);
+
+        // Pre-fetch once — device check and credential lookup are shared
+        // across all events, avoiding N redundant external calls.
+        DeviceTypes.DeviceIdentity memory device = passportNFT.getDevice(tokenId);
+        if (device.decommissioned) revert DeviceIsDecommissioned(tokenId);
+
+        bytes32 credentialId = credentialRegistry.getCredentialId(msg.sender);
+
+        for (uint256 i = 0; i < count; i++) {
+            BatchEventParams calldata p = events[i];
+            _logEvent(
+                tokenId,
+                p.eventType,
+                p.documentHash,
+                p.ipfsCID,
+                p.passedInspection,
+                p.softwareVersion,
+                p.notes,
+                p.hasCompatibleParts,
+                p.hasUndocumentedParts,
+                p.isSeriousIncident,
+                p.sbomHash,
+                credentialId
+            );
+        }
+
+        emit BatchLogged(tokenId, count, block.timestamp);
+    }
+
+    // ============================================================
+    //  INTERNAL
+    // ============================================================
+
+    function _logEvent(
+        uint256                tokenId,
+        DeviceTypes.EventType  eventType,
+        bytes32                documentHash,
+        string  calldata       ipfsCID,
+        bool                   passedInspection,
+        string  calldata       softwareVersion,
+        string  calldata       notes,
+        bool                   hasCompatibleParts,
+        bool                   hasUndocumentedParts,
+        bool                   isSeriousIncident,
+        bytes32                sbomHash,
+        bytes32                credentialId
+    ) internal returns (uint256 eventIndex) {
         roleManager.requireEventPermission(msg.sender, eventType);
 
-        // Check document hash is provided
-        if (documentHash == bytes32(0))
-            revert DocumentHashRequired();
+        if (documentHash == bytes32(0)) revert DocumentHashRequired();
+        if (bytes(ipfsCID).length == 0) revert IPFSCIDRequired();
 
-        // Check IPFS CID is provided
-        if (bytes(ipfsCID).length == 0)
-            revert IPFSCIDRequired();
-
-        // Check device is not decommissioned
-        DeviceTypes.DeviceIdentity memory device =
-            passportNFT.getDevice(tokenId);
-
-        if (device.decommissioned)
-            revert DeviceIsDecommissioned(tokenId);
-
-        // Get caller credential ID
-        bytes32 credentialId =
-            credentialRegistry.getCredentialId(msg.sender);
-
-        // Build and store the event
         DeviceTypes.ServiceEvent memory newEvent = DeviceTypes.ServiceEvent({
-            tokenId:          tokenId,
-            eventType:        eventType,
-            timestamp:        block.timestamp,
-            blockNumber:      block.number,
-            reportedBy:       msg.sender,
-            credentialId:     credentialId,
-            documentHash:     documentHash,
-            ipfsCID:          ipfsCID,
+            tokenId:              tokenId,
+            eventType:            eventType,
+            timestamp:            block.timestamp,
+            blockNumber:          block.number,
+            reportedBy:           msg.sender,
+            credentialId:         credentialId,
+            documentHash:         documentHash,
+            ipfsCID:              ipfsCID,
             passedInspection:     passedInspection,
             softwareVersion:      softwareVersion,
             notes:                notes,
@@ -174,7 +252,6 @@ contract ServiceLogRegistry {
         _history[tokenId].push(newEvent);
         eventIndex = _history[tokenId].length - 1;
 
-        // Update event count on the passport
         passportNFT.incrementEventCount(tokenId);
 
         emit ServiceEventLogged(

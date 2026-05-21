@@ -736,4 +736,174 @@ contract DevicePassportTest is Test {
             false  // production mode — GS1 validation enforced
         );
     }
+
+    // ============================================================
+    //  BATCH LOG
+    // ============================================================
+
+    function test_BatchLog_Success() public {
+        uint256 tokenId = _mintDevice();
+
+        ServiceLogRegistry.BatchEventParams[] memory events =
+            new ServiceLogRegistry.BatchEventParams[](3);
+
+        events[0] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash:        keccak256("batch_doc_1"),
+            ipfsCID:             "QmBatch001",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Batch PM 1",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+        events[1] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.CALIBRATION,
+            documentHash:        keccak256("batch_doc_2"),
+            ipfsCID:             "QmBatch002",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Batch calibration",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+        events[2] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash:        keccak256("batch_doc_3"),
+            ipfsCID:             "QmBatch003",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Batch PM 3",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+
+        vm.prank(serviceOrg);
+        serviceLog.batchLog(tokenId, events);
+
+        assertEq(serviceLog.getEventCount(tokenId), 3);
+        assertEq(
+            uint(serviceLog.getEvent(tokenId, 1).eventType),
+            uint(DeviceTypes.EventType.CALIBRATION)
+        );
+        assertEq(serviceLog.getEvent(tokenId, 0).documentHash, keccak256("batch_doc_1"));
+        assertEq(serviceLog.getEvent(tokenId, 2).notes, "Batch PM 3");
+    }
+
+    function test_BatchLog_AtomicRevert() public {
+        uint256 tokenId = _mintDevice();
+
+        ServiceLogRegistry.BatchEventParams[] memory events =
+            new ServiceLogRegistry.BatchEventParams[](3);
+
+        events[0] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash:        keccak256("batch_doc_1"),
+            ipfsCID:             "QmBatch001",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Valid event",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+        events[1] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.CALIBRATION,
+            documentHash:        bytes32(0), // invalid — triggers DocumentHashRequired
+            ipfsCID:             "QmBatch002",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Invalid event",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+        events[2] = ServiceLogRegistry.BatchEventParams({
+            eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash:        keccak256("batch_doc_3"),
+            ipfsCID:             "QmBatch003",
+            passedInspection:    true,
+            softwareVersion:     "",
+            notes:               "Valid event 3",
+            hasCompatibleParts:  false,
+            hasUndocumentedParts: false,
+            isSeriousIncident:   false,
+            sbomHash:            bytes32(0)
+        });
+
+        vm.prank(serviceOrg);
+        vm.expectRevert(ServiceLogRegistry.DocumentHashRequired.selector);
+        serviceLog.batchLog(tokenId, events);
+
+        // All three events must have been rolled back
+        assertEq(serviceLog.getEventCount(tokenId), 0);
+    }
+
+    function test_BatchLog_GasComparison() public {
+        // Two independent devices so each measurement starts from
+        // equivalent storage for its own token ID.
+        vm.prank(manufacturer);
+        uint256 tokenA = passport.mintDevicePassport(
+            manufacturer,
+            "00844588003288/LOT2026-A01/SN00001",
+            DeviceTypes.DeviceClass.CLASS_IIB,
+            MODEL, METADATA, true
+        );
+        vm.prank(manufacturer);
+        uint256 tokenB = passport.mintDevicePassport(
+            manufacturer,
+            "00844588003288/LOT2026-B01/SN00002",
+            DeviceTypes.DeviceClass.CLASS_IIB,
+            MODEL, METADATA, true
+        );
+
+        // Measure 3 individual logEvent() calls on tokenA
+        vm.startPrank(serviceOrg);
+        uint256 gasStart = gasleft();
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d1"), "QmInd001", true, "", "PM 1",  false, false, false, bytes32(0));
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.CALIBRATION,            keccak256("d2"), "QmInd002", true, "", "Cal 1", false, false, false, bytes32(0));
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d3"), "QmInd003", true, "", "PM 2",  false, false, false, bytes32(0));
+        uint256 individualGas = gasStart - gasleft();
+        vm.stopPrank();
+
+        // Build the equivalent batch for tokenB
+        ServiceLogRegistry.BatchEventParams[] memory events =
+            new ServiceLogRegistry.BatchEventParams[](3);
+        events[0] = ServiceLogRegistry.BatchEventParams({
+            eventType: DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash: keccak256("d1"), ipfsCID: "QmBatch001",
+            passedInspection: true, softwareVersion: "", notes: "PM 1",
+            hasCompatibleParts: false, hasUndocumentedParts: false,
+            isSeriousIncident: false, sbomHash: bytes32(0)
+        });
+        events[1] = ServiceLogRegistry.BatchEventParams({
+            eventType: DeviceTypes.EventType.CALIBRATION,
+            documentHash: keccak256("d2"), ipfsCID: "QmBatch002",
+            passedInspection: true, softwareVersion: "", notes: "Cal 1",
+            hasCompatibleParts: false, hasUndocumentedParts: false,
+            isSeriousIncident: false, sbomHash: bytes32(0)
+        });
+        events[2] = ServiceLogRegistry.BatchEventParams({
+            eventType: DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
+            documentHash: keccak256("d3"), ipfsCID: "QmBatch003",
+            passedInspection: true, softwareVersion: "", notes: "PM 2",
+            hasCompatibleParts: false, hasUndocumentedParts: false,
+            isSeriousIncident: false, sbomHash: bytes32(0)
+        });
+
+        vm.prank(serviceOrg);
+        gasStart = gasleft();
+        serviceLog.batchLog(tokenB, events);
+        uint256 batchGas = gasStart - gasleft();
+
+        assertLt(batchGas, individualGas);
+    }
 }
