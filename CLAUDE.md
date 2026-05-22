@@ -84,7 +84,7 @@ forge build
 forge test
 forge test --summary
 
-Status: 74 tests — 74 passing — 0 failing
+Status: 80 tests — 80 passing — 0 failing
   CredentialRegistryTest: 22
   DevicePassportTest: 24
   ComplianceTest: 21
@@ -128,8 +128,10 @@ logEvent() now takes 10 parameters. All tests updated.
 
 ## Pending Build Items
 
-Next: Polygon Amoy testnet deployment (home computer)
-      Demo page: docs/demo/index.html
+Sprint 7 — COMPLETE:
+  Polygon Amoy testnet — DEPLOYED ✅ block 38,793,859
+  batchLog() — DONE ✅ 80 tests passing
+  SBOM hash field — DONE ✅
 
 Phase 2:
   MTT batch events — multiple events in one transaction
@@ -153,4 +155,4 @@ git push origin main
 CI runs forge test on every push. Always run forge test before committing.
 Never push broken tests.
 
-Last updated: May 2026 · 74 tests passing · MIT License
+Last updated: May 2026 · 80 tests passing · MIT License
