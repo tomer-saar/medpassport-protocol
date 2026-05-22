@@ -378,6 +378,354 @@ function PermissionsTab({role}){
   </div>;
 }
 
+function randomTxHash(){return Array.from({length:64},()=>"0123456789abcdef"[Math.floor(Math.random()*16)]).join("");}
+
+function StepIndicator({step,total}){
+  return <div style={{marginBottom:16}}>
+    <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#888",marginBottom:6}}>Step {step} of {total}</div>
+    <div style={{display:"flex",gap:6}}>
+      {Array.from({length:total},(_,i)=><div key={i} style={{width:8,height:8,borderRadius:"50%",background:i<step?"#006B6B":"#D0DEDE",transition:"background .2s"}}/>)}
+    </div>
+  </div>;
+}
+
+function BackLink({onBack}){
+  return <button onClick={onBack} style={{background:"none",border:"none",padding:"0 0 12px 0",color:"#006B6B",fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",gap:4,fontFamily:"inherit"}}>
+    <i className="ti ti-arrow-left" style={{fontSize:12}}/> Back to workflows
+  </button>;
+}
+
+function SimulateBlock({payload}){
+  return <div style={{marginTop:12}}>
+    <div style={{fontSize:11,fontWeight:500,color:TEAL.text,marginBottom:4}}><i className="ti ti-code" style={{fontSize:12,marginRight:4}}/>Simulated payload</div>
+    <pre style={{background:TEAL.bg,border:"1px solid "+TEAL.border,borderRadius:8,padding:"14px 16px",fontFamily:"'DM Mono',monospace",fontSize:11,color:TEAL.dark,overflowX:"auto",whiteSpace:"pre",margin:0,lineHeight:1.55}}>{JSON.stringify(payload,null,2)}</pre>
+  </div>;
+}
+
+function SuccessState({txHash,contract,contractUrl,onReset,resetLabel}){
+  return <div style={{background:GREEN.bg,border:"1px solid "+GREEN.border,borderRadius:8,padding:"16px 20px",marginTop:12}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+      <i className="ti ti-circle-check" style={{fontSize:20,color:GREEN.text}}/>
+      <div style={{fontSize:15,fontWeight:500,color:GREEN.dark}}>Transaction submitted</div>
+    </div>
+    <div style={{fontSize:11,color:"#5A7070",marginBottom:4}}>Contract address</div>
+    <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:TEAL.text,marginBottom:10,wordBreak:"break-all"}}>{contract}</div>
+    <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12}}>
+      <a href={"https://amoy.polygonscan.com/tx/0x"+txHash} target="_blank" rel="noopener noreferrer" style={{color:BLUE.text,fontSize:12,textDecoration:"underline"}}>View transaction on Polygonscan →</a>
+      <a href={contractUrl} target="_blank" rel="noopener noreferrer" style={{color:BLUE.text,fontSize:12,textDecoration:"underline"}}>View contract on Polygonscan →</a>
+    </div>
+    <div style={{fontSize:11,color:GREEN.text,fontStyle:"italic",lineHeight:1.55,borderTop:"1px solid "+GREEN.border,paddingTop:10,marginBottom:12}}>
+      In production, this transaction appears on Polygonscan within ~2 seconds and is permanently immutable — no party, including the manufacturer, can alter it after writing.
+    </div>
+    {onReset&&<button onClick={onReset} style={{background:GREEN.text,color:"white",border:"none",borderRadius:6,padding:"0 18px",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",height:44}}>{resetLabel||"Done"}</button>}
+  </div>;
+}
+
+function FField({label,helper,children}){
+  return <div style={{marginBottom:14}}>
+    <div style={{fontSize:12,fontWeight:500,color:"#2D4040",marginBottom:4}}>{label}</div>
+    {children}
+    {helper&&<div style={{fontSize:11,color:"#888",marginTop:4,lineHeight:1.5}}>{helper}</div>}
+  </div>;
+}
+
+function TInput({value,onChange,placeholder,mono}){
+  return <input value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{width:"100%",height:44,border:"1px solid #D0DEDE",borderRadius:6,padding:"0 12px",fontSize:13,fontFamily:mono?"'DM Mono',monospace":"inherit",boxSizing:"border-box"}}/>;
+}
+
+function DInput({value,onChange}){
+  return <input type="date" value={value} onChange={e=>onChange(e.target.value)} style={{width:"100%",height:44,border:"1px solid #D0DEDE",borderRadius:6,padding:"0 12px",fontSize:13,fontFamily:"inherit",boxSizing:"border-box"}}/>;
+}
+
+function TToggle({options,value,onChange}){
+  return <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+    {options.map(opt=>{const v=opt.value||opt;const l=opt.label||opt;return <button key={v} onClick={()=>onChange(v)} style={{height:44,padding:"0 16px",flex:1,border:"1.5px solid "+(value===v?TEAL.border:"#D0DEDE"),borderRadius:6,background:value===v?TEAL.bg:"white",color:value===v?TEAL.text:"#5A7070",fontWeight:value===v?500:400,fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>{l}</button>;})}
+  </div>;
+}
+
+function TArea({value,onChange,placeholder}){
+  return <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={3} style={{width:"100%",border:"1px solid #D0DEDE",borderRadius:6,padding:"10px 12px",fontSize:13,fontFamily:"inherit",resize:"vertical",boxSizing:"border-box",lineHeight:1.5}}/>;
+}
+
+function ErrMsg({msg}){
+  if(!msg)return null;
+  return <div style={{marginTop:6,fontSize:12,color:RED.text,display:"flex",alignItems:"center",gap:4}}><i className="ti ti-alert-circle" style={{fontSize:13}}/>{msg}</div>;
+}
+
+function NextBtn({onClick,disabled,label}){
+  return <button onClick={onClick} disabled={disabled} style={{height:44,padding:"0 24px",background:disabled?"#D0DEDE":TEAL.text,color:"white",border:"none",borderRadius:6,fontSize:13,fontWeight:500,cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",marginTop:16,opacity:disabled?0.6:1}}>{label||"Next →"}</button>;
+}
+
+function BackStepBtn({onClick}){
+  return <button onClick={onClick} style={{height:44,padding:"0 16px",background:"white",border:"1px solid #D0DEDE",borderRadius:6,fontSize:13,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>← Back</button>;
+}
+
+function ReviewRow({label,value,isCode,isGreen,idx}){
+  return <div style={{display:"flex",gap:8,padding:"8px 12px",borderBottom:"1px solid #F1EFE8",background:idx%2===0?"#F7FAFA":"white"}}>
+    <div style={{fontSize:12,color:"#5A7070",width:160,flexShrink:0}}>{label}</div>
+    <div style={{fontSize:12,fontWeight:500,color:isGreen?GREEN.dark:"#0F1A1A",fontFamily:isCode?"'DM Mono',monospace":"inherit",wordBreak:"break-all"}}>{value}</div>
+  </div>;
+}
+
+function Wf1Register({onBack}){
+  const [step,setStep]=useState(1);
+  const [data,setData]=useState({udi:"",modelName:"",manufactureDate:"",deviceClass:"IIb",jurisdiction:"EU",ceNumber:"",regNumber:"",issueDate:""});
+  const [udiErr,setUdiErr]=useState("");
+  const [mode,setMode]=useState(null);
+  const [txHash,setTxHash]=useState("");
+  const upd=(k,v)=>setData(d=>({...d,[k]:v}));
+  const CONTRACT="0x9C0395d74A24E588F1653b0866e2fdE4092623BF";
+  const CONTRACT_URL="https://amoy.polygonscan.com/address/"+CONTRACT;
+  const showCE=data.jurisdiction==="EU"||data.jurisdiction==="Both";
+  const showUS=data.jurisdiction==="US"||data.jurisdiction==="Both";
+  function step1Next(){if(!data.udi.startsWith("00")){setUdiErr("UDI must start with 00 (GS1 format)");return;}setUdiErr("");setStep(2);}
+  function buildPayload(){
+    const p={contract:"DevicePassportNFT",method:"mintDevicePassport",params:{udi:data.udi,modelName:data.modelName,manufactureDate:data.manufactureDate,deviceClass:data.deviceClass,jurisdiction:data.jurisdiction,simulatedDevice:false}};
+    if(showCE)p.params.ceCertNumber=data.ceNumber;
+    if(showUS)p.params.reg510kPma=data.regNumber;
+    if(data.issueDate)p.params.certIssueDate=data.issueDate;
+    p.params.contractAddress=CONTRACT;
+    return p;
+  }
+  function doSubmit(){setTxHash(randomTxHash());setMode("submitted");}
+  if(mode==="submitted")return <div><BackLink onBack={onBack}/><StepIndicator step={4} total={4}/><SuccessState txHash={txHash} contract={CONTRACT} contractUrl={CONTRACT_URL} onReset={onBack} resetLabel="Register another device"/></div>;
+  return <div>
+    <BackLink onBack={onBack}/>
+    <StepIndicator step={step} total={4}/>
+    {step===1&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
+      <FField label="Device UDI (Unique Device Identifier)">
+        <TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/>
+        <ErrMsg msg={udiErr}/>
+      </FField>
+      <div style={{fontSize:11,color:"#888",padding:"8px 10px",background:"#F7FAFA",borderRadius:6,border:"1px solid #D0DEDE"}}><i className="ti ti-info-circle" style={{fontSize:12,marginRight:4}}/>GS1 UDI format. Must begin with 00 followed by the 14-digit Device Identifier.</div>
+      <NextBtn onClick={step1Next}/>
+    </div>}
+    {step===2&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Device details</div>
+      <FField label="Model name"><TInput value={data.modelName} onChange={v=>upd("modelName",v)} placeholder="e.g. CardioScan Pro 3000"/></FField>
+      <FField label="Manufacture date"><DInput value={data.manufactureDate} onChange={v=>upd("manufactureDate",v)}/></FField>
+      <FField label="Device class"><TToggle options={["IIa","IIb","III"]} value={data.deviceClass} onChange={v=>upd("deviceClass",v)}/></FField>
+      <FField label="Jurisdiction"><TToggle options={["EU","US","Both"]} value={data.jurisdiction} onChange={v=>upd("jurisdiction",v)}/></FField>
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(1)}/><NextBtn onClick={()=>setStep(3)} disabled={!data.modelName||!data.manufactureDate}/></div>
+    </div>}
+    {step===3&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Certification details</div>
+      {showCE&&<FField label="CE certificate number"><TInput value={data.ceNumber} onChange={v=>upd("ceNumber",v)} placeholder="CE 2195/..."/></FField>}
+      {showUS&&<FField label="510(k) / PMA number"><TInput value={data.regNumber} onChange={v=>upd("regNumber",v)} placeholder="K230123 or P230001"/></FField>}
+      <FField label="Certificate issue date"><DInput value={data.issueDate} onChange={v=>upd("issueDate",v)}/></FField>
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(2)}/><NextBtn onClick={()=>setStep(4)}/></div>
+    </div>}
+    {step===4&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Review & submit</div>
+      <div style={{border:"1px solid #D0DEDE",borderRadius:8,overflow:"hidden",marginBottom:14}}>
+        {[["UDI",data.udi,true],["Model name",data.modelName],["Manufacture date",data.manufactureDate],["Device class",data.deviceClass],["Jurisdiction",data.jurisdiction],showCE&&["CE certificate number",data.ceNumber||"—"],showUS&&["510(k)/PMA number",data.regNumber||"—"],["Cert issue date",data.issueDate||"—"]].filter(Boolean).map(([k,v,isCode],i)=><ReviewRow key={i} label={k} value={v} isCode={!!isCode} idx={i}/>)}
+      </div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        <BackStepBtn onClick={()=>setStep(3)}/>
+        <button onClick={()=>setMode(mode==="simulate"?null:"simulate")} style={{height:44,padding:"0 18px",background:"white",border:"1.5px solid "+TEAL.border,color:TEAL.text,borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Simulate</button>
+        <button onClick={doSubmit} style={{height:44,padding:"0 18px",background:TEAL.text,color:"white",border:"none",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Submit →</button>
+      </div>
+      {mode==="simulate"&&<SimulateBlock payload={buildPayload()}/>}
+    </div>}
+  </div>;
+}
+
+const SVC_TYPES=[
+  {id:"PM",label:"PM",desc:"Preventive maintenance",icon:"ti-tool"},
+  {id:"Calibration",label:"Calibration",desc:"Calibration & cert",icon:"ti-ruler-measure"},
+  {id:"SW_Update",label:"SW Update",desc:"Firmware / software",icon:"ti-cpu"},
+  {id:"Inspection",label:"Inspection",desc:"Safety inspection",icon:"ti-clipboard-list"},
+  {id:"Complaint",label:"Complaint",desc:"User complaint",icon:"ti-message-report"},
+  {id:"FSCA",label:"FSCA",desc:"Safety corrective action",icon:"ti-alert-triangle"},
+];
+
+function Wf2Service({onBack}){
+  const [step,setStep]=useState(1);
+  const [data,setData]=useState({udi:"",eventType:"",date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});
+  const [udiErr,setUdiErr]=useState("");
+  const [mode,setMode]=useState(null);
+  const [txHash,setTxHash]=useState("");
+  const upd=(k,v)=>setData(d=>({...d,[k]:v}));
+  const CONTRACT="0xc45a6e3aA2d5A505d6c4d1bbeE6ae3DFfe5E29e7";
+  const CONTRACT_URL="https://amoy.polygonscan.com/address/"+CONTRACT;
+  function step1Next(){if(!data.udi.startsWith("00")){setUdiErr("UDI must start with 00 (GS1 format)");return;}setUdiErr("");setStep(2);}
+  function buildPayload(){
+    const p={contract:"ServiceLogRegistry",method:"batchLog",params:{udi:data.udi,eventType:data.eventType,timestamp:new Date().toISOString()}};
+    if(data.eventType==="PM"||data.eventType==="Inspection"){p.params.date=data.date;p.params.result=data.pof;if(data.notes)p.params.notes=data.notes;}
+    if(data.eventType==="Calibration"){p.params.date=data.date;p.params.certReference=data.certRef;p.params.result=data.pof;}
+    if(data.eventType==="SW_Update"){p.params.swVersion=data.swVer;p.params.sbomHash=data.sbomHash||"";}
+    if(data.eventType==="Complaint"){p.params.description=data.desc;p.params.severity=data.severity;}
+    if(data.eventType==="FSCA"){p.params.fsca_reference=data.fscaRef;p.params.correctiveAction=data.fscaAction;}
+    p.params.contractAddress=CONTRACT;
+    return p;
+  }
+  function doSubmit(){setTxHash(randomTxHash());setMode("submitted");}
+  function resetAnother(){setStep(1);setData({udi:"",eventType:"",date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});setMode(null);setUdiErr("");}
+  if(mode==="submitted")return <div><BackLink onBack={onBack}/><StepIndicator step={5} total={5}/><SuccessState txHash={txHash} contract={CONTRACT} contractUrl={CONTRACT_URL} onReset={resetAnother} resetLabel="Log another event"/></div>;
+  return <div>
+    <BackLink onBack={onBack}/>
+    <StepIndicator step={step} total={5}/>
+    {step===1&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
+      <FField label="Device UDI"><TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/><ErrMsg msg={udiErr}/></FField>
+      <NextBtn onClick={step1Next}/>
+    </div>}
+    {step===2&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Select event type</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
+        {SVC_TYPES.map(t=><button key={t.id} onClick={()=>upd("eventType",t.id)} style={{border:"1.5px solid "+(data.eventType===t.id?TEAL.border:"#D0DEDE"),borderRadius:8,padding:"12px 8px",background:data.eventType===t.id?TEAL.bg:"white",cursor:"pointer",textAlign:"left",fontFamily:"inherit",minHeight:80}}>
+          <i className={"ti "+t.icon} style={{fontSize:20,color:data.eventType===t.id?TEAL.text:"#888",display:"block",marginBottom:5}}/>
+          <div style={{fontSize:12,fontWeight:500,color:data.eventType===t.id?TEAL.dark:"#0F1A1A"}}>{t.label}</div>
+          <div style={{fontSize:10,color:"#888",marginTop:2}}>{t.desc}</div>
+        </button>)}
+      </div>
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(1)}/><NextBtn onClick={()=>setStep(3)} disabled={!data.eventType}/></div>
+    </div>}
+    {step===3&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Event details — {data.eventType.replace("_"," ")}</div>
+      {(data.eventType==="PM"||data.eventType==="Inspection")&&<div>
+        <FField label="Date"><DInput value={data.date} onChange={v=>upd("date",v)}/></FField>
+        <FField label="Result"><TToggle options={["Pass","Fail"]} value={data.pof} onChange={v=>upd("pof",v)}/></FField>
+        <FField label="Notes (optional)"><TArea value={data.notes} onChange={v=>upd("notes",v)} placeholder="Additional observations..."/></FField>
+      </div>}
+      {data.eventType==="Calibration"&&<div>
+        <FField label="Date"><DInput value={data.date} onChange={v=>upd("date",v)}/></FField>
+        <FField label="Calibration certificate reference"><TInput value={data.certRef} onChange={v=>upd("certRef",v)} placeholder="CAL-2026-XXXX"/></FField>
+        <FField label="Result"><TToggle options={["Pass","Fail"]} value={data.pof} onChange={v=>upd("pof",v)}/></FField>
+      </div>}
+      {data.eventType==="SW_Update"&&<div>
+        <FField label="Software version"><TInput value={data.swVer} onChange={v=>upd("swVer",v)} placeholder="v4.5.0"/></FField>
+        <FField label="SBOM hash — software bill of materials (EU MDR software currency + FDA cybersecurity)" helper="Optional. SHA-256 hash of the updated SBOM file. Enables cross-organizational software version tracking for regulatory compliance.">
+          <TInput value={data.sbomHash} onChange={v=>upd("sbomHash",v)} placeholder="sha256:e3b0c44298fc1c149..." mono={true}/>
+        </FField>
+      </div>}
+      {data.eventType==="Complaint"&&<div>
+        <FField label="Description"><TArea value={data.desc} onChange={v=>upd("desc",v)} placeholder="Describe the complaint or adverse event..."/></FField>
+        <FField label="Severity"><TToggle options={[{label:"Low",value:"low"},{label:"Medium",value:"medium"},{label:"High",value:"high"}]} value={data.severity} onChange={v=>upd("severity",v)}/></FField>
+      </div>}
+      {data.eventType==="FSCA"&&<div>
+        <FField label="FSCA reference number"><TInput value={data.fscaRef} onChange={v=>upd("fscaRef",v)} placeholder="EU-VIGIL-2026-CT-XXXX"/></FField>
+        <FField label="Corrective action"><TArea value={data.fscaAction} onChange={v=>upd("fscaAction",v)} placeholder="Describe the corrective action taken..."/></FField>
+      </div>}
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(2)}/><NextBtn onClick={()=>setStep(4)}/></div>
+    </div>}
+    {step===4&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Review & submit</div>
+      <div style={{border:"1px solid #D0DEDE",borderRadius:8,overflow:"hidden",marginBottom:14}}>
+        {[["UDI",data.udi,true],["Event type",data.eventType.replace("_"," ")],data.date&&["Date",data.date],(data.pof&&(data.eventType==="PM"||data.eventType==="Inspection"||data.eventType==="Calibration"))&&["Result",data.pof],data.certRef&&["Cert reference",data.certRef],data.swVer&&["SW version",data.swVer],data.eventType==="SW_Update"&&["sbomHash",data.sbomHash||"(empty — bytes32(0))",true],data.desc&&["Description",data.desc],(data.severity&&data.eventType==="Complaint")&&["Severity",data.severity],data.fscaRef&&["FSCA reference",data.fscaRef],data.fscaAction&&["Corrective action",data.fscaAction],data.notes&&["Notes",data.notes]].filter(Boolean).map(([k,v,isCode],i)=><ReviewRow key={i} label={k} value={v} isCode={!!isCode} idx={i}/>)}
+      </div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        <BackStepBtn onClick={()=>setStep(3)}/>
+        <button onClick={()=>setMode(mode==="simulate"?null:"simulate")} style={{height:44,padding:"0 18px",background:"white",border:"1.5px solid "+TEAL.border,color:TEAL.text,borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Simulate</button>
+        <button onClick={doSubmit} style={{height:44,padding:"0 18px",background:TEAL.text,color:"white",border:"none",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Submit →</button>
+      </div>
+      {mode==="simulate"&&<div>
+        <SimulateBlock payload={buildPayload()}/>
+        {data.eventType==="SW_Update"&&<div style={{fontSize:11,color:"#888",marginTop:6,fontStyle:"italic"}}>Note: sbomHash is always included. Empty string maps to bytes32(0) on-chain if not provided.</div>}
+      </div>}
+    </div>}
+  </div>;
+}
+
+function DualSigBox({title,org,signed,onSign}){
+  return <div style={{flex:1,minWidth:200,border:"1.5px solid "+(signed?GREEN.border:"#D0DEDE"),borderRadius:8,padding:"14px",background:signed?GREEN.bg:"white",transition:"border-color .2s,background .2s"}}>
+    <div style={{fontSize:12,fontWeight:500,color:signed?GREEN.dark:"#0F1A1A",marginBottom:4}}><i className={"ti "+(signed?"ti-circle-check":"ti-pen")} style={{fontSize:14,marginRight:5,color:signed?GREEN.text:"#888"}}/>{title}</div>
+    <div style={{fontSize:11,color:"#5A7070",marginBottom:12}}>{org}</div>
+    {signed
+      ?<div style={{display:"flex",alignItems:"center",gap:6,height:44,background:GREEN.bg,border:"1px solid "+GREEN.border,borderRadius:6,padding:"0 14px"}}><i className="ti ti-check" style={{color:GREEN.text,fontSize:16}}/><span style={{fontSize:13,color:GREEN.dark,fontWeight:500}}>Signed</span></div>
+      :<button onClick={onSign} style={{width:"100%",height:44,background:PURPLE.bg,border:"1.5px solid "+PURPLE.border,color:PURPLE.text,borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit"}}><i className="ti ti-pen" style={{fontSize:13,marginRight:5}}/>Sign</button>
+    }
+  </div>;
+}
+
+function Wf3Transfer({onBack}){
+  const [step,setStep]=useState(1);
+  const [data,setData]=useState({udi:"",fromOrg:"Current holder",toOrg:"",transferDate:"",reason:"sale"});
+  const [signed,setSigned]=useState({transferor:false,transferee:false});
+  const [udiErr,setUdiErr]=useState("");
+  const [mode,setMode]=useState(null);
+  const [txHash,setTxHash]=useState("");
+  const upd=(k,v)=>setData(d=>({...d,[k]:v}));
+  const CONTRACT="0x97B887D935d7094d7e302e3e531089f5D865D986";
+  const CONTRACT_URL="https://amoy.polygonscan.com/address/"+CONTRACT;
+  const bothSigned=signed.transferor&&signed.transferee;
+  function step1Next(){if(!data.udi.startsWith("00")){setUdiErr("UDI must start with 00 (GS1 format)");return;}setUdiErr("");setStep(2);}
+  function buildPayload(){return {contract:"TransferManager",method:"initiateTransfer",params:{udi:data.udi,fromOrg:data.fromOrg,toOrg:data.toOrg,transferDate:data.transferDate,reason:data.reason,transferorSignature:"0xSIMULATED_TRANSFEROR_SIG",transfereeSignature:"0xSIMULATED_TRANSFEREE_SIG",expiryWindow:"72h",contractAddress:CONTRACT}};}
+  function doSubmit(){setTxHash(randomTxHash());setMode("submitted");}
+  if(mode==="submitted")return <div><BackLink onBack={onBack}/><StepIndicator step={4} total={4}/><SuccessState txHash={txHash} contract={CONTRACT} contractUrl={CONTRACT_URL} onReset={onBack} resetLabel="Record another transfer"/></div>;
+  return <div>
+    <BackLink onBack={onBack}/>
+    <StepIndicator step={step} total={4}/>
+    {step===1&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Device being transferred</div>
+      <FField label="Device UDI"><TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/><ErrMsg msg={udiErr}/></FField>
+      <NextBtn onClick={step1Next}/>
+    </div>}
+    {step===2&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Transfer details</div>
+      <FField label="From organization"><TInput value={data.fromOrg} onChange={v=>upd("fromOrg",v)} placeholder="Current holder"/></FField>
+      <FField label="To organization"><TInput value={data.toOrg} onChange={v=>upd("toOrg",v)} placeholder="Receiving organization name"/></FField>
+      <FField label="Transfer date"><DInput value={data.transferDate} onChange={v=>upd("transferDate",v)}/></FField>
+      <FField label="Transfer reason"><TToggle options={[{label:"Sale",value:"sale"},{label:"Lease",value:"lease"},{label:"Decommission",value:"decommission"},{label:"Refurbishment",value:"refurbishment"}]} value={data.reason} onChange={v=>upd("reason",v)}/></FField>
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(1)}/><NextBtn onClick={()=>setStep(3)} disabled={!data.toOrg||!data.transferDate}/></div>
+    </div>}
+    {step===3&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:12,color:"#0F1A1A"}}>Dual-signature confirmation</div>
+      <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:12}}>
+        <DualSigBox title="Transferor signature" org={data.fromOrg||"Current holder"} signed={signed.transferor} onSign={()=>setSigned(s=>({...s,transferor:true}))}/>
+        <DualSigBox title="Transferee signature" org={data.toOrg||"Receiving organization"} signed={signed.transferee} onSign={()=>setSigned(s=>({...s,transferee:true}))}/>
+      </div>
+      <div style={{fontSize:12,color:PURPLE.text,fontStyle:"italic",padding:"10px 12px",background:PURPLE.bg,border:"1px solid "+PURPLE.border,borderRadius:6,lineHeight:1.55,marginBottom:4}}>
+        Both parties must sign independently. Neither can complete the transfer unilaterally. This is the Mutual Attestation mechanism.
+      </div>
+      <div style={{display:"flex",gap:8}}><BackStepBtn onClick={()=>setStep(2)}/><NextBtn onClick={()=>setStep(4)} disabled={!bothSigned}/></div>
+    </div>}
+    {step===4&&<div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Review & submit</div>
+      <div style={{border:"1px solid #D0DEDE",borderRadius:8,overflow:"hidden",marginBottom:14}}>
+        {[["UDI",data.udi,true,false],["From organization",data.fromOrg,false,false],["To organization",data.toOrg,false,false],["Transfer date",data.transferDate,false,false],["Reason",data.reason,false,false],["Transferor signature","✓ Signed",false,true],["Transferee signature","✓ Signed",false,true],["Expiry window","72 hours",false,false]].map(([k,v,isCode,isGreen],i)=><ReviewRow key={i} label={k} value={v} isCode={isCode} isGreen={isGreen} idx={i}/>)}
+      </div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+        <BackStepBtn onClick={()=>setStep(3)}/>
+        <button onClick={()=>setMode(mode==="simulate"?null:"simulate")} style={{height:44,padding:"0 18px",background:"white",border:"1.5px solid "+PURPLE.border,color:PURPLE.text,borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Simulate</button>
+        <button onClick={doSubmit} style={{height:44,padding:"0 18px",background:TEAL.text,color:"white",border:"none",borderRadius:6,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit",marginTop:16}}>Submit →</button>
+      </div>
+      {mode==="simulate"&&<SimulateBlock payload={buildPayload()}/>}
+    </div>}
+  </div>;
+}
+
+function WorkflowSelector({onSelect}){
+  const wfs=[
+    {id:"register",label:"Register device",icon:"ti-plus",color:BLUE,forLabel:"OEM / Distributor",desc:"Register a new device on the blockchain"},
+    {id:"service",label:"Log service event",icon:"ti-tool",color:TEAL,forLabel:"ISO / Hospital engineer",desc:"Record PM, calibration, SW update, inspection"},
+    {id:"transfer",label:"Transfer ownership",icon:"ti-transfer",color:PURPLE,forLabel:"Distributor / Refurbisher",desc:"Record device sale or handover"},
+  ];
+  return <div>
+    <div style={{fontSize:10,fontWeight:500,color:"#888",letterSpacing:0.8,textTransform:"uppercase",marginBottom:10}}>Select workflow</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:10}}>
+      {wfs.map(w=><button key={w.id} onClick={()=>onSelect(w.id)} style={{border:"1.5px solid "+w.color.border,borderRadius:10,padding:"16px 14px",background:w.color.bg,cursor:"pointer",textAlign:"left",fontFamily:"inherit",minHeight:120,display:"flex",flexDirection:"column",gap:6}}>
+        <i className={"ti "+w.icon} style={{fontSize:24,color:w.color.text}}/>
+        <div style={{fontSize:13,fontWeight:600,color:w.color.dark}}>{w.label}</div>
+        <div style={{fontSize:11,color:w.color.text,fontWeight:500}}>For: {w.forLabel}</div>
+        <div style={{fontSize:11,color:"#5A7070",lineHeight:1.45}}>{w.desc}</div>
+      </button>)}
+    </div>
+  </div>;
+}
+
+function LogRegisterTab(){
+  const [workflow,setWorkflow]=useState(null);
+  return <div>
+    <span className="tab-section-label">📲 Log event / Register — write transactions to the MedPassport Protocol on Polygon Amoy</span>
+    {!workflow&&<WorkflowSelector onSelect={setWorkflow}/>}
+    {workflow==="register"&&<Wf1Register onBack={()=>setWorkflow(null)}/>}
+    {workflow==="service"&&<Wf2Service onBack={()=>setWorkflow(null)}/>}
+    {workflow==="transfer"&&<Wf3Transfer onBack={()=>setWorkflow(null)}/>}
+  </div>;
+}
+
 function App(){
   const [role,setRole]=useState("manufacturer");
   const [tab,setTab]=useState("timeline");
@@ -388,6 +736,7 @@ function App(){
     {id:"vault",label:"Document vault",icon:"ti-folder-lock"},
     {id:"safety",label:"Safety & scoring",icon:"ti-shield-exclamation"},
     {id:"permissions",label:"Permissions",icon:"ti-key"},
+    {id:"log",label:"Log event / Register",icon:"ti-device-mobile"},
   ];
   return <div>
     <div style={{marginBottom:16}}>
@@ -434,6 +783,7 @@ function App(){
     {tab==="vault"&&<div><span className="tab-section-label">🔒 Document Vault — 14 encrypted documents · access varies by role · hashes always public</span><VaultTab role={role}/></div>}
     {tab==="safety"&&<div><span className="tab-section-label">⚠️ Safety Events & Compliance Scoring — EU FSCA + FDA MAUDE cross-referenced · score impact shown</span><SafetyTab role={role}/></div>}
     {tab==="permissions"&&<div><span className="tab-section-label">🔑 Access Permissions — What {ri.label} can read and write on the protocol</span><PermissionsTab role={role}/></div>}
+    {tab==="log"&&<LogRegisterTab/>}
   </div>;
 }
 
