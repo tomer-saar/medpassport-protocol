@@ -110,6 +110,14 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px}
   </div>
 </footer>
 
+<script>
+(function(){
+  var p=new URLSearchParams(window.location.search);
+  ['tab','workflow','udi','event'].forEach(function(k){
+    var v=p.get(k);if(v)sessionStorage.setItem('mp_'+k,v);
+  });
+})();
+</script>
 <script type="text/babel">
 const { useState } = React;
 
@@ -533,7 +541,9 @@ function ReviewRow({label,value,isCode,isGreen,idx}){
 
 function Wf1Register({onBack}){
   const [step,setStep]=useState(1);
-  const [data,setData]=useState({udi:"",modelName:"",manufactureDate:"",deviceClass:"IIb",jurisdiction:"EU",ceNumber:"",regNumber:"",issueDate:""});
+  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
+  const [data,setData]=useState({udi:prefillUdi,modelName:"",manufactureDate:"",deviceClass:"IIb",jurisdiction:"EU",ceNumber:"",regNumber:"",issueDate:""});
+  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
   const [txHash,setTxHash]=useState("");
@@ -559,8 +569,9 @@ function Wf1Register({onBack}){
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
       <FField label="Device UDI (Unique Device Identifier)">
-        <UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/>
+        <UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");setAutoFillMsg("");}} error={udiErr}/>
       </FField>
+      {autoFillMsg&&<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10,padding:"7px 10px",background:TEAL.bg,border:"1px solid "+TEAL.border,borderRadius:6,fontSize:11,color:TEAL.dark}}><i className="ti ti-qrcode" style={{fontSize:13,flexShrink:0}}/>{autoFillMsg}</div>}
       <div style={{fontSize:11,color:"#888",padding:"8px 10px",background:"#F7FAFA",borderRadius:6,border:"1px solid #D0DEDE"}}><i className="ti ti-info-circle" style={{fontSize:12,marginRight:4}}/>GS1 UDI format. Must begin with 00 followed by the 14-digit Device Identifier.</div>
       <NextBtn onClick={step1Next}/>
     </div>}
@@ -605,7 +616,10 @@ const SVC_TYPES=[
 
 function Wf2Service({onBack}){
   const [step,setStep]=useState(1);
-  const [data,setData]=useState({udi:"",eventType:"",date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});
+  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
+  const [prefillEvent]=useState(()=>{var v=sessionStorage.getItem('mp_event')||'';if(v)sessionStorage.removeItem('mp_event');return v;});
+  const [data,setData]=useState({udi:prefillUdi,eventType:prefillEvent,date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});
+  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
   const [txHash,setTxHash]=useState("");
@@ -631,7 +645,8 @@ function Wf2Service({onBack}){
     <StepIndicator step={step} total={5}/>
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
-      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/></FField>
+      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");setAutoFillMsg("");}} error={udiErr}/></FField>
+      {autoFillMsg&&<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10,padding:"7px 10px",background:TEAL.bg,border:"1px solid "+TEAL.border,borderRadius:6,fontSize:11,color:TEAL.dark}}><i className="ti ti-qrcode" style={{fontSize:13,flexShrink:0}}/>{autoFillMsg}</div>}
       <NextBtn onClick={step1Next}/>
     </div>}
     {step===2&&<div>
@@ -704,7 +719,9 @@ function DualSigBox({title,org,signed,onSign}){
 
 function Wf3Transfer({onBack}){
   const [step,setStep]=useState(1);
-  const [data,setData]=useState({udi:"",fromOrg:"Current holder",toOrg:"",transferDate:"",reason:"sale"});
+  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
+  const [data,setData]=useState({udi:prefillUdi,fromOrg:"Current holder",toOrg:"",transferDate:"",reason:"sale"});
+  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
   const [signed,setSigned]=useState({transferor:false,transferee:false});
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
@@ -722,7 +739,8 @@ function Wf3Transfer({onBack}){
     <StepIndicator step={step} total={4}/>
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Device being transferred</div>
-      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/></FField>
+      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");setAutoFillMsg("");}} error={udiErr}/></FField>
+      {autoFillMsg&&<div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10,padding:"7px 10px",background:TEAL.bg,border:"1px solid "+TEAL.border,borderRadius:6,fontSize:11,color:TEAL.dark}}><i className="ti ti-qrcode" style={{fontSize:13,flexShrink:0}}/>{autoFillMsg}</div>}
       <NextBtn onClick={step1Next}/>
     </div>}
     {step===2&&<div>
@@ -779,7 +797,7 @@ function WorkflowSelector({onSelect}){
 }
 
 function LogRegisterTab(){
-  const [workflow,setWorkflow]=useState(null);
+  const [workflow,setWorkflow]=useState(()=>{var v=sessionStorage.getItem('mp_workflow');if(v)sessionStorage.removeItem('mp_workflow');return v||null;});
   return <div>
     <span className="tab-section-label">📲 Log event / Register — write transactions to the MedPassport Protocol on Polygon Amoy</span>
     {!workflow&&<WorkflowSelector onSelect={setWorkflow}/>}
@@ -791,7 +809,7 @@ function LogRegisterTab(){
 
 function App(){
   const [role,setRole]=useState("manufacturer");
-  const [tab,setTab]=useState("timeline");
+  const [tab,setTab]=useState(()=>{var v=sessionStorage.getItem('mp_tab');if(v)sessionStorage.removeItem('mp_tab');return v||'timeline';});
   const ri=ROLES.find(r=>r.id===role);
   const ci=certInfo(100);
   const tabs=[

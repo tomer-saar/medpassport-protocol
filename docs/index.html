@@ -1364,12 +1364,13 @@ function renderPassport(device) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const udi = params.get('udi');
-  if (udi) { document.getElementById('udi-input').value = udi; lookupPassport(); }
-  document.getElementById('udi-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') lookupPassport();
-  });
+  const udi = new URLSearchParams(window.location.search).get('udi');
+  if (udi) {
+    for (const key of Object.keys(DEMO_DEVICES)) {
+      if (DEMO_DEVICES[key].udi === udi) { renderPassport(DEMO_DEVICES[key]); return; }
+    }
+    renderNotFound(udi);
+  }
 });
 </script>
 
