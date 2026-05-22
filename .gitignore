@@ -156,4 +156,4 @@ coverage.json
 # =========================================================================
 .claude/settings.local.json
 .claude/history/
-.claude/mcp/
+.claude/mcp/cache/
