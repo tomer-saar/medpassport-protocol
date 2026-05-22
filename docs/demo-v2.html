@@ -452,6 +452,70 @@ function ErrMsg({msg}){
   return <div style={{marginTop:6,fontSize:12,color:RED.text,display:"flex",alignItems:"center",gap:4}}><i className="ti ti-alert-circle" style={{fontSize:13}}/>{msg}</div>;
 }
 
+function UDIField({value,onChange,error}){
+  const [isScanning,setIsScanning]=useState(false);
+  const [scanErr,setScanErr]=useState("");
+  const shouldScanRef=React.useRef(false);
+  const streamRef=React.useRef(null);
+  React.useEffect(()=>{
+    return ()=>{
+      shouldScanRef.current=false;
+      if(streamRef.current)streamRef.current.getTracks().forEach(t=>t.stop());
+    };
+  },[]);
+  async function handleScan(){
+    if(isScanning){
+      shouldScanRef.current=false;
+      if(streamRef.current){streamRef.current.getTracks().forEach(t=>t.stop());streamRef.current=null;}
+      setIsScanning(false);
+      return;
+    }
+    if(!('BarcodeDetector' in window)){
+      const typed=window.prompt("Camera scanning not supported on this browser. Please type the UDI manually.");
+      if(typed!==null){onChange(typed);setScanErr("");}
+      return;
+    }
+    setScanErr("");setIsScanning(true);shouldScanRef.current=true;
+    let stream;
+    try{
+      stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
+    }catch(err){
+      shouldScanRef.current=false;setIsScanning(false);
+      setScanErr(err.name==="NotAllowedError"||err.name==="PermissionDeniedError"
+        ?"Camera access denied. Please type the UDI manually."
+        :"Camera error. Please type the UDI manually.");
+      return;
+    }
+    streamRef.current=stream;
+    const video=document.createElement("video");
+    video.srcObject=stream;video.setAttribute("playsinline","true");video.play();
+    const detector=new BarcodeDetector({formats:["code_128","data_matrix","pdf417","qr_code","aztec"]});
+    function pollFrame(){
+      if(!shouldScanRef.current)return;
+      detector.detect(video).then(barcodes=>{
+        if(!shouldScanRef.current)return;
+        if(barcodes.length>0){
+          stream.getTracks().forEach(t=>t.stop());streamRef.current=null;
+          shouldScanRef.current=false;setIsScanning(false);setScanErr("");
+          onChange(barcodes[0].rawValue);
+        }else{requestAnimationFrame(pollFrame);}
+      }).catch(()=>{if(shouldScanRef.current)requestAnimationFrame(pollFrame);});
+    }
+    video.addEventListener("playing",()=>requestAnimationFrame(pollFrame),{once:true});
+  }
+  return <div>
+    <div style={{display:"flex"}}>
+      <input value={value} onChange={e=>{onChange(e.target.value);setScanErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..." style={{flex:1,height:44,border:"1px solid #D0DEDE",borderRight:"none",borderRadius:"6px 0 0 6px",padding:"0 12px",fontSize:13,fontFamily:"'DM Mono',monospace",boxSizing:"border-box"}}/>
+      <button onClick={handleScan} title={isScanning?"Cancel scan":"Scan barcode"} style={{width:48,height:44,background:isScanning?TEAL.dark:TEAL.text,color:"white",border:"1px solid "+TEAL.border,borderRadius:"0 6px 6px 0",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        <i className={"ti "+(isScanning?"ti-loader":"ti-camera")} style={{fontSize:20}}/>
+      </button>
+    </div>
+    {isScanning&&<div style={{display:"flex",alignItems:"center",gap:4,marginTop:5,fontSize:11,color:TEAL.text}}><i className="ti ti-refresh" style={{fontSize:12}}/>Scanning...</div>}
+    {scanErr&&<ErrMsg msg={scanErr}/>}
+    {error&&<ErrMsg msg={error}/>}
+  </div>;
+}
+
 function NextBtn({onClick,disabled,label}){
   return <button onClick={onClick} disabled={disabled} style={{height:44,padding:"0 24px",background:disabled?"#D0DEDE":TEAL.text,color:"white",border:"none",borderRadius:6,fontSize:13,fontWeight:500,cursor:disabled?"not-allowed":"pointer",fontFamily:"inherit",marginTop:16,opacity:disabled?0.6:1}}>{label||"Next →"}</button>;
 }
@@ -495,8 +559,7 @@ function Wf1Register({onBack}){
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
       <FField label="Device UDI (Unique Device Identifier)">
-        <TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/>
-        <ErrMsg msg={udiErr}/>
+        <UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/>
       </FField>
       <div style={{fontSize:11,color:"#888",padding:"8px 10px",background:"#F7FAFA",borderRadius:6,border:"1px solid #D0DEDE"}}><i className="ti ti-info-circle" style={{fontSize:12,marginRight:4}}/>GS1 UDI format. Must begin with 00 followed by the 14-digit Device Identifier.</div>
       <NextBtn onClick={step1Next}/>
@@ -568,7 +631,7 @@ function Wf2Service({onBack}){
     <StepIndicator step={step} total={5}/>
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Enter device UDI</div>
-      <FField label="Device UDI"><TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/><ErrMsg msg={udiErr}/></FField>
+      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/></FField>
       <NextBtn onClick={step1Next}/>
     </div>}
     {step===2&&<div>
@@ -659,7 +722,7 @@ function Wf3Transfer({onBack}){
     <StepIndicator step={step} total={4}/>
     {step===1&&<div>
       <div style={{fontSize:14,fontWeight:500,marginBottom:14,color:"#0F1A1A"}}>Device being transferred</div>
-      <FField label="Device UDI"><TInput value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} placeholder="00XXXXXXXXXXXXXXX/LOT.../SN..."/><ErrMsg msg={udiErr}/></FField>
+      <FField label="Device UDI"><UDIField value={data.udi} onChange={v=>{upd("udi",v);setUdiErr("");}} error={udiErr}/></FField>
       <NextBtn onClick={step1Next}/>
     </div>}
     {step===2&&<div>
