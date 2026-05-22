@@ -632,9 +632,9 @@
   </a>
   <ul class="nav-links">
     <li><a href="#pillars">Solution</a></li>
-    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="demo.html">How It Works</a></li>
     <li><a href="#regulatory">Regulatory</a></li>
-    <li><a href="demo-v2.html">Demo</a></li>
+    <li><a href="demo-v2.html">Interactive Demo</a></li>
     <li><a href="#verify">UDI Lookup</a></li>
     <li><a href="#pilots">Pilots</a></li>
     <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
@@ -662,7 +662,8 @@
         No patient data on-chain. No changes to how field technicians work.
       </p>
       <div class="hero-actions">
-        <a href="demo-v2.html" class="btn-primary">Interactive Demo — 5 roles · vault · Path B →</a>
+        <a href="demo.html" class="btn-primary">How It Works — 5-step interactive walkthrough →</a>
+        <a href="demo-v2.html" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">Interactive Demo — 5 roles · vault · Path B →</a>
         <a href="#verify" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">UDI Lookup →</a>
         <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary">Technical Overview & Whitepaper ↗</a>
       </div>
@@ -1283,7 +1284,7 @@ function renderPassport(device) {
       </span>
     </div>`).join('');
 
-  const noteHTML = device.scoreNote ? \`<div style='background:#FDF3E0;border:1px solid #F0D898;border-radius:6px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#7A5500;'><strong>Why Silver?</strong> \${device.scoreNote} Once resolved, score recovers automatically. Use CorrectionRegistry if the gap was due to a data entry error.</div>\` : '';
+  const noteHTML = device.scoreNote ? `<div style='background:#FDF3E0;border:1px solid #F0D898;border-radius:6px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#7A5500;'><strong>Why Silver?</strong> ${device.scoreNote} Once resolved, score recovers automatically. Use CorrectionRegistry if the gap was due to a data entry error.</div>` : '';
   const recallHTML = device.recallActive
     ? `<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--red);font-weight:500;background:#FBE8E8;border:1px solid #E8B0B0;border-radius:4px;padding:12px 16px;margin-bottom:20px;">
         <span>⚠</span> Active Field Safety Corrective Action — Do not use pending resolution
