@@ -319,7 +319,7 @@ forge build
 forge test
 ```
 
-Expected output: `74 tests passing · 0 failed`
+Expected output: `80 tests passing · 0 failed`
 
 ---
 
@@ -328,11 +328,11 @@ Expected output: `74 tests passing · 0 failed`
 - [x] **Sprint 0** — Protocol design · axioms · event taxonomy · sequence diagrams
 - [x] **Sprint 1** — Identity and governance · CredentialRegistry · RoleManager · MigrationGovernance
 - [x] **Sprint 2** — Core lifecycle · DevicePassportNFT · ServiceLogRegistry · CorrectionRegistry · TransferManager
-- [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT · 74 tests passing
+- [x] **Sprint 3** — Compliance layer · ComplianceScorer · CertificationSBT · 80 tests passing
 - [x] **Sprint 4** — Deployment scripts · live demo · CT scanner pilot verified on-chain
 - [x] **Sprint 5** — Live GUDID bridge · AccessGUDID API verified · dual-market UDI fields
 - [x] **Sprint 6** — ComplianceScorer v2 decay model · configurable weights · ServiceEvent integrity flags
-- [ ] **Phase 2 / Sprint 7 (active)** — Polygon Amoy testnet · IPFS vault · ERC-4337 Paymaster · preliminary security audit · `batchLog()` · Path B barcode UI
+- [x] **Phase 2 / Sprint 7 (complete)** — Polygon Amoy testnet ✅ LIVE · `batchLog()` ✅ · SBOM hash field ✅ · Role-based demo v2 ✅ deployed
 - [ ] **Phase 2 / Sprint 8** — CMMS Headless Adapter (ServiceMax + Infor EAM) · Offline-to-Online sync · MDR/EUDAMED regulatory deliverable
 - [ ] **Phase 2 / Sprint 9** — Pilot execution · 10–20 Class IIb devices on-chain · ComplianceScorer calibration against real field data
 - [ ] **Phase 2 / Sprint 10** — FSCA simulation · TRL 6 validation · first published FSCA reach rate benchmark
@@ -348,18 +348,23 @@ PASSPORT STATUS - CardioScan Pro 3000
 Token ID:         1
 UDI:              00844588003288/LOT2023-Q1/SN00432
 Service events:   4 (PM, Calibration, Inspection, SW Update)
-Compliance score: 100 / 100  (decay model — device maintained to spec)
-Certified:        true
-Cert level:       GOLD
+Compliance score: 100 / 100
+Certified:        GOLD
 Recall active:    false
+Testnet:          Polygon Amoy (Chain ID 80002)
+Block deployed:   38,793,859
 ======================================
-Full workflow verified:
-  Passport minted by manufacturer (GUDID validated)
-  Dual-signature ownership transfer to hospital
-  4 service events logged on-chain
-  Compliance score: 100/100 (no deductions — all service on schedule)
-  Gold certification issued via dual-signature
-  Full history preserved across all transfers
+Contracts live on Polygon Amoy testnet:
+  CredentialRegistry:  0x86212ddCD3FBcb470D311f1139B12DC8009b79D8
+  RoleManager:         0xB2ab2c71Ab58652cb78a78Ed6c803eb53659eC5f
+  MigrationGovernance: 0x68C90BD6F8760053299dcC6F585A244C31173185
+  DevicePassportNFT:   0x9C0395d74A24E588F1653b0866e2fdE4092623BF
+  ServiceLogRegistry:  0xc45a6e3aA2d5A505d6c4d1bbeE6ae3DFfe5E29e7
+  CorrectionRegistry:  0x8Dda4E49ADbBD57f74BC3814d880120d8D5fc762
+  TransferManager:     0x97B887D935d7094d7e302e3e531089f5D865D986
+  ComplianceScorer:    0x8168e27440e3064F61765DB294002CE634E6c286
+  CertificationSBT:    0xeFb2a996F76B0Ec515a658074830477EB3c68F74
+Verify: https://amoy.polygonscan.com/address/0x86212ddCD3FBcb470D311f1139B12DC8009b79D8
 ```
 
 ---
