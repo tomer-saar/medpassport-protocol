@@ -290,33 +290,6 @@
     .problem-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
     .problem-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
 
-    /* ── How It Works ── */
-    .steps {
-      display: flex; flex-direction: column; gap: 0;
-      border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
-    }
-    .step {
-      display: grid; grid-template-columns: 64px 1fr;
-      border-bottom: 1px solid var(--rule); transition: background 0.2s;
-    }
-    .step:last-child { border-bottom: none; }
-    .step:hover { background: var(--off-white); }
-    .step-number {
-      background: var(--teal-light);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-display); font-size: 20px; font-weight: 500;
-      color: var(--teal); border-right: 1px solid var(--rule);
-    }
-    .step-content { padding: 22px 28px; }
-    .step-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
-    .step-desc { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
-    .step-tag {
-      display: inline-block; margin-top: 8px;
-      font-family: var(--font-mono); font-size: 10px;
-      color: var(--teal); background: var(--teal-light);
-      padding: 2px 8px; border-radius: 2px; letter-spacing: 0.3px;
-    }
-
     /* ── Regulatory ── */
     .reg-section { background: var(--ink); border-bottom: 4px solid var(--teal); }
     .reg-section h2 { color: white; }
@@ -663,8 +636,6 @@
       </p>
       <div class="hero-actions">
         <a href="demo.html" class="btn-primary">How It Works — 5-step interactive walkthrough →</a>
-        <a href="demo-v2.html" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">Interactive Demo — 5 roles · vault · Path B →</a>
-        <a href="#verify" class="btn-secondary" style="border-color:var(--teal);color:var(--teal);font-weight:500;">UDI Lookup →</a>
         <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-secondary">Technical Overview & Whitepaper ↗</a>
       </div>
       <div class="hero-stats">
@@ -859,61 +830,6 @@
         <div class="problem-number">30–90</div>
         <div class="problem-title">Days to resolve warranty disputes</div>
         <div class="problem-desc">Both parties reconstruct history from competing paper records. A shared evidence layer — where both parties access the same immutable record — makes disputes resolvable in hours, not months.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── How It Works ── -->
-<section id="how-it-works" style="background:var(--off-white);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:80px 48px;">
-  <div class="section-inner">
-    <p class="section-label">How It Works</p>
-    <h2>Five steps. Zero workflow changes.</h2>
-    <p class="section-sub">
-      Field technicians take zero additional steps throughout. Every event
-      is captured automatically from existing CMMS systems and written
-      as a signed attestation on the shared ledger.
-    </p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <div class="step-content">
-          <div class="step-title">Manufacturer mints the passport</div>
-          <div class="step-desc">At manufacture, a unique Digital Product Passport is created and anchored to the device UDI. GS1 format is validated against FDA GUDID and EUDAMED before minting is permitted. No passport — no placement on market.</div>
-          <span class="step-tag">DevicePassportNFT.sol · GS1 validated</span>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <div class="step-title">Ownership transfer requires two independent signatures</div>
-          <div class="step-desc">Every change of ownership — manufacturer to distributor, distributor to hospital, hospital to refurbisher — requires two credentialed actors to sign independently. No single party can transfer a device unilaterally. Full chain of custody permanently recorded.</div>
-          <span class="step-tag">TransferManager.sol · Dual-signature · 72h expiry</span>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <div class="step-content">
-          <div class="step-title">Service events logged — automatically or by barcode scan</div>
-          <div class="step-desc"><strong>Path A (automated):</strong> The protocol reads closed work orders from ServiceMax and Infor EAM automatically — zero additional steps for field technicians. <strong>Path B (barcode):</strong> Sites without CMMS use a mobile barcode scan and a 60-second structured form. Both paths produce identical on-chain attestations. Offline-to-Online sync supported.</div>
-          <span class="step-tag">ServiceLogRegistry.sol · Path A: Headless CMMS · Path B: Barcode + mobile</span>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-number">4</div>
-        <div class="step-content">
-          <div class="step-title">Compliance score calculated on-chain from service history</div>
-          <div class="step-desc">A weighted algorithm reads the full service history and produces a 0–100 compliance score. Calibration, preventive maintenance, inspection, and software currency each carry defined weights. Incident reports trigger automatic deductions. Recall flags force score to zero.</div>
-          <span class="step-tag">ComplianceScorer.sol · Weighted 0–100</span>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-number">5</div>
-        <div class="step-content">
-          <div class="step-title">Certification issued — the trust stamp for resale</div>
-          <div class="step-desc">A certifier proposes. The device owner confirms. Only after two independent signatures is a Soulbound Token minted — a non-transferable trust stamp tied to the device, not the owner. Bronze (60–74), Silver (75–89), or Gold (90–100). A buyer scans a QR code and sees the result instantly.</div>
-          <span class="step-tag">CertificationSBT.sol · ERC-5192 Soulbound · Dual-signature</span>
-        </div>
       </div>
     </div>
   </div>
