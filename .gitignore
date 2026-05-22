@@ -141,3 +141,19 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+# =========================================================================
+# Web3 / Hardhat / Solidity Custom Rules
+# =========================================================================
+artifacts/
+cache/
+typechain/
+typechain-types/
+coverage/
+coverage.json
+
+# =========================================================================
+# Claude Code Local Session & Tool Rules
+# =========================================================================
+.claude/settings.local.json
+.claude/history/
+.claude/mcp/
