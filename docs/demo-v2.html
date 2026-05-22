@@ -76,7 +76,7 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px}
   <a class="nav-logo" href="index.html">← Home · MedPassport</a>
   <div class="nav-links">
     <a class="nav-btn" href="index.html">← Home</a>
-    <a class="nav-btn" href="demo.html">UDI Passport Lookup</a>
+    <a class="nav-btn" href="index.html#verify">UDI Lookup</a>
     <a class="nav-btn" href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub ↗</a>
     <a class="nav-btn" href="https://linkedin.com/in/tomer-saar" target="_blank">Contact</a>
   </div>
@@ -110,16 +110,13 @@ footer a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px}
   </div>
 </footer>
 
-<script>
-(function(){
-  var p=new URLSearchParams(window.location.search);
-  ['tab','workflow','udi','event'].forEach(function(k){
-    var v=p.get(k);if(v)sessionStorage.setItem('mp_'+k,v);
-  });
-})();
-</script>
 <script type="text/babel">
 const { useState } = React;
+const _p=new URLSearchParams(window.location.search);
+const _initTab=_p.get('tab')||'timeline';
+const _initWorkflow=_p.get('workflow')||null;
+const _initUdi=_p.get('udi')||'';
+const _initEvent=_p.get('event')||'';
 
 const TEAL={bg:"#E1F5EE",border:"#5DCAA5",text:"#0F6E56",dark:"#085041"};
 const AMBER={bg:"#FAEEDA",border:"#EF9F27",text:"#854F0B",dark:"#633806"};
@@ -541,9 +538,8 @@ function ReviewRow({label,value,isCode,isGreen,idx}){
 
 function Wf1Register({onBack}){
   const [step,setStep]=useState(1);
-  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
-  const [data,setData]=useState({udi:prefillUdi,modelName:"",manufactureDate:"",deviceClass:"IIb",jurisdiction:"EU",ceNumber:"",regNumber:"",issueDate:""});
-  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
+  const [data,setData]=useState({udi:_initUdi,modelName:"",manufactureDate:"",deviceClass:"IIb",jurisdiction:"EU",ceNumber:"",regNumber:"",issueDate:""});
+  const [autoFillMsg,setAutoFillMsg]=useState(_initUdi?'UDI auto-filled from QR scan: '+_initUdi:'');
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
   const [txHash,setTxHash]=useState("");
@@ -616,10 +612,8 @@ const SVC_TYPES=[
 
 function Wf2Service({onBack}){
   const [step,setStep]=useState(1);
-  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
-  const [prefillEvent]=useState(()=>{var v=sessionStorage.getItem('mp_event')||'';if(v)sessionStorage.removeItem('mp_event');return v;});
-  const [data,setData]=useState({udi:prefillUdi,eventType:prefillEvent,date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});
-  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
+  const [data,setData]=useState({udi:_initUdi,eventType:_initEvent,date:"",pof:"Pass",notes:"",certRef:"",swVer:"",sbomHash:"",desc:"",severity:"medium",fscaRef:"",fscaAction:""});
+  const [autoFillMsg,setAutoFillMsg]=useState(_initUdi?'UDI auto-filled from QR scan: '+_initUdi:'');
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
   const [txHash,setTxHash]=useState("");
@@ -719,9 +713,8 @@ function DualSigBox({title,org,signed,onSign}){
 
 function Wf3Transfer({onBack}){
   const [step,setStep]=useState(1);
-  const [prefillUdi]=useState(()=>{var v=sessionStorage.getItem('mp_udi')||'';if(v)sessionStorage.removeItem('mp_udi');return v;});
-  const [data,setData]=useState({udi:prefillUdi,fromOrg:"Current holder",toOrg:"",transferDate:"",reason:"sale"});
-  const [autoFillMsg,setAutoFillMsg]=useState(prefillUdi?'UDI auto-filled from QR scan: '+prefillUdi:'');
+  const [data,setData]=useState({udi:_initUdi,fromOrg:"Current holder",toOrg:"",transferDate:"",reason:"sale"});
+  const [autoFillMsg,setAutoFillMsg]=useState(_initUdi?'UDI auto-filled from QR scan: '+_initUdi:'');
   const [signed,setSigned]=useState({transferor:false,transferee:false});
   const [udiErr,setUdiErr]=useState("");
   const [mode,setMode]=useState(null);
@@ -797,7 +790,7 @@ function WorkflowSelector({onSelect}){
 }
 
 function LogRegisterTab(){
-  const [workflow,setWorkflow]=useState(()=>{var v=sessionStorage.getItem('mp_workflow');if(v)sessionStorage.removeItem('mp_workflow');return v||null;});
+  const [workflow,setWorkflow]=useState(_initWorkflow);
   return <div>
     <span className="tab-section-label">📲 Log event / Register — write transactions to the MedPassport Protocol on Polygon Amoy</span>
     {!workflow&&<WorkflowSelector onSelect={setWorkflow}/>}
@@ -809,7 +802,7 @@ function LogRegisterTab(){
 
 function App(){
   const [role,setRole]=useState("manufacturer");
-  const [tab,setTab]=useState(()=>{var v=sessionStorage.getItem('mp_tab');if(v)sessionStorage.removeItem('mp_tab');return v||'timeline';});
+  const [tab,setTab]=useState(_initTab);
   const ri=ROLES.find(r=>r.id===role);
   const ci=certInfo(100);
   const tabs=[
