@@ -59,6 +59,7 @@ contract ServiceLogRegistry {
         bool                  hasUndocumentedParts;
         bool                  isSeriousIncident;
         bytes32               sbomHash;
+        string                sbomCid;
     }
 
     // ============================================================
@@ -152,7 +153,8 @@ contract ServiceLogRegistry {
         bool                   hasCompatibleParts,
         bool                   hasUndocumentedParts,
         bool                   isSeriousIncident,
-        bytes32                sbomHash
+        bytes32                sbomHash,
+        string  calldata       sbomCid
     ) external returns (uint256 eventIndex) {
         DeviceTypes.DeviceIdentity memory device = passportNFT.getDevice(tokenId);
         if (device.decommissioned) revert DeviceIsDecommissioned(tokenId);
@@ -160,7 +162,7 @@ contract ServiceLogRegistry {
         return _logEvent(
             tokenId, eventType, documentHash, ipfsCID, passedInspection,
             softwareVersion, notes, hasCompatibleParts, hasUndocumentedParts,
-            isSeriousIncident, sbomHash, credentialId
+            isSeriousIncident, sbomHash, sbomCid, credentialId
         );
     }
 
@@ -201,6 +203,7 @@ contract ServiceLogRegistry {
                 p.hasUndocumentedParts,
                 p.isSeriousIncident,
                 p.sbomHash,
+                p.sbomCid,
                 credentialId
             );
         }
@@ -224,6 +227,7 @@ contract ServiceLogRegistry {
         bool                   hasUndocumentedParts,
         bool                   isSeriousIncident,
         bytes32                sbomHash,
+        string  calldata       sbomCid,
         bytes32                credentialId
     ) internal returns (uint256 eventIndex) {
         roleManager.requireEventPermission(msg.sender, eventType);
@@ -246,7 +250,8 @@ contract ServiceLogRegistry {
             hasCompatibleParts:   hasCompatibleParts,
             hasUndocumentedParts: hasUndocumentedParts,
             isSeriousIncident:    isSeriousIncident,
-            sbomHash:             sbomHash
+            sbomHash:             sbomHash,
+            sbomCid:              sbomCid
         });
 
         _history[tokenId].push(newEvent);

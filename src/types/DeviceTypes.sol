@@ -112,6 +112,7 @@ library DeviceTypes {
         bool       hasUndocumentedParts;  // parts used with no documentation
         bool       isSeriousIncident;     // for INCIDENT_REPORT: serious vs minor
         bytes32    sbomHash;              // SBOM hash for SOFTWARE_UPDATE events; bytes32(0) otherwise
+        string     sbomCid;               // IPFS CID of SBOM.json; empty string otherwise
     }
 
     struct CorrectionRecord {

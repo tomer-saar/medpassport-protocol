@@ -144,7 +144,8 @@ contract ComplianceTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -160,7 +161,8 @@ contract ComplianceTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -176,7 +178,8 @@ contract ComplianceTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -235,7 +238,8 @@ contract ComplianceTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
 
         uint256 scoreWith = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
@@ -338,7 +342,8 @@ contract ComplianceTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -683,7 +688,8 @@ contract ComplianceTest is Test {
             tokenId, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             hash, "QmUndocParts", true, "", "PM with undocumented parts",
             false, true, false,  // hasUndocumentedParts = true
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertLt(scoreAfter, scoreBefore);
@@ -700,7 +706,8 @@ contract ComplianceTest is Test {
             tokenId, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             keccak256("pm_compat"), "QmCompatParts", true, "", "PM with compatible parts",
             true, false, false,  // hasCompatibleParts = true
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertLt(scoreAfter, scoreBefore);
@@ -717,14 +724,16 @@ contract ComplianceTest is Test {
             tokenId1, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             keccak256("pm_compat2"), "QmC2", true, "", "Compatible parts",
             true, false, false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         vm.prank(serviceOrg);
         serviceLog.logEvent(
             tokenId2, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             keccak256("pm_undoc2"), "QmU2", true, "", "Undocumented parts",
             false, true, false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         uint256 scoreCompat = scorer.calculateScoreSimple(tokenId1, passport, serviceLog);
         uint256 scoreUndoc  = scorer.calculateScoreSimple(tokenId2, passport, serviceLog);
@@ -745,7 +754,8 @@ contract ComplianceTest is Test {
             keccak256("serious_inc"), "QmSerious",
             false, "", "Serious adverse event",
             false, false, true,  // isSeriousIncident = true
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         uint256 scoreAfter = scorer.calculateScoreSimple(tokenId, passport, serviceLog);
         assertLt(scoreAfter, scoreBefore);
@@ -762,7 +772,8 @@ contract ComplianceTest is Test {
             keccak256("minor_inc"), "QmMinor",
             false, "", "Minor incident",
             false, false, false,  // isSeriousIncident = false
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         vm.prank(serviceOrg);
         serviceLog.logEvent(
@@ -770,7 +781,8 @@ contract ComplianceTest is Test {
             keccak256("serious_inc2"), "QmSerious2",
             false, "", "Serious incident",
             false, false, true,  // isSeriousIncident = true
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         uint256 scoreMinor   = scorer.calculateScoreSimple(tokenId1, passport, serviceLog);
         uint256 scoreSerious = scorer.calculateScoreSimple(tokenId2, passport, serviceLog);

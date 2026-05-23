@@ -119,7 +119,8 @@ contract LiveDemo is Script {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         svcLog.logEvent(
             tokenId,
@@ -130,7 +131,8 @@ contract LiveDemo is Script {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         svcLog.logEvent(
             tokenId,
@@ -141,7 +143,8 @@ contract LiveDemo is Script {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         vm.stopBroadcast();
 
@@ -155,7 +158,8 @@ contract LiveDemo is Script {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         vm.stopBroadcast();
         console.log("4 service events logged on-chain");

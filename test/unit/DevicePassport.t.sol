@@ -140,7 +140,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -311,7 +312,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -339,7 +341,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
     }
 
@@ -370,7 +373,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            sbom
+            sbom,
+            ""
         );
 
         DeviceTypes.ServiceEvent memory evt = serviceLog.getEvent(tokenId, 0);
@@ -393,7 +397,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
 
         DeviceTypes.ServiceEvent memory evt = serviceLog.getEvent(tokenId, 0);
@@ -417,7 +422,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            sbom1
+            sbom1,
+            ""
         );
 
         vm.prank(manufacturer);
@@ -432,7 +438,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            sbom2
+            sbom2,
+            ""
         );
 
         assertEq(serviceLog.getEvent(tokenId, 0).sbomHash, sbom1);
@@ -656,7 +663,8 @@ contract DevicePassportTest is Test {
             false,
             false,
             false,
-            bytes32(0)
+            bytes32(0),
+            ""
         );
         assertEq(serviceLog.getEventCount(tokenId), 2);
         console.log("Step 4: Calibration logged");
@@ -757,7 +765,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+            sbomCid:              ""
         });
         events[1] = ServiceLogRegistry.BatchEventParams({
             eventType:           DeviceTypes.EventType.CALIBRATION,
@@ -769,7 +778,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+            sbomCid:              ""
         });
         events[2] = ServiceLogRegistry.BatchEventParams({
             eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
@@ -781,7 +791,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+            sbomCid:              ""
         });
 
         vm.prank(serviceOrg);
@@ -812,7 +823,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+             sbomCid:              ""
         });
         events[1] = ServiceLogRegistry.BatchEventParams({
             eventType:           DeviceTypes.EventType.CALIBRATION,
@@ -824,7 +836,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+            sbomCid:              ""
         });
         events[2] = ServiceLogRegistry.BatchEventParams({
             eventType:           DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
@@ -836,7 +849,8 @@ contract DevicePassportTest is Test {
             hasCompatibleParts:  false,
             hasUndocumentedParts: false,
             isSeriousIncident:   false,
-            sbomHash:            bytes32(0)
+            sbomHash:            bytes32(0),
+            sbomCid:              ""
         });
 
         vm.prank(serviceOrg);
@@ -868,9 +882,9 @@ contract DevicePassportTest is Test {
         // Measure 3 individual logEvent() calls on tokenA
         vm.startPrank(serviceOrg);
         uint256 gasStart = gasleft();
-        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d1"), "QmInd001", true, "", "PM 1",  false, false, false, bytes32(0));
-        serviceLog.logEvent(tokenA, DeviceTypes.EventType.CALIBRATION,            keccak256("d2"), "QmInd002", true, "", "Cal 1", false, false, false, bytes32(0));
-        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d3"), "QmInd003", true, "", "PM 2",  false, false, false, bytes32(0));
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d1"), "QmInd001", true, "", "PM 1",  false, false, false, bytes32(0), "");
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.CALIBRATION,            keccak256("d2"), "QmInd002", true, "", "Cal 1", false, false, false, bytes32(0), "");
+        serviceLog.logEvent(tokenA, DeviceTypes.EventType.PREVENTIVE_MAINTENANCE, keccak256("d3"), "QmInd003", true, "", "PM 2",  false, false, false, bytes32(0), "");
         uint256 individualGas = gasStart - gasleft();
         vm.stopPrank();
 
@@ -882,21 +896,24 @@ contract DevicePassportTest is Test {
             documentHash: keccak256("d1"), ipfsCID: "QmBatch001",
             passedInspection: true, softwareVersion: "", notes: "PM 1",
             hasCompatibleParts: false, hasUndocumentedParts: false,
-            isSeriousIncident: false, sbomHash: bytes32(0)
+            isSeriousIncident: false, sbomHash: bytes32(0),
+             sbomCid:              ""
         });
         events[1] = ServiceLogRegistry.BatchEventParams({
             eventType: DeviceTypes.EventType.CALIBRATION,
             documentHash: keccak256("d2"), ipfsCID: "QmBatch002",
             passedInspection: true, softwareVersion: "", notes: "Cal 1",
             hasCompatibleParts: false, hasUndocumentedParts: false,
-            isSeriousIncident: false, sbomHash: bytes32(0)
+            isSeriousIncident: false, sbomHash: bytes32(0),
+             sbomCid:              ""
         });
         events[2] = ServiceLogRegistry.BatchEventParams({
             eventType: DeviceTypes.EventType.PREVENTIVE_MAINTENANCE,
             documentHash: keccak256("d3"), ipfsCID: "QmBatch003",
             passedInspection: true, softwareVersion: "", notes: "PM 2",
             hasCompatibleParts: false, hasUndocumentedParts: false,
-            isSeriousIncident: false, sbomHash: bytes32(0)
+            isSeriousIncident: false, sbomHash: bytes32(0),
+             sbomCid:              ""
         });
 
         vm.prank(serviceOrg);
