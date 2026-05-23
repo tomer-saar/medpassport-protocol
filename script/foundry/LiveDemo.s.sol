@@ -118,7 +118,8 @@ contract LiveDemo is Script {
             true, "", "Annual PM - all checks passed",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
         svcLog.logEvent(
             tokenId,
@@ -128,7 +129,8 @@ contract LiveDemo is Script {
             true, "", "Annual calibration passed",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
         svcLog.logEvent(
             tokenId,
@@ -138,7 +140,8 @@ contract LiveDemo is Script {
             true, "", "Regulatory inspection passed",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
         vm.stopBroadcast();
 
@@ -151,7 +154,8 @@ contract LiveDemo is Script {
             true, "v3.2.1", "Security patch applied",
             false,
             false,
-            false
+            false,
+            bytes32(0)
         );
         vm.stopBroadcast();
         console.log("4 service events logged on-chain");
