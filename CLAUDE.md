@@ -156,3 +156,13 @@ CI runs forge test on every push. Always run forge test before committing.
 Never push broken tests.
 
 Last updated: May 2026 · 80 tests passing · MIT License
+
+## EUDAMED Bridge
+
+oracle/eudamed-bridge/EUDAMEDBridge.js
+Test: cd oracle/eudamed-bridge && node EUDAMEDBridge.js
+Note: requires normal network (ec.europa.eu blocked in Codespace egress)
+Functions:
+  validateBasicUdiDi(basicUdiDi) — validates EU device registration
+  runDualMarketValidation(udi, basicUdiDi) — EU + US in one call
+Returns: euAuthorised, riskClass, certificate, authorisedRep, eudamedRef
