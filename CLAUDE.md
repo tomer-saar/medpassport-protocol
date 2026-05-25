@@ -166,3 +166,7 @@ Functions:
   validateBasicUdiDi(basicUdiDi) — validates EU device registration
   runDualMarketValidation(udi, basicUdiDi) — EU + US in one call
 Returns: euAuthorised, riskClass, certificate, authorisedRep, eudamedRef
+EUDAMED bridge: oracle/eudamed-bridge/EUDAMEDBridge.js
+Verified: 2,042,051 devices accessible · Hangzhou Kangji Class IIa · live API confirmed
+Test: cd oracle/eudamed-bridge && node EUDAMEDBridge.js
+Note: run from home computer — ec.europa.eu blocked in Codespace egress
