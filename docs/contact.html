@@ -349,9 +349,9 @@
   </a>
   <ul class="nav-links">
     <li><a href="index.html#pillars">Solution</a></li>
-    <li><a href="demo.html">How It Works</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
     <li><a href="index.html#regulatory">Regulatory</a></li>
-    <li><a href="demo-v2.html">Interactive Demo</a></li>
+    <li><a href="demo.html">Interactive Demo</a></li>
     <li><a href="index.html#verify">UDI Lookup</a></li>
     <li><a href="index.html#pilots">Pilots</a></li>
     <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
@@ -385,6 +385,22 @@
           <div class="form-group">
             <label for="organisation">Organisation *</label>
             <input type="text" id="organisation" name="organisation" placeholder="Company or institution" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email address *</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required/>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone <span style="font-weight:300;color:#AAC0C0;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 555 000 0000"/>
+          </div>
+          <div class="form-group">
+            <label for="linkedin">LinkedIn URL <span style="font-weight:300;color:#AAC0C0;">(optional)</span></label>
+            <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/yourname"/>
           </div>
         </div>
 
@@ -433,7 +449,7 @@
       <div class="form-success" id="formSuccess">
         <div class="success-icon">✓</div>
         <h3>Message received</h3>
-        <p>Thank you for reaching out. We respond to all inquiries within 48 hours.<br/>All communications are treated as confidential.</p>
+        <p>Thank you for reaching out. We will follow up at the email address you provided within 48 hours.<br/>All communications are treated as strictly confidential.</p>
       </div>
     </div>
 

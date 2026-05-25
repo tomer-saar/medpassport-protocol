@@ -3,15 +3,24 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>MedPassport — How It Works</title>
+<title>MedPassport — Role-Based Demo v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root {
   --teal:#006B6B; --teal-d:#004E4E; --teal-l:#E6F2F2; --teal-m:#CCE5E5;
   --ink:#0F1A1A; --ink-m:#2D4040; --ink-l:#5A7070;
-  --red:#8B2020; --red-l:#FBE8E8;
-  --green:#1A5C38; --green-l:#E8F5EF;
-  --gold:#C6922A; --gold-l:#FDF3E0;
+  --red:#8B2020; --red-l:#FBE8E8; --red-b:#E8B0B0;
+  --green:#1A5C38; --green-l:#E8F5EF; --green-b:#B8DEC9;
+  --gold:#C6922A; --gold-l:#FDF3E0; --gold-b:#F0D898;
+  --purple:#534AB7; --purple-l:#EEEDFE; --purple-b:#AFA9EC;
+  --blue:#185FA5; --blue-l:#E6F1FB; --blue-b:#85B7EB;
+  --gray-l:#F1EFE8; --gray-b:#B4B2A9; --gray-t:#5F5E5A;
   --white:#FFFFFF; --off:#F7FAFA; --rule:#D0DEDE;
   --fd:'Playfair Display',Georgia,serif;
   --fb:'DM Sans',system-ui,sans-serif;
@@ -22,721 +31,704 @@ html{font-size:15px;scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--off);color:var(--ink);line-height:1.6}
 
 nav{background:var(--teal);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
-.nav-logo{font-family:var(--fd);font-size:20px;color:white;letter-spacing:-.3px}
+.nav-logo{font-family:var(--fd);font-size:20px;color:white;letter-spacing:-.3px;text-decoration:none}
 .nav-links{display:flex;gap:6px;flex-wrap:wrap}
-.nav-btn{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:6px 14px;font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s}
-.nav-btn:hover,.nav-btn.active{background:rgba(255,255,255,.25)}
+.nav-btn{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:6px 14px;font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s}
+.nav-btn:hover{background:rgba(255,255,255,.08)}
 
-.hero{background:var(--teal);padding:50px 40px 40px;text-align:center}
-.hero h1{font-family:var(--fd);font-size:36px;color:white;margin-bottom:10px;line-height:1.2}
-.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:540px;margin:0 auto}
+.hero{background:var(--teal);padding:48px 40px 36px;text-align:center}
+.hero-label{font-family:var(--fm);font-size:11px;color:rgba(255,255,255,.55);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+.hero h1{font-family:var(--fd);font-size:32px;color:white;margin-bottom:10px;line-height:1.25}
+.hero p{font-size:15px;color:rgba(255,255,255,.7);max-width:560px;margin:0 auto 24px}
+.hero-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hero-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);border-radius:20px;padding:4px 14px;font-size:12px}
 
-.content{max-width:1000px;margin:0 auto;padding:36px 20px 80px}
-.scene{display:none}
-.scene.active{display:block}
+.page-body{max-width:800px;margin:0 auto;padding:32px 20px 60px}
 
-/* DEVICE CARD */
-.device-card{background:white;border:1.5px solid var(--rule);border-radius:12px;padding:20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.device-icon{width:56px;height:56px;background:var(--teal-l);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:26px}
-.device-info{flex:1;min-width:200px}
-.device-info h3{font-size:16px;font-weight:500;margin-bottom:3px}
-.device-udi{font-family:var(--fm);font-size:11px;color:var(--teal);background:var(--teal-l);padding:3px 8px;border-radius:4px;display:inline-block;margin-top:4px}
-.start-btn{background:var(--teal);color:white;border:none;border-radius:8px;padding:11px 22px;font-family:var(--fb);font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;white-space:nowrap}
-.start-btn:hover{background:var(--teal-d)}
-.start-btn:disabled{background:var(--ink-l);cursor:not-allowed}
+.intro-box{background:white;border:1px solid var(--rule);border-radius:10px;padding:20px 24px;margin-bottom:24px}
+.intro-box p{font-size:14px;color:var(--ink-m);line-height:1.65}
+.intro-box strong{color:var(--ink)}
 
-/* PROGRESS */
-.progress-wrap{background:var(--rule);border-radius:4px;height:5px;margin-bottom:20px;overflow:hidden}
-.progress-bar{height:100%;background:var(--teal);width:0%;transition:width .5s ease;border-radius:4px}
+#root{background:white;border:1px solid var(--rule);border-radius:10px;padding:20px 20px 24px}
 
-/* STEPS */
-.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
-.step{background:white;border:1.5px solid var(--rule);border-radius:10px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;transition:all .4s}
-.step.active-step{border-color:var(--teal);background:var(--teal-l)}
-.step.done{border-color:var(--green);background:var(--green-l)}
-.step-num{width:32px;height:32px;border-radius:50%;background:var(--off);border:2px solid var(--rule);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:12px;font-weight:500;color:var(--ink-l);flex-shrink:0;margin-top:1px;transition:all .4s}
-.step.active-step .step-num{background:var(--teal);border-color:var(--teal);color:white}
-.step.done .step-num{background:var(--green);border-color:var(--green);color:white}
-.step-text h4{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
-.step-text p{font-size:12px;color:var(--ink-l)}
-.step.active-step .step-text h4{color:var(--teal-d)}
-.step.done .step-text h4{color:var(--green)}
-.step-check{margin-left:auto;font-size:16px;opacity:0;transition:opacity .3s;flex-shrink:0}
-.step.done .step-check{opacity:1}
+footer{background:var(--teal);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:48px}
+footer span{font-size:12px;color:rgba(255,255,255,.5)}
+footer a{color:rgba(255,255,255,.7);text-decoration:none;font-size:12px}
 
-/* OFFCHAIN NOTE */
-.offchain-note{background:#FDF3E0;border:1.5px solid #F0D898;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#7A5500;display:flex;gap:12px;align-items:flex-start}
-.offchain-note-icon{font-size:18px;flex-shrink:0;margin-top:1px}
-.offchain-note strong{font-weight:500;display:block;margin-bottom:3px}
+@media(max-width:600px){
+  nav{padding:12px 16px}
+  .hero{padding:36px 16px 28px}
+  .hero h1{font-size:24px}
+  .page-body{padding:20px 12px 48px}
+  #root{padding:14px 12px 18px}
+}
 
-/* RESULT CARD */
-.result-card{background:white;border:2px solid var(--teal);border-radius:12px;padding:24px;display:none;animation:fadeIn .5s ease}
-.result-card.show{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.result-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
-.passport-icon{width:50px;height:50px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:white;flex-shrink:0}
-.passport-title h3{font-family:var(--fd);font-size:18px;color:var(--teal-d);margin-bottom:2px}
-.passport-title p{font-size:12px;color:var(--ink-l);font-family:var(--fm)}
-.cert-badge{margin-left:auto;background:var(--gold-l);border:2px solid var(--gold);border-radius:8px;padding:7px 14px;text-align:center;flex-shrink:0}
-.cert-level{font-family:var(--fm);font-size:10px;font-weight:500;color:var(--gold);letter-spacing:1px;text-transform:uppercase}
-.cert-score{font-size:24px;font-weight:500;color:var(--ink);line-height:1}
-
-.passport-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.field{background:var(--off);border-radius:6px;padding:9px 12px}
-.field-label{font-family:var(--fm);font-size:9px;font-weight:500;color:var(--teal);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
-.field-value{font-size:12px;color:var(--ink);font-weight:500}
-.field-value.mono{font-family:var(--fm);font-size:10px;word-break:break-all;color:var(--ink-m)}
-
-.chain-ref{background:var(--ink);border-radius:8px;padding:12px 14px;font-family:var(--fm);font-size:11px;color:#88BBBB;letter-spacing:.3px;word-break:break-all}
-.chain-label{color:rgba(255,255,255,.4);font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-.chain-hash{color:#4ECDC4}
-
-/* OWNERSHIP TRANSFER SCENE */
-.transfer-flow{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
-.transfer-step{background:white;border:1.5px solid var(--rule);border-radius:10px;padding:18px 20px}
-.transfer-step.active{border-color:var(--teal);background:var(--teal-l)}
-.transfer-step.complete{border-color:var(--green);background:var(--green-l)}
-.ts-header{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.ts-num{width:28px;height:28px;border-radius:50%;background:var(--rule);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:12px;font-weight:500;color:var(--ink-l);flex-shrink:0;transition:all .4s}
-.transfer-step.active .ts-num{background:var(--teal);color:white}
-.transfer-step.complete .ts-num{background:var(--green);color:white}
-.ts-title{font-size:14px;font-weight:500;color:var(--ink)}
-.transfer-step.active .ts-title{color:var(--teal-d)}
-.transfer-step.complete .ts-title{color:var(--green)}
-.ts-body{font-size:13px;color:var(--ink-l);padding-left:40px}
-.sig-block{display:flex;gap:10px;margin-top:10px;padding-left:40px;flex-wrap:wrap}
-.sig-pill{background:var(--off);border:1px solid var(--rule);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--ink-m);display:flex;align-items:center;gap:6px}
-.sig-pill.signed{background:var(--green-l);border-color:#B8DEC9;color:var(--green)}
-
-/* PM EVENT SCENE */
-.pm-event{background:white;border:1.5px solid var(--rule);border-radius:12px;padding:24px;margin-bottom:20px}
-.pm-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--rule)}
-.pm-icon{width:46px;height:46px;background:#E6F2F2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.pm-title h3{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:2px}
-.pm-title p{font-size:12px;color:var(--ink-l)}
-.pm-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-.pm-field{background:var(--off);border-radius:6px;padding:9px 12px}
-.pm-field-label{font-family:var(--fm);font-size:9px;font-weight:500;color:var(--teal);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
-.pm-field-val{font-size:12px;color:var(--ink);font-weight:500}
-.pm-path-tabs{display:flex;gap:8px;margin-bottom:16px}
-.path-tab{padding:7px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--rule);background:white;color:var(--ink-l);transition:all .2s}
-.path-tab.active{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
-.path-content{display:none;animation:fadeIn .3s ease}
-.path-content.active{display:block}
-.path-desc{font-size:13px;color:var(--ink-m);background:var(--off);border-radius:8px;padding:12px 14px;margin-bottom:12px}
-.score-change{display:flex;align-items:center;gap:12px;background:var(--green-l);border:1px solid #B8DEC9;border-radius:8px;padding:12px 16px}
-.score-before{text-align:center}
-.score-after{text-align:center}
-.score-num{font-family:var(--fd);font-size:28px;color:var(--ink)}
-.score-label{font-size:11px;color:var(--ink-l)}
-.score-arrow{font-size:18px;color:var(--ink-l)}
-.score-note{font-size:12px;color:var(--green)}
-
-/* VIEWS */
-.views-intro{text-align:center;margin-bottom:24px}
-.views-intro h2{font-family:var(--fd);font-size:24px;color:var(--ink);margin-bottom:6px}
-.views-intro p{font-size:13px;color:var(--ink-l);max-width:500px;margin:0 auto}
-.views-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:24px}
-.view-card{border-radius:12px;overflow:hidden;border:1.5px solid var(--rule)}
-.view-hdr{padding:12px 16px}
-.view-role{font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:3px;opacity:.8}
-.view-title{font-size:14px;font-weight:500}
-.view-body{padding:14px 16px;background:white;min-height:200px}
-.view-item{margin-bottom:8px;padding:7px 9px;border-radius:6px;font-size:12px}
-.view-label{font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px;opacity:.7}
-.view-val{font-size:12px;font-weight:500}
-.lock-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;border-radius:4px;padding:2px 8px;margin-top:4px}
-.view-mfg .view-hdr{background:var(--teal-l);color:var(--teal-d)}
-.view-mfg .view-item{background:var(--teal-l)}
-.view-comp .view-hdr{background:var(--red-l);color:var(--red)}
-.view-comp .view-item{background:#FDF4F4}
-.view-reg .view-hdr{background:var(--green-l);color:var(--green)}
-.view-reg .view-item{background:#F2FAF5}
-.hash-display{font-family:var(--fm);font-size:10px;color:var(--red);word-break:break-all;line-height:1.6;margin-top:6px}
-
-/* FSCA */
-.fsca-intro{text-align:center;margin-bottom:24px}
-.fsca-intro h2{font-family:var(--fd);font-size:24px;color:var(--ink);margin-bottom:6px}
-.fsca-intro p{font-size:13px;color:var(--ink-l);max-width:500px;margin:0 auto}
-.fsca-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.before-box,.after-box{border-radius:12px;padding:18px;border:1.5px solid}
-.before-box{background:var(--red-l);border-color:#E8B0B0}
-.after-box{background:var(--green-l);border-color:#B8DEC9}
-.box-label{font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.before-box .box-label{color:var(--red)}
-.after-box .box-label{color:var(--green)}
-.box-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:7px;font-size:12px}
-.before-box .box-item{color:var(--red)}
-.before-box .box-item::before{content:'✗';flex-shrink:0;margin-top:1px}
-.after-box .box-item{color:var(--green)}
-.after-box .box-item::before{content:'✓';flex-shrink:0;margin-top:1px}
-.timer-demo{background:white;border:1.5px solid var(--rule);border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
-.timer-label{font-family:var(--fm);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--ink-l);margin-bottom:10px}
-.timer-compare{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:10px}
-.timer-num{font-family:var(--fd);font-size:38px;line-height:1}
-.timer-unit{font-size:11px;color:var(--ink-l);margin-top:2px}
-.timer-before .timer-num{color:var(--red)}
-.timer-after .timer-num{color:var(--green)}
-.timer-vs{font-size:18px;color:var(--ink-l);font-weight:300}
-.timer-caveat{font-size:11px;color:var(--ink-l);font-style:italic;margin-top:4px}
-
-/* RECALL DEVICES */
-.recall-row{margin-bottom:8px}
-.recall-device{display:flex;align-items:center;gap:12px;border-radius:8px;padding:10px 14px;border:1px solid}
-
-/* CTA */
-.cta-bar{background:var(--teal);padding:28px 40px;text-align:center}
-.cta-bar h3{font-family:var(--fd);font-size:20px;color:white;margin-bottom:6px}
-.cta-bar p{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px}
-.cta-links{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.cta-link{display:inline-block;padding:9px 20px;border-radius:7px;font-family:var(--fb);font-size:13px;font-weight:500;text-decoration:none;transition:opacity .2s}
-.cta-link:hover{opacity:.85}
-.cta-link.primary{background:white;color:var(--teal)}
-.cta-link.secondary{background:transparent;color:white;border:1.5px solid rgba(255,255,255,.4)}
+    .tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;padding:4px 0}
+    .tab-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:8px;border:2px solid #D0DEDE;background:white;color:#2D4040;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:border-color .15s;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .tab-btn:hover{border-color:#006B6B;color:#006B6B;background:#E6F2F2}
+    .tab-btn.active{background:#006B6B;color:white;border-color:#006B6B;box-shadow:0 2px 8px rgba(0,107,107,.25)}
+    .tab-btn i{font-size:16px}
+    .tab-section-label{font-size:11px;font-weight:500;color:#006B6B;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;padding:8px 14px;background:#E6F2F2;border-radius:6px;display:block;border-left:3px solid #006B6B}
+    .role-banner{border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo" style="text-decoration:none;">MedPassport Protocol</a>
+  <a class="nav-logo" href="index.html">← MedPassport</a>
   <div class="nav-links">
-    <a href="index.html" class="nav-btn" style="text-decoration:none;">← Home</a>
-    <button class="nav-btn active" onclick="showScene('register',this)">① Register Device</button>
-    <button class="nav-btn" onclick="showScene('transfer',this)">② Ownership Transfer</button>
-    <button class="nav-btn" onclick="showScene('pm',this)">③ Service Event</button>
-    <button class="nav-btn" onclick="showScene('views',this)">④ Who Sees What</button>
-    <button class="nav-btn" onclick="showScene('fsca',this)">⑤ Recall Response</button>
+    <a class="nav-btn" href="index.html">← Home</a>
   </div>
 </nav>
 
 <div class="hero">
-  <h1>How MedPassport Works</h1>
-  <p>An interactive walkthrough for medical device professionals. No blockchain knowledge required.</p>
-</div>
-
-<div class="content">
-
-  <!-- ① REGISTER DEVICE ──────────────────────────────────────── -->
-  <div class="scene active" id="scene-register">
-
-    <div class="device-card">
-      <div class="device-icon">🔬</div>
-      <div class="device-info">
-        <h3>CardioScan Pro 3000 — Class IIb/III CT Scanner</h3>
-        <p style="font-size:12px;color:var(--ink-l)">Fresh from manufacturing · Ready for first deployment</p>
-        <div class="device-udi">UDI: 00844588003288/LOT2026-001/SN00432</div>
-      </div>
-      <button class="start-btn" id="startBtn" onclick="startRegistration()">
-        Create Digital Passport →
-      </button>
-    </div>
-
-    <div class="offchain-note">
-      <div class="offchain-note-icon">🔒</div>
-      <div>
-        <strong>What gets stored where</strong>
-        Only a cryptographic fingerprint (hash) goes on the public blockchain — never your data.
-        Full service reports, calibration certificates, and customer details are stored in an <strong>encrypted off-chain vault</strong> (IPFS/Arweave) — accessible only to authorized parties. Your CMMS and ERP systems are never touched.
-      </div>
-    </div>
-
-    <div class="progress-wrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="steps" id="stepsContainer">
-      <div class="step" id="step1">
-        <div class="step-num">1</div>
-        <div class="step-text">
-          <h4>Validate UDI against FDA GUDID registry</h4>
-          <p>Confirms device identity and regulatory classification via FDA GUDID (US) and EUDAMED (EU) — validated before passport is created</p>
-        </div>
-        <div class="step-check">✓</div>
-      </div>
-      <div class="step" id="step2">
-        <div class="step-num">2</div>
-        <div class="step-text">
-          <h4>Create cryptographic device identity token (ERC-721)</h4>
-          <p>One unique token per physical device — permanently anchored to the UDI, cannot be duplicated</p>
-        </div>
-        <div class="step-check">✓</div>
-      </div>
-      <div class="step" id="step3">
-        <div class="step-num">3</div>
-        <div class="step-text">
-          <h4>Record manufacturer attestation on-chain</h4>
-          <p>Hash of static metadata written to Polygon ledger — timestamped, immutable. Full details go to encrypted vault.</p>
-        </div>
-        <div class="step-check">✓</div>
-      </div>
-      <div class="step" id="step4">
-        <div class="step-num">4</div>
-        <div class="step-text">
-          <h4>Set initial compliance score: 100 / 100</h4>
-          <p>New CE-marked device starts fully compliant. Score decays only when service is overdue or events deviate.</p>
-        </div>
-        <div class="step-check">✓</div>
-      </div>
-      <div class="step" id="step5">
-        <div class="step-num">5</div>
-        <div class="step-text">
-          <h4>Digital Product Passport ready</h4>
-          <p>Passport travels with this device for its entire life — across every owner, service provider, and jurisdiction</p>
-        </div>
-        <div class="step-check">✓</div>
-      </div>
-    </div>
-
-    <div class="result-card" id="resultCard">
-      <div class="result-header">
-        <div class="passport-icon">🛂</div>
-        <div class="passport-title">
-          <h3>Digital Product Passport — Issued</h3>
-          <p>Token #1 · Polygon network · Block #8,429,112</p>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-level">🥇 Gold</div>
-          <div class="cert-score">100<span style="font-size:13px;color:var(--ink-l)">/100</span></div>
-        </div>
-      </div>
-      <div class="passport-fields">
-        <div class="field"><div class="field-label">Device</div><div class="field-value">CardioScan Pro 3000</div></div>
-        <div class="field"><div class="field-label">Classification</div><div class="field-value">Class IIb/III — CE Marked</div></div>
-        <div class="field"><div class="field-label">UDI</div><div class="field-value mono">00844588003288/LOT2026-001/SN00432</div></div>
-        <div class="field"><div class="field-label">GUDID Verified</div><div class="field-value" style="color:var(--green)">✓ Device class confirmed</div></div>
-        <div class="field"><div class="field-label">Manufacturer</div><div class="field-value">MedDevice GmbH · 0xA9d5…5745</div></div>
-        <div class="field"><div class="field-label">Recall Status</div><div class="field-value" style="color:var(--green)">✓ Clear</div></div>
-      </div>
-      <div style="background:#FDF3E0;border:1px solid #F0D898;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#7A5500">
-        <strong>Stored off-chain (encrypted vault):</strong> CE certificate PDF · Technical file reference · Manufacturing facility details · Full device specifications — accessible only to authorized parties with valid credentials.
-      </div>
-      <div class="chain-ref">
-        <div class="chain-label">On-chain record — public ledger (all a competitor sees)</div>
-        <div class="chain-hash">0x8f4b2a9c1d3e7f0a2b5c8d1e4f7a0b3c9d2e5f8a1b4c7d0e3f6a9b2c5d8e1f4a</div>
-      </div>
-      <div style="margin-top:10px;font-size:12px;color:var(--ink-l);text-align:center">A random string and a timestamp. Mathematically impossible to reverse into customer names, pricing, or service data.</div>
-    </div>
-
-  </div>
-
-  <!-- ② OWNERSHIP TRANSFER ────────────────────────────────────── -->
-  <div class="scene" id="scene-transfer">
-
-    <div class="device-card">
-      <div class="device-icon">📦</div>
-      <div class="device-info">
-        <h3>Ownership Transfer — SN00432</h3>
-        <p style="font-size:12px;color:var(--ink-l)">MedDevice GmbH → St. Anna Hospital, Vienna · Post-installation sign-off</p>
-        <div class="device-udi">Dual-signature required · Both parties must confirm</div>
-      </div>
-      <button class="start-btn" id="transferBtn" onclick="startTransfer()">
-        Start Transfer →
-      </button>
-    </div>
-
-    <div class="offchain-note">
-      <div class="offchain-note-icon">🔒</div>
-      <div>
-        <strong>What gets stored where</strong>
-        The transfer event hash, timestamp, and credential IDs go on-chain.
-        Hospital name, purchase price, contract terms, and installation report go to the <strong>encrypted off-chain vault</strong> — visible only to the manufacturer and hospital with valid credentials. Competitors see only the hash.
-      </div>
-    </div>
-
-    <div class="transfer-flow" id="transferFlow">
-      <div class="transfer-step" id="ts1">
-        <div class="ts-header">
-          <div class="ts-num">1</div>
-          <div class="ts-title">OEM installation engineer proposes transfer</div>
-        </div>
-        <div class="ts-body">Installation complete at St. Anna Hospital. OEM engineer scans device barcode — MedPassport app proposes transfer on-chain.</div>
-        <div class="sig-block">
-          <div class="sig-pill" id="sig-oem">⏳ OEM engineer signature pending</div>
-        </div>
-      </div>
-      <div class="transfer-step" id="ts2">
-        <div class="ts-header">
-          <div class="ts-num">2</div>
-          <div class="ts-title">Hospital biomedical engineer confirms receipt</div>
-        </div>
-        <div class="ts-body">Hospital representative scans same device barcode or receives email link. Confirms installation acceptance with hospital credential.</div>
-        <div class="sig-block">
-          <div class="sig-pill" id="sig-hosp">⏳ Hospital signature pending</div>
-        </div>
-      </div>
-      <div class="transfer-step" id="ts3">
-        <div class="ts-header">
-          <div class="ts-num">3</div>
-          <div class="ts-title">Territory check — automatic</div>
-        </div>
-        <div class="ts-body">System verifies receiving party's jurisdiction against device's approved territory rules. Flags any out-of-policy transfers for manufacturer review.</div>
-      </div>
-      <div class="transfer-step" id="ts4">
-        <div class="ts-header">
-          <div class="ts-num">4</div>
-          <div class="ts-title">Transfer confirmed — passport updated</div>
-        </div>
-        <div class="ts-body">Dual-signature complete. Device passport now shows St. Anna Hospital as current owner. Compliance score unchanged — device is in perfect condition.</div>
-      </div>
-    </div>
-
-    <div class="result-card" id="transferResult">
-      <div class="result-header">
-        <div class="passport-icon">✅</div>
-        <div class="passport-title">
-          <h3>Ownership Transfer — Confirmed</h3>
-          <p>Dual-signed · Block #8,429,892 · Polygon network</p>
-        </div>
-        <div class="cert-badge">
-          <div class="cert-level">Score</div>
-          <div class="cert-score">100<span style="font-size:13px;color:var(--ink-l)">/100</span></div>
-        </div>
-      </div>
-      <div class="passport-fields">
-        <div class="field"><div class="field-label">Previous owner</div><div class="field-value">MedDevice GmbH</div></div>
-        <div class="field"><div class="field-label">New owner</div><div class="field-value">St. Anna Hospital, Vienna</div></div>
-        <div class="field"><div class="field-label">OEM signature</div><div class="field-value" style="color:var(--green)">✓ Credential #EU-MFG-0042</div></div>
-        <div class="field"><div class="field-label">Hospital signature</div><div class="field-value" style="color:var(--green)">✓ Credential #EU-HSP-1187</div></div>
-        <div class="field"><div class="field-label">Territory check</div><div class="field-value" style="color:var(--green)">✓ EU — within approved territory</div></div>
-        <div class="field"><div class="field-label">Transfer date</div><div class="field-value">14 May 2026 · 09:43 UTC</div></div>
-      </div>
-      <div style="background:#FDF3E0;border:1px solid #F0D898;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#7A5500">
-        <strong>Stored off-chain (encrypted vault):</strong> Installation report · Hospital purchase order reference · Site acceptance certificate · Service contract reference — visible to manufacturer and hospital only.
-      </div>
-      <div class="chain-ref">
-        <div class="chain-label">On-chain transfer attestation hash</div>
-        <div class="chain-hash">0x3c7a1f8b2e4d9c0a5f6b7e1d4a8c2f9b3e5a7c0f4b6d8e1a3c5f7b9d2e4a6c8f</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ③ SERVICE EVENT (PM) ─────────────────────────────────────── -->
-  <div class="scene" id="scene-pm">
-
-    <div class="device-card">
-      <div class="device-icon">🔧</div>
-      <div class="device-info">
-        <h3>Preventive Maintenance Event — SN00432</h3>
-        <p style="font-size:12px;color:var(--ink-l)">St. Anna Hospital · Annual PM · March 2026</p>
-        <div class="device-udi">OEM service under contract · ServiceMax work order #WO-2026-0893</div>
-      </div>
-    </div>
-
-    <div class="offchain-note">
-      <div class="offchain-note-icon">🔒</div>
-      <div>
-        <strong>What gets stored where</strong>
-        Event hash, timestamp, technician credential ID, and pass/fail outcome go on-chain.
-        Full PM checklist, technician notes, part serial numbers, and calibration measurements go to the <strong>encrypted off-chain vault</strong> as a linked document — hash-anchored to the on-chain record to prove it has not been altered.
-      </div>
-    </div>
-
-    <div class="pm-event">
-      <div class="pm-header">
-        <div class="pm-icon">📋</div>
-        <div class="pm-title">
-          <h3>Annual Preventive Maintenance</h3>
-          <p>Logged automatically when ServiceMax work order closes — or via barcode scan (60 seconds)</p>
-        </div>
-      </div>
-
-      <div class="pm-fields">
-        <div class="pm-field"><div class="pm-field-label">Event type</div><div class="pm-field-val">Preventive Maintenance</div></div>
-        <div class="pm-field"><div class="pm-field-label">Date</div><div class="pm-field-val">18 March 2026</div></div>
-        <div class="pm-field"><div class="pm-field-label">Outcome</div><div class="pm-field-val" style="color:var(--green)">✓ PASSED</div></div>
-        <div class="pm-field"><div class="pm-field-label">Technician</div><div class="pm-field-val">OEM Certified · ID #EU-2024-0891</div></div>
-        <div class="pm-field"><div class="pm-field-label">Parts replaced</div><div class="pm-field-val">X-ray filter seal · OEM part ✓</div></div>
-        <div class="pm-field"><div class="pm-field-label">SW version</div><div class="pm-field-val">v3.2.1 (current)</div></div>
-        <div class="pm-field"><div class="pm-field-label">Next PM due</div><div class="pm-field-val">March 2027</div></div>
-        <div class="pm-field"><div class="pm-field-label">Work order ref</div><div class="pm-field-val mono">WO-2026-0893</div></div>
-        <div class="pm-field"><div class="pm-field-label">Certificate</div><div class="pm-field-val" style="color:var(--teal)">PDF → encrypted vault</div></div>
-      </div>
-
-      <div class="pm-path-tabs">
-        <div class="path-tab active" onclick="showPath('pathA',this)">Path A — CMMS adapter (automatic)</div>
-        <div class="path-tab" onclick="showPath('pathB',this)">Path B — Barcode scan (manual fallback)</div>
-      </div>
-
-      <div class="path-content active" id="pathA">
-        <div class="path-desc">
-          <strong>How it works:</strong> When the OEM technician closes the work order in ServiceMax, MedPassport reads the closed work order automatically via API adapter. The PM event is signed and written to the ledger within minutes. <strong>Zero additional steps for the technician.</strong>
-        </div>
-      </div>
-      <div class="path-content" id="pathB">
-        <div class="path-desc">
-          <strong>How it works:</strong> Technician scans the device UDI barcode with a smartphone. A structured web form opens — pre-populated with device identity. Technician selects event type, enters outcome, uploads calibration certificate photo. Submits — signed with their organization credential. <strong>~60 seconds. No IT integration required.</strong>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:white;border:1.5px solid var(--rule);border-radius:12px;padding:20px">
-      <div style="font-family:var(--fm);font-size:10px;font-weight:500;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">Compliance score — impact of this PM event</div>
-      <div class="score-change">
-        <div style="flex:1">
-          <div class="score-change" style="background:transparent;border:none;padding:0">
-            <div class="score-before" style="text-align:left">
-              <div class="score-label">Before PM</div>
-              <div class="score-num" style="color:var(--gold)">87<span style="font-size:14px;color:var(--ink-l)">/100</span></div>
-              <div style="font-size:11px;color:var(--gold);margin-top:2px">PM was 2 months overdue</div>
-            </div>
-            <div class="score-arrow">→</div>
-            <div class="score-after">
-              <div class="score-label">After PM</div>
-              <div class="score-num" style="color:var(--green)">100<span style="font-size:14px;color:var(--ink-l)">/100</span></div>
-              <div style="font-size:11px;color:var(--green);margin-top:2px">PM deduction removed · Score restored</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="margin-top:12px;font-size:12px;color:var(--ink-l)">The score recovers automatically when the PM is logged. This is the correct incentive — the hospital's CFO sees the asset value restored, not penalized permanently.</div>
-    </div>
-
-  </div>
-
-  <!-- ④ WHO SEES WHAT ─────────────────────────────────────────── -->
-  <div class="scene" id="scene-views">
-
-    <div class="views-intro">
-      <h2>The same device — three different views</h2>
-      <p>MedPassport uses role-based access. Each party sees exactly what they need — nothing more.</p>
-    </div>
-
-    <div class="views-grid">
-      <div class="view-card view-mfg">
-        <div class="view-hdr">
-          <div class="view-role">Your organization</div>
-          <div class="view-title">Manufacturer / Hospital</div>
-        </div>
-        <div class="view-body">
-          <div class="view-item"><div class="view-label">Device</div><div class="view-val">CardioScan Pro 3000 · SN00432</div></div>
-          <div class="view-item"><div class="view-label">Compliance score</div><div class="view-val" style="color:var(--green);font-size:16px">100/100 🥇 GOLD</div></div>
-          <div class="view-item"><div class="view-label">Last PM</div><div class="view-val">March 2026 · OEM certified · PASSED</div></div>
-          <div class="view-item"><div class="view-label">Current owner</div><div class="view-val">St. Anna Hospital, Vienna</div></div>
-          <div class="view-item"><div class="view-label">Recall status</div><div class="view-val" style="color:var(--green)">✓ Clear</div></div>
-          <span class="lock-badge" style="background:var(--teal-l);color:var(--teal)">🔓 Full access — your credential</span>
-        </div>
-      </div>
-      <div class="view-card view-comp">
-        <div class="view-hdr">
-          <div class="view-role">Any competitor</div>
-          <div class="view-title">No credentials</div>
-        </div>
-        <div class="view-body">
-          <div class="view-item" style="text-align:center;padding:16px 8px">
-            <div class="view-label">Public ledger entry</div>
-            <div class="hash-display">8f4b2a9c1d3e7f0a2b5c<br>8d1e4f7a0b3c9d2e5f8a</div>
-            <div style="margin-top:10px;font-size:11px;color:var(--red)">A random string and a timestamp.</div>
-            <div style="margin-top:4px;font-size:11px;color:var(--ink-l)">Mathematically impossible to reverse into customer names, pricing, or service history.</div>
-          </div>
-          <span class="lock-badge" style="background:var(--red-l);color:var(--red)">🔒 No access — hash only</span>
-        </div>
-      </div>
-      <div class="view-card view-reg">
-        <div class="view-hdr">
-          <div class="view-role">Regulator / Notified Body</div>
-          <div class="view-title">TÜV SÜD · BSI · Competent Authority</div>
-        </div>
-        <div class="view-body">
-          <div class="view-item"><div class="view-label">Device UDI verified</div><div class="view-val" style="color:var(--green)">✓ GUDID confirmed</div></div>
-          <div class="view-item"><div class="view-label">Service events</div><div class="view-val">4 events · All independently verified</div></div>
-          <div class="view-item"><div class="view-label">Evidence integrity</div><div class="view-val" style="color:var(--green)">✓ Tamper-evident · Immutable</div></div>
-          <div class="view-item"><div class="view-label">Compliance score</div><div class="view-val" style="color:var(--green)">100/100 — maintained to spec</div></div>
-          <span class="lock-badge" style="background:var(--green-l);color:var(--green)">🔓 Read-only audit grant</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:white;border:1.5px solid var(--rule);border-radius:10px;padding:18px 22px;text-align:center">
-      <div style="font-family:var(--fd);font-size:17px;color:var(--teal);margin-bottom:6px">"The audit trail is built. The commercial data stays yours."</div>
-      <div style="font-size:12px;color:var(--ink-l)">Service history, customer names, and pricing never leave your CMMS or ERP. MedPassport carries independently verifiable proof — not the underlying data.</div>
-    </div>
-
-  </div>
-
-  <!-- ⑤ FSCA RECALL RESPONSE ──────────────────────────────────── -->
-  <div class="scene" id="scene-fsca">
-
-    <div class="fsca-intro">
-      <h2>Recall response — with and without MedPassport</h2>
-      <p>A software defect is found in firmware v3.1.0. How fast can you locate every affected device and prove corrective action?</p>
-    </div>
-
-    <div class="timer-demo">
-      <div class="timer-label">Time to locate 100% of affected devices</div>
-      <div class="timer-compare">
-        <div class="timer-item timer-before">
-          <div class="timer-num">Days–weeks</div>
-          <div class="timer-unit">depending on how many<br>org boundaries crossed</div>
-          <div style="font-size:11px;color:var(--red);margin-top:4px">Without MedPassport</div>
-        </div>
-        <div class="timer-vs">→</div>
-        <div class="timer-item timer-after">
-          <div class="timer-num">&lt;4 hrs</div>
-          <div class="timer-unit">pilot success metric</div>
-          <div style="font-size:11px;color:var(--green);margin-top:4px">With MedPassport</div>
-        </div>
-      </div>
-      <div class="timer-caveat">* The &lt;4 hour target is a Wave 1 pilot success metric — measured via a simulated FSCA at month 9. The "days to weeks" figure reflects the manual reconstruction process for Class IIb/III devices that have crossed organizational boundaries: sold to secondary buyers, serviced by ISOs, or moved across jurisdictions without a shared traceability system.</div>
-    </div>
-
-    <div class="fsca-grid">
-      <div class="before-box">
-        <div class="box-label">Without MedPassport</div>
-        <div class="box-item">Query internal ERP for affected serial numbers</div>
-        <div class="box-item">Email every distributor — wait for responses</div>
-        <div class="box-item">Hospitals search their own asset management systems</div>
-        <div class="box-item">Devices sold to secondary buyers — manufacturer visibility typically ends at contract expiry</div>
-        <div class="box-item">ISO-serviced devices — service data stays in the ISO's own system, not visible to the manufacturer</div>
-        <div class="box-item">Offline devices — older equipment, portable devices (e.g. ultrasound, monitors), or devices never connected to vendor networks have no remote data interface; service records exist only on paper or in local systems. MedPassport can register these manually via barcode scan at the device.</div>
-        <div class="box-item">Some devices never reached — regulatory exposure</div>
-      </div>
-      <div class="after-box">
-        <div class="box-label">With MedPassport</div>
-        <div class="box-item">Query the ledger — every registered device located instantly</div>
-        <div class="box-item">Current owner identified regardless of ownership history</div>
-        <div class="box-item">Recall flag written on-chain — score forced to zero</div>
-        <div class="box-item">All registered holders notified automatically</div>
-        <div class="box-item">Corrective action logged per serial — dual signature</div>
-        <div class="box-item">Regulator verifies execution from read-only portal</div>
-        <div class="box-item">Complete FSCA evidence report — one click</div>
-      </div>
-    </div>
-
-    <div style="background:white;border:1.5px solid var(--rule);border-radius:12px;padding:20px">
-      <div style="font-family:var(--fm);font-size:10px;font-weight:500;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">Simulated FSCA — pilot fleet device status</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;align-items:center;gap:12px;background:var(--green-l);border:1px solid #B8DEC9;border-radius:8px;padding:10px 14px">
-          <span style="font-size:16px">🟢</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500">SN00432 · St. Anna Hospital, Vienna</div><div style="font-size:11px;color:var(--ink-l);font-family:var(--fm)">Firmware v3.2.1 · Last PM March 2026</div></div>
-          <div style="font-size:12px;color:var(--green);font-weight:500">✓ Not affected</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--red-l);border:1px solid #E8B0B0;border-radius:8px;padding:10px 14px">
-          <span style="font-size:16px">🔴</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500">SN00433 · Charité Hospital, Berlin</div><div style="font-size:11px;color:var(--ink-l);font-family:var(--fm)">Firmware v3.1.0 ← affected version</div></div>
-          <div style="font-size:12px;color:var(--red);font-weight:500">⚠ Action required</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:var(--red-l);border:1px solid #E8B0B0;border-radius:8px;padding:10px 14px">
-          <span style="font-size:16px">🔴</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500">SN00434 · AMC Amsterdam <span style="color:var(--teal);font-weight:500">(2nd owner — transferred 2024)</span></div><div style="font-size:11px;color:var(--ink-l);font-family:var(--fm)">Firmware v3.1.0 · Located via ownership transfer trail on passport</div></div>
-          <div style="font-size:12px;color:var(--red);font-weight:500">⚠ Action required</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;background:#F0F8F0;border:1px solid #B8DEC9;border-radius:8px;padding:10px 14px">
-          <span style="font-size:16px">✅</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:500">SN00435 · MedEquip Refurbishers GmbH</div><div style="font-size:11px;color:var(--ink-l);font-family:var(--fm)">Firmware v3.2.1 · Patch applied · Dual-signed corrective action</div></div>
-          <div style="font-size:12px;color:var(--green);font-weight:500">✓ Corrected</div>
-        </div>
-      </div>
-      <div style="margin-top:14px;padding:10px 14px;background:var(--off);border-radius:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div style="font-size:12px;color:var(--ink-m)"><strong>4 devices</strong> in pilot fleet · <strong style="color:var(--teal)">SN00434 located via ownership transfer trail</strong> — would be invisible without MedPassport</div>
-        <div style="font-family:var(--fm);font-size:11px;color:var(--teal)">Ledger query: 0.3 seconds</div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<div class="cta-bar">
-  <h3>See the full protocol</h3>
-  <p>Open-source · MIT licensed · 67 tests passing · Live GUDID bridge</p>
-  <div class="cta-links">
-    <a href="https://github.com/tomer-saar/medpassport-protocol" class="cta-link primary" target="_blank">GitHub Repository</a>
-    <a href="index.html" class="cta-link secondary">← Home</a>
-    <a href="https://www.linkedin.com/in/tomer-saar/" class="cta-link secondary" target="_blank">Contact Tomer Saar</a>
+  <div class="hero-label">Interactive Demo · Role-Based Access · Live Lifecycle</div>
+  <h1>A device passport — seen through every stakeholder's eyes</h1>
+  <p>Switch roles to see how the same passport looks to a manufacturer, hospital, ISO service org, refurbisher, or regulator. Document vault, safety event correlation, and compliance scoring included.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">9 lifecycle events</span>
+    <span class="hero-badge">14 vault documents</span>
+    <span class="hero-badge">EU FSCA correlated</span>
+    <span class="hero-badge">5 stakeholder roles</span>
+    <span class="hero-badge">Real UDI · Class IIb</span>
   </div>
 </div>
 
-<script>
-function showScene(id, btn) {
-  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('scene-' + id).classList.add('active');
-  btn.classList.add('active');
+<div class="page-body">
+  <div class="intro-box">
+    <p><strong>What you're seeing:</strong> A CardioScan Pro 3000 CT scanner (Class IIb, EU MDR + FDA QMSR) tracked from manufacture through hospital use, an EU safety event (FSCA), corrective action, decommission, refurbishment, and GOLD re-certification. Switch roles at the top to see how access, visible documents, and permitted actions change for each stakeholder.</p>
+  </div>
+  <div id="root"></div>
+</div>
+
+<footer>
+  <span>MedPassport Protocol · Open Source · MIT License · Not regulatory advice · © 2026 Tomer Saar, PMP</span>
+  <div style="display:flex;gap:16px">
+    <a href="https://tomer-saar.github.io/medpassport-protocol">tomer-saar.github.io/medpassport-protocol</a>
+    <a href="https://linkedin.com/in/tomer-saar">linkedin.com/in/tomer-saar</a>
+  </div>
+</footer>
+
+<script type="text/babel">
+const { useState } = React;
+
+const TEAL={bg:"#E1F5EE",border:"#5DCAA5",text:"#0F6E56",dark:"#085041"};
+const AMBER={bg:"#FAEEDA",border:"#EF9F27",text:"#854F0B",dark:"#633806"};
+const RED={bg:"#FCEBEB",border:"#F09595",text:"#A32D2D",dark:"#501313"};
+const BLUE={bg:"#E6F1FB",border:"#85B7EB",text:"#185FA5",dark:"#042C53"};
+const GREEN={bg:"#EAF3DE",border:"#97C459",text:"#3B6D11",dark:"#173404"};
+const GRAY={bg:"#F1EFE8",border:"#B4B2A9",text:"#5F5E5A",dark:"#2C2C2A"};
+const PURPLE={bg:"#EEEDFE",border:"#AFA9EC",text:"#534AB7",dark:"#26215C"};
+
+const ROLES=[
+  {id:"manufacturer",label:"Manufacturer (OEM)",icon:"ti-building-factory-2",color:BLUE,desc:"Sigmascan Medical AG"},
+  {id:"hospital",label:"Hospital",icon:"ti-building-hospital",color:TEAL,desc:"St. Anna University Hospital"},
+  {id:"iso",label:"ISO Service Org",icon:"ti-tool",color:PURPLE,desc:"MedTech Services GmbH"},
+  {id:"refurbisher",label:"Refurbisher",icon:"ti-recycle",color:AMBER,desc:"RemedEquip Ltd."},
+  {id:"regulator",label:"Regulator",icon:"ti-shield-check",color:RED,desc:"BfArM / FDA Observer"},
+];
+
+const EVENTS=[
+  {id:1,type:"MINT",date:"2023-03-12",title:"Device passport minted",detail:"UDI validated vs FDA GUDID. CE mark confirmed. Initial score 100/100. Passport anchored to Polygon ledger.",scoreAfter:100,scoreDelta:0,txHash:"0x4a3f…c291",blockNum:41882301,signers:null,workOrder:null,safetyRef:null,regulation:null,docs:[{id:"d1",name:"CE Certificate — CardioScan Pro 3000",type:"CE_CERT",access:["manufacturer","regulator"],hash:"8f4b2a9c…e1f4a"},{id:"d2",name:"Technical File v2.1",type:"TECH_FILE",access:["manufacturer","regulator"],hash:"3d9e1c7a…b8f2"}]},
+  {id:2,type:"TRANSFER",date:"2023-04-05",title:"Ownership transfer (dual-signature)",detail:"Dual-signature confirmed. Manufacturer rep + Hospital biomed engineer. Device installed in Radiology Dept. B, Room 3.",scoreAfter:100,scoreDelta:0,txHash:"0x7c2d…4e81",blockNum:41994120,signers:["Sigmascan Medical AG","St. Anna University Hospital"],workOrder:null,safetyRef:null,regulation:null,docs:[{id:"d3",name:"Delivery & Acceptance Certificate",type:"TRANSFER_DOC",access:["manufacturer","hospital","regulator"],hash:"a1c4f8e2…d739"}]},
+  {id:3,type:"SERVICE",date:"2023-10-14",title:"Annual preventive maintenance — PASS",detail:"PM completed per OEM spec. All safety checks passed. Software confirmed v4.2.1. OEM-supplied filter kit installed. CMMS adapter auto-captured.",scoreAfter:100,scoreDelta:0,txHash:"0x1b8f…9a3c",blockNum:42510884,signers:null,workOrder:"WO-2023-4471",safetyRef:null,regulation:null,docs:[{id:"d4",name:"PM Report — Oct 2023",type:"SERVICE_REPORT",access:["manufacturer","hospital","iso","regulator"],hash:"f6a2d1b4…c8e3"},{id:"d5",name:"Annual Calibration Certificate 2023",type:"CALIBRATION_CERT",access:["manufacturer","hospital","iso","regulator"],hash:"2c9e7f1a…4d80"}]},
+  {id:4,type:"SERVICE",date:"2024-04-02",title:"SW update — Security patch v4.3.0",detail:"Critical cybersecurity patch applied per FDA SBOM alert. Firmware signature verified on-chain.",scoreAfter:100,scoreDelta:0,txHash:"0x9f3a…2b17",blockNum:42989043,signers:null,workOrder:"WO-2024-1102",safetyRef:null,regulation:null,docs:[{id:"d6",name:"SW Update Log — v4.3.0",type:"SW_UPDATE",access:["manufacturer","hospital","iso","regulator"],hash:"7b1f3e9d…a524"}]},
+  {id:5,type:"FSCA_EU",date:"2024-09-18",title:"EU Safety Event — FSCA registered",detail:"Voltage regulator failure in CardioScan Pro 3000, all LOT2023-Q1. Risk: intermittent power loss during imaging. Classification: Serious deterioration of health. Corrective action: mandatory firmware v4.4.0 + physical inspection.",scoreAfter:0,scoreDelta:-100,txHash:"0x3c7e…f10a",blockNum:43441209,signers:null,workOrder:null,safetyRef:"EU-VIGIL-2024-CT-0447",regulation:"MDR Art. 87 / EUDAMED Vigilance",docs:[{id:"d7",name:"FSCA Notice — EU-VIGIL-2024-CT-0447",type:"FSCA_NOTICE",access:["manufacturer","hospital","iso","refurbisher","regulator"],hash:"5d0c8a2f…3b91"},{id:"d8",name:"Risk Assessment — Voltage Regulator Failure",type:"RISK_DOC",access:["manufacturer","regulator"],hash:"c4e7f2b1…8d06"}]},
+  {id:6,type:"SERVICE",date:"2024-10-03",title:"FSCA corrective action — firmware + inspection",detail:"Mandatory corrective action completed. Firmware v4.4.0-FSCA applied. Voltage regulator physically inspected — unit passed. FSCA flag cleared by regulator. Score restored.",scoreAfter:85,scoreDelta:85,txHash:"0x8e2b…c753",blockNum:43501775,signers:null,workOrder:"WO-2024-FSCA-0447",safetyRef:null,regulation:null,docs:[{id:"d9",name:"FSCA Corrective Action Report",type:"FSCA_REPORT",access:["manufacturer","hospital","iso","regulator"],hash:"1a9f6c3e…7d24"},{id:"d10",name:"Inspection Certificate — Post-FSCA",type:"CALIBRATION_CERT",access:["manufacturer","hospital","iso","regulator"],hash:"e4b8d2f7…c190"}]},
+  {id:7,type:"TRANSFER",date:"2025-01-15",title:"Ownership transfer to refurbisher (dual-signature)",detail:"Hospital decommissioned device (fleet upgrade). Sold to certified refurbisher. Score 85 — Silver certified. Dual-signature confirmed.",scoreAfter:85,scoreDelta:0,txHash:"0x6f1d…a482",blockNum:44102337,signers:["St. Anna University Hospital","RemedEquip Ltd."],workOrder:null,safetyRef:null,regulation:null,docs:[{id:"d11",name:"Sale & Transfer Agreement",type:"TRANSFER_DOC",access:["hospital","refurbisher","regulator"],hash:"9b3c5a1e…f807"}]},
+  {id:8,type:"REFURBISHMENT",date:"2025-02-20",title:"Full refurbishment — PASS",detail:"Complete inspection, cleaning, component testing. New OEM-sourced cable harness installed. Full calibration suite completed.",scoreAfter:95,scoreDelta:10,txHash:"0x2c4f…b196",blockNum:44219088,signers:null,workOrder:null,safetyRef:null,regulation:null,docs:[{id:"d12",name:"Refurbishment Report — Feb 2025",type:"SERVICE_REPORT",access:["refurbisher","regulator"],hash:"4d7a9e2c…1f53"},{id:"d13",name:"Full Calibration Certificate 2025",type:"CALIBRATION_CERT",access:["manufacturer","hospital","iso","refurbisher","regulator"],hash:"b6f1c8a4…e329"}]},
+  {id:9,type:"CERTIFICATION",date:"2025-03-01",title:"GOLD certification issued (dual-signature)",detail:"ComplianceScorer: 100/100. Dual-signature: Refurbisher QA Lead + Accredited Certifier. Device ready for resale with verified GOLD passport.",scoreAfter:100,scoreDelta:5,txHash:"0x5a8c…d024",blockNum:44281540,signers:["RemedEquip Ltd. (QA Lead)","MedTech Services GmbH (Certifier)"],workOrder:null,safetyRef:null,regulation:null,docs:[{id:"d14",name:"GOLD Certification — SN00432",type:"CERTIFICATION",access:["manufacturer","hospital","iso","refurbisher","regulator"],hash:"0f3e7b2d…a615"}]},
+];
+
+const DOC_META={
+  CE_CERT:{label:"CE certificate",icon:"ti-certificate",color:TEAL},
+  TECH_FILE:{label:"Technical file",icon:"ti-file-description",color:BLUE},
+  TRANSFER_DOC:{label:"Transfer doc",icon:"ti-transfer",color:PURPLE},
+  SERVICE_REPORT:{label:"Service report",icon:"ti-report",color:GRAY},
+  CALIBRATION_CERT:{label:"Calibration cert",icon:"ti-ruler-measure",color:GREEN},
+  SW_UPDATE:{label:"SW update log",icon:"ti-cpu",color:BLUE},
+  FSCA_NOTICE:{label:"FSCA notice",icon:"ti-alert-triangle",color:RED},
+  RISK_DOC:{label:"Risk assessment",icon:"ti-shield-exclamation",color:AMBER},
+  FSCA_REPORT:{label:"FSCA corrective",icon:"ti-clipboard-check",color:GREEN},
+  CERTIFICATION:{label:"Certification",icon:"ti-star",color:AMBER},
+};
+
+const SAFETY_EVENTS=[
+  {ref:"EU-VIGIL-2024-CT-0447",source:"EUDAMED / BfArM Germany",date:"2024-09-18",type:"FSCA",classification:"Serious",status:"resolved",impact:-100,affected:"All LOT2023-Q1 units — CardioScan Pro 3000",corrective:"Firmware v4.4.0-FSCA + physical voltage regulator inspection"},
+  {ref:"FDA-MAUDE-2024-8811239",source:"FDA MAUDE Database",date:"2024-09-20",type:"MDR Report",classification:"Malfunction",status:"resolved",impact:0,affected:"US market equivalent — same root cause confirmed",corrective:"Same corrective action applied under dual-market protocol"},
+];
+
+const SCORE_WEIGHTS=[
+  {label:"Calibration compliance",pts:25},
+  {label:"PM compliance",pts:25},
+  {label:"Inspection compliance",pts:20},
+  {label:"Software currency",pts:10},
+  {label:"Parts integrity",pts:10},
+  {label:"Clean complaint record",pts:10},
+];
+
+const PERMS={
+  manufacturer:{can:["Mint device passports","Log software updates","Initiate FSCA / recall flags","View full fleet compliance","Access CE certificates + technical files","View all service history"],cannot:["Alter historical records","Access hospital service notes","Control other orgs' credentials"]},
+  hospital:{can:["Accept ownership transfer (dual-sig)","View compliance score + history","Log installation events","Access calibration certificates","Request FSCA status","Audit Readiness dashboard"],cannot:["Mint passports","Set recall flags","View manufacturer technical files","Access refurbisher internal reports"]},
+  iso:{can:["Log service events + calibration","Upload calibration certificates","Read device compliance score","View service history (assigned devices)","Log parts replacement (OEM / non-OEM flagged)"],cannot:["Transfer ownership","Set recall flags","View technical files","Access transfer agreements"]},
+  refurbisher:{can:["Accept ownership transfer (dual-sig)","Log refurbishment events","Request certification (dual-sig)","Upload refurbishment reports","Transfer to next buyer","View full device history"],cannot:["Mint passports","Set recall flags","Access hospital internal records","View manufacturer technical files"]},
+  regulator:{can:["View ALL records — full audit trail","Access ALL vault documents","Set / clear recall flags (unilateral)","Flag disputed records","Query any device by UDI","Export full compliance evidence"],cannot:["Alter historical records","Write service events","Transfer ownership","Issue certifications"]},
+};
+
+function certInfo(score){
+  if(score>=90)return{label:"GOLD",color:AMBER};
+  if(score>=75)return{label:"SILVER",color:GRAY};
+  if(score>=60)return{label:"BRONZE",color:RED};
+  if(score===0)return{label:"RECALL ACTIVE",color:RED};
+  return{label:"UNCERTIFIED",color:GRAY};
 }
 
-// ── Scene 1: Registration ─────────────────────────────────────────
-let regRunning = false;
-function startRegistration() {
-  if (regRunning) return;
-  regRunning = true;
-  const btn = document.getElementById('startBtn');
-  btn.disabled = true;
-  btn.textContent = 'Creating passport…';
-  const bar = document.getElementById('progressBar');
-  const delays  = [600, 1400, 2300, 3200, 4000];
-  const progress= [20, 40, 60, 80, 100];
-  for (let i = 0; i < 5; i++) {
-    const n = i + 1;
-    setTimeout(() => {
-      if (i > 0) {
-        document.getElementById('step'+(i)).classList.remove('active-step');
-        document.getElementById('step'+(i)).classList.add('done');
+function s(obj){return{style:obj};}
+
+function ScoreBar({score}){
+  const c=score===0?RED.border:score>=90?AMBER.border:score>=75?GRAY.border:TEAL.border;
+  return <div style={{height:6,borderRadius:3,background:"#e8eded",overflow:"hidden",margin:"8px 0"}}>
+    <div style={{height:"100%",width:score+"%",background:c,borderRadius:3,transition:"width 0.5s ease"}}/>
+  </div>;
+}
+
+function EventBadge({type}){
+  const m={MINT:{c:BLUE,l:"mint"},TRANSFER:{c:PURPLE,l:"transfer"},SERVICE:{c:TEAL,l:"service"},FSCA_EU:{c:RED,l:"FSCA (EU)"},REFURBISHMENT:{c:AMBER,l:"refurbishment"},CERTIFICATION:{c:AMBER,l:"certification"}};
+  const d=m[type]||{c:GRAY,l:type};
+  return <span style={{background:d.c.bg,border:"1px solid "+d.c.border,color:d.c.text,borderRadius:4,padding:"1px 8px",fontSize:11,fontWeight:500}}>{d.l}</span>;
+}
+
+function DocRow({doc,role}){
+  const m=DOC_META[doc.type]||{label:doc.type,icon:"ti-file",color:GRAY};
+  const ok=doc.access.includes(role);
+  return <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 12px",borderBottom:"1px solid #e8eded",opacity:ok?1:0.5}}>
+    <i className={"ti "+m.icon} style={{fontSize:15,color:ok?m.color.text:"#999"}}/>
+    <div style={{flex:1,minWidth:0}}>
+      <div style={{fontSize:12,fontWeight:500,color:ok?"#0F1A1A":"#999",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{doc.name}</div>
+      <div style={{fontSize:10,color:"#888",fontFamily:"'DM Mono',monospace"}}>{doc.hash}</div>
+    </div>
+    <div style={{display:"flex",gap:4,flexShrink:0}}>
+      <span style={{fontSize:10,background:m.color.bg,color:m.color.text,borderRadius:4,padding:"1px 6px"}}>{m.label}</span>
+      {ok
+        ?<span style={{fontSize:10,background:GREEN.bg,color:GREEN.text,borderRadius:4,padding:"1px 6px"}}><i className="ti ti-eye" style={{fontSize:10,marginRight:2}}/>view</span>
+        :<span style={{fontSize:10,background:RED.bg,color:RED.text,borderRadius:4,padding:"1px 6px"}}><i className="ti ti-lock" style={{fontSize:10,marginRight:2}}/>restricted</span>
       }
-      document.getElementById('step'+n).classList.add('active-step');
-      bar.style.width = (progress[i] - 10) + '%';
-    }, delays[i] - 500);
-    setTimeout(() => {
-      document.getElementById('step'+n).classList.remove('active-step');
-      document.getElementById('step'+n).classList.add('done');
-      bar.style.width = progress[i] + '%';
-      if (i === 4) {
-        setTimeout(() => {
-          document.getElementById('resultCard').classList.add('show');
-          btn.textContent = 'Passport created ✓';
-          btn.style.background = 'var(--green)';
-        }, 400);
-      }
-    }, delays[i]);
+    </div>
+  </div>;
+}
+
+function TimelineChart(){
+  const pts=EVENTS.map((e,i)=>({i,score:e.scoreAfter,type:e.type,date:e.date.slice(5)}));
+  const W=700,H=110,pl=28,pr=12,pt=10,pb=18;
+  const iw=W-pl-pr,ih=H-pt-pb;
+  const cx=i=>pl+(i/(pts.length-1))*iw;
+  const cy=s=>pt+ih-(s/100)*ih;
+  const path=pts.map((p,i)=>`${i===0?"M":"L"}${Math.round(cx(i))},${Math.round(cy(p.score))}`).join(" ");
+  return <div style={{border:"1px solid #D0DEDE",borderRadius:8,padding:"12px 14px",marginBottom:14,background:"white"}}>
+    <div style={{fontSize:12,fontWeight:500,color:"#5A7070",marginBottom:6}}>Compliance score — full device lifecycle</div>
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{display:"block",overflow:"visible"}}>
+      {[0,75,90,100].map(y=>{
+        const yc=cy(y);
+        return <g key={y}><line x1={pl} y1={yc} x2={W-pr} y2={yc} stroke="#D0DEDE" strokeWidth={0.5}/><text x={pl-3} y={yc+3} fontSize={8} fill="#888" textAnchor="end">{y}</text></g>;
+      })}
+      <path d={path} fill="none" stroke={TEAL.border} strokeWidth={2}/>
+      {pts.map((p,i)=><circle key={i} cx={cx(i)} cy={cy(p.score)} r={4} fill={p.type==="FSCA_EU"?RED.border:p.score>=90?AMBER.border:TEAL.border} stroke="white" strokeWidth={1.5}/>)}
+      {pts.map((p,i)=><text key={"l"+i} x={cx(i)} y={H-3} fontSize={7.5} fill="#999" textAnchor="middle">{p.date}</text>)}
+      {pts.filter(p=>p.type==="FSCA_EU").map((p,i)=><text key={"f"+i} x={cx(p.i)} y={cy(p.score)-9} fontSize={8} fill={RED.text} textAnchor="middle">FSCA</text>)}
+    </svg>
+  </div>;
+}
+
+function TimelineTab({role}){
+  const [exp,setExp]=useState(new Set());
+  const toggle=id=>setExp(prev=>{const n=new Set(prev);n.has(id)?n.delete(id):n.add(id);return n;});
+  return <div>
+    <TimelineChart/>
+    {EVENTS.map(ev=>{
+      const isRecall=ev.type==="FSCA_EU";
+      const open=exp.has(ev.id);
+      const allDocs=ev.docs||[];
+      const ci=certInfo(ev.scoreAfter);
+      return <div key={ev.id} style={{border:"1px solid "+(isRecall?RED.border:"#D0DEDE"),borderRadius:8,marginBottom:8,background:isRecall?RED.bg:"white",overflow:"hidden"}}>
+        <div onClick={()=>toggle(ev.id)} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"10px 14px",cursor:"pointer"}}>
+          <div style={{width:7,height:7,borderRadius:"50%",background:isRecall?RED.border:TEAL.border,marginTop:5,flexShrink:0}}/>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",marginBottom:3}}>
+              <EventBadge type={ev.type}/>
+              <span style={{fontSize:11,color:"#888"}}>{ev.date}</span>
+              {ev.scoreDelta!==0&&<span style={{fontSize:11,fontWeight:500,color:ev.scoreDelta>0?GREEN.text:RED.text}}>{ev.scoreDelta>0?"+":""}{ev.scoreDelta} pts</span>}
+            </div>
+            <div style={{fontSize:13,fontWeight:500,color:isRecall?RED.dark:"#0F1A1A"}}>{ev.title}</div>
+            {ev.safetyRef&&<div style={{fontSize:11,color:RED.text,marginTop:2}}><i className="ti ti-alert-triangle" style={{fontSize:11,marginRight:3}}/>{ev.safetyRef} — {ev.regulation}</div>}
+          </div>
+          <div style={{display:"flex",gap:5,alignItems:"center",flexShrink:0}}>
+            <span style={{background:ci.color.bg,border:"1px solid "+ci.color.border,color:ci.color.text,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:500,whiteSpace:"nowrap"}}>{ev.scoreAfter}/100</span>
+            <i className={"ti "+(open?"ti-chevron-up":"ti-chevron-down")} style={{fontSize:13,color:"#999"}}/>
+          </div>
+        </div>
+        {open&&<div style={{borderTop:"1px solid #D0DEDE",padding:"12px 14px"}}>
+          <p style={{fontSize:12,color:"#2D4040",marginBottom:10,lineHeight:1.55}}>{ev.detail}</p>
+          {ev.signers&&<div style={{background:PURPLE.bg,border:"1px solid "+PURPLE.border,borderRadius:6,padding:"8px 10px",marginBottom:8}}>
+            <div style={{fontSize:10,fontWeight:500,color:PURPLE.text,marginBottom:3}}><i className="ti ti-signature" style={{fontSize:11,marginRight:3}}/>dual-signature confirmed</div>
+            {ev.signers.map((s,i)=><div key={i} style={{fontSize:11,color:PURPLE.dark}}><i className="ti ti-check" style={{fontSize:11,marginRight:3,color:GREEN.text}}/>{s}</div>)}
+          </div>}
+          {ev.workOrder&&<div style={{fontSize:11,color:"#888",marginBottom:8}}>Work order: <span style={{fontFamily:"'DM Mono',monospace",color:BLUE.text}}>{ev.workOrder}</span> → CMMS adapter auto-captured</div>}
+          <div style={{fontSize:10,color:"#888",fontFamily:"'DM Mono',monospace",marginBottom:8}}>tx: {ev.txHash} · block #{ev.blockNum&&ev.blockNum.toLocaleString()}</div>
+          {allDocs.length>0&&<div>
+            <div style={{fontSize:11,fontWeight:500,color:"#5A7070",marginBottom:5}}><i className="ti ti-folder" style={{fontSize:12,marginRight:3}}/>vault documents ({allDocs.filter(d=>d.access.includes(role)).length}/{allDocs.length} accessible)</div>
+            <div style={{border:"1px solid #D0DEDE",borderRadius:6,overflow:"hidden"}}>
+              {[...allDocs.filter(d=>d.access.includes(role)),...allDocs.filter(d=>!d.access.includes(role))].map(d=><DocRow key={d.id} doc={d} role={role}/>)}
+            </div>
+          </div>}
+        </div>}
+      </div>;
+    })}
+  </div>;
+}
+
+function VaultTab({role}){
+  const allDocs=EVENTS.flatMap(e=>e.docs||[]);
+  const acc=allDocs.filter(d=>d.access.includes(role));
+  const rest=allDocs.filter(d=>!d.access.includes(role));
+  const ri=ROLES.find(r=>r.id===role);
+  return <div>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+      <div style={{fontSize:13,fontWeight:500}}>Document vault — {allDocs.length} documents total</div>
+      <div style={{display:"flex",gap:5}}>
+        <span style={{fontSize:11,background:GREEN.bg,color:GREEN.text,borderRadius:4,padding:"2px 8px"}}><i className="ti ti-eye" style={{fontSize:11,marginRight:2}}/>{acc.length} accessible</span>
+        <span style={{fontSize:11,background:RED.bg,color:RED.text,borderRadius:4,padding:"2px 8px"}}><i className="ti ti-lock" style={{fontSize:11,marginRight:2}}/>{rest.length} restricted</span>
+      </div>
+    </div>
+    <div style={{background:ri.color.bg,border:"1px solid "+ri.color.border,borderRadius:6,padding:"8px 12px",marginBottom:10,fontSize:12,color:ri.color.text}}>
+      <i className={"ti "+ri.icon} style={{fontSize:13,marginRight:5}}/>Viewing as <strong>{ri.label}</strong> — {ri.desc}
+    </div>
+    <div style={{border:"1px solid #D0DEDE",borderRadius:8,overflow:"hidden"}}>
+      <div style={{background:"#F7FAFA",padding:"6px 12px",display:"flex",gap:8,borderBottom:"1px solid #D0DEDE"}}>
+        <div style={{flex:1,fontSize:11,fontWeight:500,color:"#5A7070"}}>Document</div>
+        <div style={{width:90,fontSize:11,fontWeight:500,color:"#5A7070"}}>Type</div>
+        <div style={{width:65,fontSize:11,fontWeight:500,color:"#5A7070"}}>Access</div>
+      </div>
+      {[...acc,...rest].map(d=><DocRow key={d.id} doc={d} role={role}/>)}
+    </div>
+    <div style={{marginTop:10,padding:"8px 12px",background:"#F7FAFA",border:"1px solid #D0DEDE",borderRadius:6,fontSize:11,color:"#5A7070"}}>
+      <i className="ti ti-info-circle" style={{fontSize:12,marginRight:4}}/>All documents stored encrypted in IPFS vault. On-chain: cryptographic hash only. Content readable only by permitted roles.
+    </div>
+  </div>;
+}
+
+function SafetyTab({role}){
+  const canSeeAll=role==="regulator"||role==="manufacturer";
+  return <div>
+    <div style={{fontSize:13,fontWeight:500,marginBottom:10}}>Registered safety events — EU + US cross-referenced</div>
+    {SAFETY_EVENTS.map((ev,i)=>{
+      const resolved=ev.status==="resolved";
+      return <div key={i} style={{border:"1px solid "+(resolved?GREEN.border:RED.border),borderRadius:8,padding:"12px",marginBottom:10,background:resolved?GREEN.bg:RED.bg}}>
+        <div style={{display:"flex",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}>
+          <div>
+            <div style={{fontFamily:"'DM Mono',monospace",fontSize:12,fontWeight:500,color:resolved?GREEN.dark:RED.dark,marginBottom:3}}>{ev.ref}</div>
+            <div style={{fontSize:13,fontWeight:500,color:resolved?GREEN.dark:RED.dark}}>{ev.type} — {ev.classification}</div>
+            <div style={{fontSize:11,color:resolved?GREEN.text:RED.text,marginTop:2}}><i className="ti ti-database" style={{fontSize:11,marginRight:3}}/>{ev.source} · {ev.date}</div>
+          </div>
+          <div style={{textAlign:"right"}}>
+            <div style={{fontSize:10,background:resolved?GREEN.bg:RED.bg,color:resolved?GREEN.text:RED.text,border:"1px solid "+(resolved?GREEN.border:RED.border),borderRadius:4,padding:"1px 7px",marginBottom:5}}>{ev.status}</div>
+            <div style={{fontSize:20,fontWeight:500,color:ev.impact<0?RED.text:GREEN.text}}>{ev.impact<0?ev.impact+" pts":"no score impact"}</div>
+          </div>
+        </div>
+        <div style={{marginTop:8,paddingTop:8,borderTop:"1px solid "+(resolved?GREEN.border:RED.border)}}>
+          <div style={{fontSize:12,color:"#2D4040"}}><strong>Affected:</strong> {ev.affected}</div>
+          {canSeeAll
+            ?<div style={{fontSize:12,color:"#2D4040",marginTop:3}}><strong>Corrective action:</strong> {ev.corrective}</div>
+            :<div style={{fontSize:11,color:"#888",marginTop:3,fontStyle:"italic"}}>Corrective action details visible to manufacturer and regulator only</div>
+          }
+        </div>
+      </div>;
+    })}
+    <div style={{border:"1px solid #D0DEDE",borderRadius:8,padding:"14px"}}>
+      <div style={{fontSize:13,fontWeight:500,marginBottom:10}}>Compliance scoring — component weights</div>
+      {SCORE_WEIGHTS.map((w,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,marginBottom:5}}>
+        <div style={{fontSize:11,color:"#5A7070",width:160,flexShrink:0}}>{w.label}</div>
+        <div style={{flex:1,height:5,borderRadius:3,background:"#e8eded",overflow:"hidden"}}>
+          <div style={{height:"100%",width:"100%",background:TEAL.border,borderRadius:3}}/>
+        </div>
+        <div style={{fontSize:12,fontWeight:500,color:TEAL.text,width:22,textAlign:"right"}}>{w.pts}</div>
+      </div>)}
+      <div style={{marginTop:8,padding:"8px 10px",background:RED.bg,border:"1px solid "+RED.border,borderRadius:6,fontSize:11,color:RED.dark}}>
+        <i className="ti ti-alert-triangle" style={{fontSize:12,marginRight:4}}/><strong>Active FSCA override:</strong> Any active recall sets score to 0 regardless of component weights.
+      </div>
+    </div>
+  </div>;
+}
+
+function PermissionsTab({role}){
+  const p=PERMS[role]||{can:[],cannot:[]};
+  const ri=ROLES.find(r=>r.id===role);
+  return <div>
+    <div style={{fontSize:13,fontWeight:500,marginBottom:10}}>Access permissions — {ri.label}</div>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+      <div style={{border:"1px solid "+GREEN.border,borderRadius:8,overflow:"hidden"}}>
+        <div style={{background:GREEN.bg,padding:"7px 12px",fontSize:11,fontWeight:500,color:GREEN.dark}}><i className="ti ti-check" style={{fontSize:12,marginRight:4}}/>permitted</div>
+        {p.can.map((item,i)=><div key={i} style={{padding:"6px 12px",borderBottom:"1px solid #e8eded",fontSize:11,color:"#0F1A1A"}}><i className="ti ti-check-circle" style={{fontSize:12,color:GREEN.text,marginRight:5}}/>{item}</div>)}
+      </div>
+      <div style={{border:"1px solid "+RED.border,borderRadius:8,overflow:"hidden"}}>
+        <div style={{background:RED.bg,padding:"7px 12px",fontSize:11,fontWeight:500,color:RED.dark}}><i className="ti ti-x" style={{fontSize:12,marginRight:4}}/>not permitted</div>
+        {p.cannot.map((item,i)=><div key={i} style={{padding:"6px 12px",borderBottom:"1px solid #e8eded",fontSize:11,color:"#0F1A1A"}}><i className="ti ti-x-circle" style={{fontSize:12,color:RED.text,marginRight:5}}/>{item}</div>)}
+      </div>
+    </div>
+  </div>;
+}
+
+// ── Path B barcode scenarios ──────────────────────────────────────────────────
+const PATH_B_SCENARIOS = [
+  {
+    id:"cardioscan",
+    udi:"00844588003288/LOT2023-Q1/SN00432",
+    device:"CardioScan Pro 3000",
+    deviceClass:"Class IIb — Diagnostic Imaging",
+    role:"iso",
+    roleLabel:"ISO Technician",
+    suggestedEvent:"SERVICE",
+    suggestedOutcome:"PASS",
+    credPlaceholder:"ISO-CERT-4471",
+    context:"Annual preventive maintenance due. ISO technician on-site at RemedEquip Ltd. No CMMS integration — using Path B barcode fallback.",
+    color:TEAL,
+  },
+  {
+    id:"infupro",
+    udi:"00384109500023/LOT2025-012/SN01891",
+    device:"InfuPro Elite 500",
+    deviceClass:"Class IIb — Active Therapeutic",
+    role:"hospital",
+    roleLabel:"Hospital Biomed Engineer",
+    suggestedEvent:"CALIBRATION",
+    suggestedOutcome:"PASS",
+    credPlaceholder:"HOSP-BIOMED-0892",
+    context:"Flow rate calibration scheduled. City Medical Center biomedical engineering team — integrated with Infor EAM but Path B used for portable device in satellite ward.",
+    color:GREEN,
+  },
+  {
+    id:"ventassist",
+    udi:"00729483610044/LOT2023-008/SN00234",
+    device:"VentAssist Pro II",
+    deviceClass:"Class III — Life Support",
+    role:"iso",
+    roleLabel:"ISO Technician",
+    suggestedEvent:"INSPECTION",
+    suggestedOutcome:"PASS",
+    credPlaceholder:"ISO-CERT-7823",
+    context:"Post-FSCA corrective action inspection. Firmware v2.1.1 patch verified. Device cleared for return to service pending dual-signature from manufacturer.",
+    color:RED,
+  },
+];
+
+const EVENT_TYPES = ["SERVICE","CALIBRATION","INSPECTION","SW_UPDATE","COMPLAINT","FSCA_CORRECTIVE"];
+const OUTCOMES    = ["PASS","FAIL","CONDITIONAL_PASS"];
+
+function fakeHash(){ return "0x"+Array.from({length:8},()=>Math.floor(Math.random()*0xffff).toString(16).padStart(4,"0")).join(""); }
+function fakeBlock(){ return (44000000+Math.floor(Math.random()*200000)).toLocaleString(); }
+function fakeCid(){ return "bafybei"+Math.random().toString(36).slice(2,12)+"k2f3x8mq9pn1r7"; }
+
+function BarcodeCard({scenario, onScanSimulate}){
+  const bcId = "bc-"+scenario.id;
+  React.useEffect(()=>{
+    if(window.JsBarcode){
+      try{ JsBarcode("#"+bcId, scenario.udi, {format:"CODE128",width:1.6,height:48,displayValue:false,margin:6}); }
+      catch(e){}
+    }
+  },[]);
+  const qrId = "qr-"+scenario.id;
+  React.useEffect(()=>{
+    const el = document.getElementById(qrId);
+    if(el && window.QRCode){
+      el.innerHTML="";
+      try{ new QRCode(el,{text:window.location.href.split("?")[0]+"?scan="+scenario.id+"&role="+scenario.role,width:72,height:72,colorDark:"#006B6B",colorLight:"#FFFFFF"}); }
+      catch(e){}
+    }
+  },[]);
+  return <div style={{border:"1px solid "+scenario.color.border,borderRadius:10,overflow:"hidden",marginBottom:12}}>
+    <div style={{background:scenario.color.bg,padding:"10px 14px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}>
+      <div>
+        <div style={{fontSize:9,fontWeight:500,color:scenario.color.text,letterSpacing:1,textTransform:"uppercase",marginBottom:2}}>{scenario.roleLabel}</div>
+        <div style={{fontSize:14,fontWeight:500,color:scenario.color.dark||scenario.color.text}}>{scenario.device}</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:scenario.color.text,marginTop:2}}>{scenario.deviceClass}</div>
+      </div>
+      <div style={{fontSize:11,color:scenario.color.text,background:"white",borderRadius:6,padding:"4px 10px",border:"1px solid "+scenario.color.border,fontWeight:500}}>
+        Suggested: {scenario.suggestedEvent}
+      </div>
+    </div>
+    <div style={{padding:"12px 14px",background:"white"}}>
+      <div style={{fontSize:11,color:"#5A7070",lineHeight:1.6,marginBottom:12}}>{scenario.context}</div>
+      <div style={{display:"flex",gap:16,alignItems:"flex-start",flexWrap:"wrap"}}>
+        <div style={{flex:1,minWidth:160}}>
+          <div style={{fontSize:10,fontWeight:500,color:"#888",textTransform:"uppercase",letterSpacing:0.8,marginBottom:6}}>Scan with phone camera</div>
+          <svg id={bcId} style={{width:"100%",maxWidth:220,display:"block"}}></svg>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:9,color:"#888",marginTop:4,wordBreak:"break-all"}}>{scenario.udi}</div>
+        </div>
+        <div style={{textAlign:"center"}}>
+          <div style={{fontSize:10,fontWeight:500,color:"#888",textTransform:"uppercase",letterSpacing:0.8,marginBottom:6}}>Or scan QR</div>
+          <div id={qrId}></div>
+          <div style={{fontSize:9,color:"#aaa",marginTop:4}}>Opens form on mobile</div>
+        </div>
+      </div>
+      <button onClick={()=>onScanSimulate(scenario)} style={{marginTop:12,width:"100%",padding:"9px 0",background:scenario.color.bg,border:"1.5px solid "+scenario.color.border,borderRadius:7,color:scenario.color.text,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit"}}>
+        <i className="ti ti-device-mobile-code" style={{marginRight:6,fontSize:14}}/>Simulate scan on this device →
+      </button>
+    </div>
+  </div>;
+}
+
+function LogEventTab({onEventLogged, initialScenario=null}){
+  const [phase,setPhase]=useState(initialScenario?"form":"barcodes"); // barcodes | form | submitting | success
+  const [active,setActive]=useState(initialScenario);
+  const [eventType,setEventType]=useState(initialScenario?initialScenario.suggestedEvent:"");
+  const [outcome,setOutcome]=useState(initialScenario?initialScenario.suggestedOutcome:"PASS");
+  const [cred,setCred]=useState(initialScenario?initialScenario.credPlaceholder:"");
+  const [notes,setNotes]=useState("");
+  const [hasDoc,setHasDoc]=useState(false);
+  const [result,setResult]=useState(null);
+
+  function handleScan(scenario){
+    setActive(scenario);
+    setEventType(scenario.suggestedEvent);
+    setOutcome(scenario.suggestedOutcome);
+    setCred(scenario.credPlaceholder);
+    setNotes("");
+    setHasDoc(false);
+    setPhase("form");
   }
+
+  function handleSubmit(){
+    if(!cred.trim()||!eventType) return;
+    setPhase("submitting");
+    setTimeout(()=>{
+      const r={
+        txHash:fakeHash(),
+        block:fakeBlock(),
+        cid:fakeCid(),
+        ts:new Date().toISOString().slice(0,19).replace("T"," ")+" UTC",
+        eventType,outcome,cred,notes,
+        device:active.device,udi:active.udi,
+      };
+      setResult(r);
+      setPhase("success");
+      onEventLogged({scenario:active,eventType,outcome,cred});
+    },2200);
+  }
+
+  function reset(){ setPhase("barcodes");setActive(null);setResult(null); }
+
+  if(phase==="barcodes") return <div>
+    <span className="tab-section-label">📱 Path B — Barcode Scan · No CMMS integration required · 60 seconds per event</span>
+    <div style={{background:"#E6F2F2",border:"1px solid #CCE5E5",borderRadius:8,padding:"12px 16px",marginBottom:16,fontSize:12,color:"#004E4E",lineHeight:1.7}}>
+      <strong>How Path B works:</strong> Field technician scans the device UDI barcode with a smartphone camera. A structured form opens pre-populated with device identity. Technician selects event type, enters outcome, optionally attaches a certificate photo, and submits — signed with their organisation credential. <strong>No IT integration required.</strong><br/>
+      Scan any barcode below with your phone, or click <em>Simulate scan</em> to see the form flow on desktop.
+    </div>
+    {PATH_B_SCENARIOS.map(s=><BarcodeCard key={s.id} scenario={s} onScanSimulate={handleScan}/>)}
+  </div>;
+
+  if(phase==="form") return <div>
+    <span className="tab-section-label">📝 Log Event — {active.device} · Path B Form</span>
+    <div style={{background:active.color.bg,border:"1px solid "+active.color.border,borderRadius:8,padding:"10px 14px",marginBottom:14,fontSize:12,color:active.color.text}}>
+      <strong>Device identified from barcode scan</strong><br/>
+      <span style={{fontFamily:"'DM Mono',monospace",fontSize:10}}>{active.udi}</span> · {active.device} · {active.deviceClass}
+    </div>
+    <div style={{display:"grid",gap:10}}>
+      <div>
+        <label style={{fontSize:11,fontWeight:500,color:"#5A7070",display:"block",marginBottom:4,textTransform:"uppercase",letterSpacing:0.8}}>Event Type *</label>
+        <select value={eventType} onChange={e=>setEventType(e.target.value)} style={{width:"100%",padding:"8px 10px",border:"1px solid #D0DEDE",borderRadius:6,fontFamily:"inherit",fontSize:13,color:"#0F1A1A",background:"white"}}>
+          <option value="">Select event type…</option>
+          {EVENT_TYPES.map(t=><option key={t} value={t}>{t.replace("_"," ")}</option>)}
+        </select>
+      </div>
+      <div>
+        <label style={{fontSize:11,fontWeight:500,color:"#5A7070",display:"block",marginBottom:4,textTransform:"uppercase",letterSpacing:0.8}}>Outcome *</label>
+        <div style={{display:"flex",gap:8}}>
+          {OUTCOMES.map(o=><button key={o} onClick={()=>setOutcome(o)} style={{flex:1,padding:"7px 4px",borderRadius:6,border:outcome===o?"1.5px solid #006B6B":"1px solid #D0DEDE",background:outcome===o?"#E6F2F2":"white",color:outcome===o?"#004E4E":"#5A7070",fontSize:11,fontWeight:outcome===o?500:400,cursor:"pointer",fontFamily:"inherit"}}>{o.replace("_"," ")}</button>)}
+        </div>
+      </div>
+      <div>
+        <label style={{fontSize:11,fontWeight:500,color:"#5A7070",display:"block",marginBottom:4,textTransform:"uppercase",letterSpacing:0.8}}>Technician Credential *</label>
+        <input value={cred} onChange={e=>setCred(e.target.value)} placeholder="e.g. ISO-CERT-4471" style={{width:"100%",padding:"8px 10px",border:"1px solid #D0DEDE",borderRadius:6,fontFamily:"'DM Mono',monospace",fontSize:12,color:"#0F1A1A",boxSizing:"border-box"}}/>
+      </div>
+      <div>
+        <label style={{fontSize:11,fontWeight:500,color:"#5A7070",display:"block",marginBottom:4,textTransform:"uppercase",letterSpacing:0.8}}>Notes</label>
+        <textarea value={notes} onChange={e=>setNotes(e.target.value)} rows={3} placeholder="Service notes, findings, parts used…" style={{width:"100%",padding:"8px 10px",border:"1px solid #D0DEDE",borderRadius:6,fontFamily:"inherit",fontSize:12,resize:"vertical",boxSizing:"border-box"}}/>
+      </div>
+      <div style={{border:"1px dashed #D0DEDE",borderRadius:8,padding:"14px",textAlign:"center",background:hasDoc?"#E8F5EF":"#F7FAFA",cursor:"pointer"}} onClick={()=>setHasDoc(!hasDoc)}>
+        <i className="ti ti-file-upload" style={{fontSize:20,color:hasDoc?"#1A5C38":"#888",display:"block",marginBottom:4}}/>
+        <div style={{fontSize:12,color:hasDoc?"#1A5C38":"#888",fontWeight:hasDoc?500:400}}>{hasDoc?"✓ Certificate attached (simulated)":"Attach calibration certificate or service report (optional)"}</div>
+        <div style={{fontSize:10,color:"#aaa",marginTop:2}}>PDF · JPG · PNG · click to toggle</div>
+      </div>
+    </div>
+    <div style={{display:"flex",gap:8,marginTop:14}}>
+      <button onClick={reset} style={{padding:"9px 18px",borderRadius:7,border:"1px solid #D0DEDE",background:"white",color:"#5A7070",fontSize:13,cursor:"pointer",fontFamily:"inherit"}}>← Back</button>
+      <button onClick={handleSubmit} disabled={!cred.trim()||!eventType} style={{flex:1,padding:"9px 0",borderRadius:7,border:"none",background:cred.trim()&&eventType?"#006B6B":"#D0DEDE",color:"white",fontSize:13,fontWeight:500,cursor:cred.trim()&&eventType?"pointer":"not-allowed",fontFamily:"inherit"}}>
+        <i className="ti ti-lock" style={{marginRight:6}}/>Sign & Submit to Chain
+      </button>
+    </div>
+  </div>;
+
+  if(phase==="submitting") return <div style={{textAlign:"center",padding:"48px 24px"}}>
+    <div style={{width:48,height:48,border:"3px solid #E6F2F2",borderTop:"3px solid #006B6B",borderRadius:"50%",margin:"0 auto 20px",animation:"spin 0.9s linear infinite"}}/>
+    <div style={{fontSize:15,fontWeight:500,color:"#0F1A1A",marginBottom:6}}>Writing attestation to chain…</div>
+    <div style={{fontSize:12,color:"#5A7070"}}>Signing with credential · computing hash · broadcasting to Polygon Amoy</div>
+    <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+  </div>;
+
+  if(phase==="success"&&result) return <div>
+    <div style={{background:"#E8F5EF",border:"1px solid #B8DEC9",borderRadius:10,padding:"18px 20px",marginBottom:16}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+        <i className="ti ti-circle-check" style={{fontSize:24,color:"#1A5C38"}}/>
+        <div style={{fontSize:15,fontWeight:500,color:"#1A5C38"}}>Event written to chain — tamper-evident attestation created</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px 16px",fontSize:11}}>
+        {[["Event type",result.eventType],["Outcome",result.outcome],["Device",result.device],["Credential",result.cred],["Timestamp",result.ts],["Block",result.block]].map(([l,v])=><div key={l}>
+          <div style={{color:"#888",fontSize:10,textTransform:"uppercase",letterSpacing:0.7,marginBottom:1}}>{l}</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#1A5C38",fontWeight:500}}>{v}</div>
+        </div>)}
+      </div>
+      <div style={{marginTop:12,padding:"8px 10px",background:"white",borderRadius:6,border:"1px solid #B8DEC9"}}>
+        <div style={{fontSize:9,color:"#888",textTransform:"uppercase",letterSpacing:0.8,marginBottom:3}}>On-chain tx hash</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#004E4E",wordBreak:"break-all"}}>{result.txHash}</div>
+      </div>
+      {result.cid&&<div style={{marginTop:8,padding:"8px 10px",background:"white",borderRadius:6,border:"1px solid #B8DEC9"}}>
+        <div style={{fontSize:9,color:"#888",textTransform:"uppercase",letterSpacing:0.8,marginBottom:3}}>IPFS document CID</div>
+        <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:"#004E4E",wordBreak:"break-all"}}>{result.cid}</div>
+        <div style={{fontSize:10,color:"#5A7070",marginTop:2}}>Document hash anchored on-chain · independently verifiable</div>
+      </div>}
+    </div>
+    <div style={{background:"#E6F2F2",border:"1px solid #CCE5E5",borderRadius:8,padding:"10px 14px",fontSize:12,color:"#004E4E",marginBottom:14}}>
+      <strong>Compliance score updated.</strong> The device header above reflects the new event. In production, ComplianceScorer.sol recalculates automatically on every logEvent() call.
+    </div>
+    <button onClick={reset} style={{width:"100%",padding:"9px 0",borderRadius:7,border:"1.5px solid #006B6B",background:"white",color:"#006B6B",fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:"inherit"}}>← Log another event</button>
+  </div>;
+
+  return null;
 }
 
-// ── Scene 2: Transfer ─────────────────────────────────────────────
-let transRunning = false;
-function startTransfer() {
-  if (transRunning) return;
-  transRunning = true;
-  const btn = document.getElementById('transferBtn');
-  btn.disabled = true;
-  btn.textContent = 'Processing…';
+// ── Mobile scan landing view ──────────────────────────────────────────────────
+// When ?scan=<id> is in the URL (from barcode QR scan on mobile),
+// show ONLY the pre-filled form — no role selector, no device header, no tabs.
+function MobileScanView({scenario, onBack}){
+  return <div style={{minHeight:"100vh",background:"#F7FAFA",padding:"0 0 40px"}}>
+    <div style={{background:scenario.color.bg,borderBottom:"1px solid "+scenario.color.border,padding:"14px 16px",display:"flex",alignItems:"center",gap:10}}>
+      <button onClick={onBack} style={{background:"white",border:"1px solid "+scenario.color.border,borderRadius:6,padding:"6px 10px",fontSize:12,color:scenario.color.text,cursor:"pointer",fontFamily:"inherit",flexShrink:0}}>← Desktop view</button>
+      <div>
+        <div style={{fontSize:9,fontWeight:500,color:scenario.color.text,letterSpacing:1,textTransform:"uppercase"}}>Path B — Barcode scan</div>
+        <div style={{fontSize:14,fontWeight:500,color:scenario.color.dark||scenario.color.text}}>{scenario.device}</div>
+      </div>
+    </div>
+    <div style={{maxWidth:480,margin:"0 auto",padding:"16px 16px 0"}}>
+      <div style={{background:"white",borderRadius:10,padding:"16px",border:"1px solid #D0DEDE",boxShadow:"0 2px 12px rgba(0,107,107,0.07)"}}>
+        <LogEventTab onEventLogged={()=>{}} initialScenario={scenario}/>
+      </div>
+    </div>
+  </div>;
+}
 
-  const steps = ['ts1','ts2','ts3','ts4'];
-  const delays = [700, 1800, 2800, 3700];
+function App(){
+  const [role,setRole]=useState("manufacturer");
+  const [tab,setTab]=useState("timeline");
+  const [score,setScore]=useState(100);
+  const [eventCount,setEventCount]=useState(9);
+  const [mobileScan,setMobileScan]=useState(null);
+  const ri=ROLES.find(r=>r.id===role);
 
-  steps.forEach((id, i) => {
-    setTimeout(() => {
-      if (i > 0) document.getElementById(steps[i-1]).classList.add('complete');
-      document.getElementById(id).classList.add('active');
-      if (id === 'ts1') {
-        setTimeout(() => {
-          document.getElementById('sig-oem').textContent = '✓ OEM engineer signed';
-          document.getElementById('sig-oem').classList.add('signed');
-        }, 600);
+  // Handle URL param from mobile barcode scan
+  React.useEffect(()=>{
+    const p=new URLSearchParams(window.location.search);
+    const scanId=p.get("scan");
+    const roleParam=p.get("role");
+    if(scanId){
+      const s=PATH_B_SCENARIOS.find(x=>x.id===scanId);
+      if(s){
+        const resolvedRole=roleParam||s.role;
+        setRole(resolvedRole);
+        setTab("log");
+        // On mobile — show dedicated full-screen form
+        if(window.innerWidth < 768){
+          setMobileScan(s);
+        } else {
+          // On desktop — switch to log tab and scroll to it
+          setTimeout(()=>{
+            const el=document.getElementById("log-event-section");
+            if(el) el.scrollIntoView({behavior:"smooth",block:"start"});
+          }, 300);
+        }
       }
-      if (id === 'ts2') {
-        setTimeout(() => {
-          document.getElementById('sig-hosp').textContent = '✓ Hospital confirmed';
-          document.getElementById('sig-hosp').classList.add('signed');
-        }, 600);
-      }
-    }, delays[i]);
-  });
+    }
+  },[]);
 
-  setTimeout(() => {
-    document.getElementById('ts4').classList.add('complete');
-    document.getElementById('transferResult').classList.add('show');
-    btn.textContent = 'Transfer complete ✓';
-    btn.style.background = 'var(--green)';
-  }, delays[3] + 700);
+  function handleEventLogged({scenario,outcome}){
+    setEventCount(c=>c+1);
+    if(outcome==="PASS") setScore(s=>Math.min(100,s+2));
+    if(outcome==="FAIL") setScore(s=>Math.max(0,s-10));
+  }
+
+  const certColor = score>=90?AMBER:score>=75?TEAL:score>=60?{text:"#8B5E3C",bg:"#F5EDE8",border:"#D4B8A8"}:RED;
+  const certLabel = score>=90?"★ GOLD":score>=75?"★ SILVER":score>=60?"★ BRONZE":"Not certified";
+
+  const tabs=[
+    {id:"timeline",label:"Device timeline",icon:"ti-timeline"},
+    {id:"vault",label:"Document vault",icon:"ti-folder-lock"},
+    {id:"safety",label:"Safety & scoring",icon:"ti-shield-exclamation"},
+    {id:"permissions",label:"Permissions",icon:"ti-key"},
+    {id:"log",label:"Log Event (Path B)",icon:"ti-qrcode"},
+  ];
+
+  // Mobile full-screen view when coming from barcode scan
+  if(mobileScan) return <MobileScanView scenario={mobileScan} onBack={()=>setMobileScan(null)}/>;
+
+  return <div>
+    <div style={{marginBottom:16}}>
+      <div style={{fontSize:10,fontWeight:500,color:"#888",letterSpacing:0.8,textTransform:"uppercase",marginBottom:8}}>viewing as</div>
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        {ROLES.map(r=><button key={r.id} onClick={()=>setRole(r.id)} style={{display:"flex",alignItems:"center",gap:5,padding:"6px 12px",borderRadius:6,border:role===r.id?"1.5px solid "+r.color.border:"1px solid #D0DEDE",background:role===r.id?r.color.bg:"white",color:role===r.id?r.color.text:"#5A7070",fontSize:12,fontWeight:role===r.id?500:400,cursor:"pointer",fontFamily:"inherit"}}>
+          <i className={"ti "+r.icon} style={{fontSize:14}}/>{r.label}
+        </button>)}
+      </div>
+    </div>
+
+    <div style={{border:"1px solid #D0DEDE",borderRadius:8,padding:"14px",background:"white",marginBottom:14}}>
+      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12,flexWrap:"wrap"}}>
+        <div>
+          <div style={{fontSize:10,fontWeight:500,color:"#888",letterSpacing:0.8,textTransform:"uppercase",marginBottom:3}}>device passport</div>
+          <div style={{fontSize:16,fontWeight:500,color:"#0F1A1A",marginBottom:2}}>CardioScan Pro 3000</div>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:10,color:TEAL.text,background:TEAL.bg,display:"inline-block",borderRadius:4,padding:"2px 8px",marginBottom:6}}>00844588003288/LOT2023-Q1/SN00432</div>
+          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+            {["Class IIb","Sigmascan Medical AG","SW v4.4.0-FSCA","EU MDR + FDA QMSR"].map((t,i)=><span key={i} style={{fontSize:11,color:"#5A7070"}}>{i>0?"· ":""}{t}</span>)}
+          </div>
+        </div>
+        <div style={{textAlign:"right",flexShrink:0}}>
+          <div style={{fontSize:32,fontWeight:500,color:certColor.text,lineHeight:1,transition:"color 0.4s"}}>{score}</div>
+          <div style={{fontSize:10,color:"#888"}}>/100</div>
+          <div style={{marginTop:4,background:certColor.bg,border:"1px solid "+certColor.border,color:certColor.text,borderRadius:5,padding:"3px 10px",fontSize:11,fontWeight:500,transition:"all 0.4s"}}>{certLabel}</div>
+        </div>
+      </div>
+      <ScoreBar score={score}/>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:6,marginTop:6}}>
+        {[{label:"current owner",value:"RemedEquip Ltd.",icon:"ti-building"},{label:"recall active",value:"none",icon:"ti-shield-check"},{label:"events on-chain",value:String(eventCount),icon:"ti-timeline"},{label:"vault docs",value:"14",icon:"ti-folder-lock"}].map((item,i)=><div key={i} style={{background:"#F7FAFA",borderRadius:6,padding:"7px 10px"}}>
+          <div style={{fontSize:9,color:"#888",textTransform:"uppercase",letterSpacing:0.7,marginBottom:1}}><i className={"ti "+item.icon} style={{fontSize:10,marginRight:2}}/>{item.label}</div>
+          <div style={{fontSize:12,fontWeight:500,color:"#0F1A1A",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{item.value}</div>
+        </div>)}
+      </div>
+    </div>
+
+    <div style={{display:"flex",gap:0,borderBottom:"1px solid #D0DEDE",marginBottom:14,overflowX:"auto"}}>
+      {tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{display:"flex",alignItems:"center",gap:4,padding:"8px 12px",background:"transparent",border:"none",borderBottom:tab===t.id?"2px solid "+ri.color.border:"2px solid transparent",color:tab===t.id?"#0F1A1A":"#888",fontSize:12,fontWeight:tab===t.id?500:400,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"inherit"}}>
+        <i className={"ti "+t.icon} style={{fontSize:13}}/>{t.label}
+        {t.id==="log"&&<span style={{marginLeft:4,background:"#006B6B",color:"white",fontSize:9,borderRadius:4,padding:"1px 5px",fontWeight:500}}>NEW</span>}
+      </button>)}
+    </div>
+
+    {tab==="timeline"&&<div><div className="role-banner" style={{background:ri.color.bg,border:"1px solid "+ri.color.border,color:ri.color.text}}><i className={"ti "+ri.icon} style={{fontSize:16,flexShrink:0}}/><div><strong>Viewing as {ri.label}</strong> — all roles see the same event timeline. Expand any event to see which vault documents your role can access.</div></div><span className="tab-section-label">📋 Device Timeline — Full lifecycle · {eventCount} events · expand each to see role-gated vault documents</span><TimelineTab role={role}/></div>}
+    {tab==="vault"&&<div><span className="tab-section-label">🔒 Document Vault — 14 encrypted documents · access varies by role · hashes always public</span><VaultTab role={role}/></div>}
+    {tab==="safety"&&<div><span className="tab-section-label">⚠️ Safety Events & Compliance Scoring — EU FSCA + FDA MAUDE cross-referenced · score impact shown</span><SafetyTab role={role}/></div>}
+    {tab==="permissions"&&<div><span className="tab-section-label">🔑 Access Permissions — What {ri.label} can read and write on the protocol</span><PermissionsTab role={role}/></div>}
+    {tab==="log"&&<div id="log-event-section"><LogEventTab onEventLogged={handleEventLogged}/></div>}
+  </div>;
 }
 
-// ── Scene 3: PM paths ─────────────────────────────────────────────
-function showPath(id, tab) {
-  document.querySelectorAll('.path-content').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.path-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  tab.classList.add('active');
-}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 </script>
 </body>
 </html>
