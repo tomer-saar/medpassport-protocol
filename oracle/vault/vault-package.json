@@ -1,0 +1,16 @@
+{
+  "name": "medpassport-vault-service",
+  "version": "1.0.0",
+  "description": "MedPassport Protocol — IPFS Vault Service connecting document storage to on-chain ServiceLogRegistry",
+  "main": "VaultService.js",
+  "scripts": {
+    "test": "DOTENV_CONFIG_PATH=../../.env node test-vault.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "ethers": "^6.0.0"
+  },
+  "keywords": ["medpassport", "ipfs", "polygon", "medical-device", "vault"],
+  "author": "Tomer Saar, PMP",
+  "license": "MIT"
+}
