@@ -96,7 +96,15 @@ Convention: all mintDevicePassport calls use simulatedDevice = true
 cd oracle/gudid-bridge && node test-bridge.js
 Expected: 4 tests passing including live FDA API call
 
-## Deployment
+## EUDAMED Bridge
+
+EUDAMED bridge: oracle/eudamed-bridge/EUDAMEDBridge.js
+Verified: 2,042,051 devices · live EU Commission API · May 2026
+Run from home computer — ec.europa.eu blocked in Codespace
+
+VaultService: oracle/vault/VaultService.js
+Connects IPFS upload to on-chain logEvent() in one call
+6/7 tests passing · Test 7 requires credential registration
 
 Local:
   anvil
@@ -124,7 +132,7 @@ Demo UDIs:
 bool hasCompatibleParts     non-OEM documented parts used
 bool hasUndocumentedParts   parts used with no documentation
 bool isSeriousIncident      for INCIDENT_REPORT serious vs minor
-logEvent() now takes 10 parameters. All tests updated.
+logEvent() now takes 12 parameters. All tests updated.
 
 ## Pending Build Items
 
@@ -158,13 +166,3 @@ Never push broken tests.
 Last updated: May 2026 · 80 tests passing · MIT License
 
 
-## EUDAMED Bridge
-
-oracle/eudamed-bridge/EUDAMEDBridge.js
-Verified: 2,042,051 devices accessible · live API confirmed · May 2026
-Test: cd oracle/eudamed-bridge && node EUDAMEDBridge.js
-Note: run from home computer — ec.europa.eu blocked in Codespace egress
-Functions:
-  validateBasicUdiDi(basicUdiDi) — validates EU device, returns certificate + AR status
-  runDualMarketValidation(udi, basicUdiDi) — EU + US in one call
-Returns: euAuthorised, riskClass, certificate, authorisedRep, eudamedRef
