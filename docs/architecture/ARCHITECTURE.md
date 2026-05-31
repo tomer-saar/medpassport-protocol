@@ -410,15 +410,29 @@ Enforced in RoleManager.sol — not a policy, an architectural constraint.
 | OEM | All events for their devices | Other OEM's devices |
 | Device owner | All events for owned devices | Events after transfer |
 | ISO technician | Events they wrote | Other ISO events on same device |
-| Notified Body | Full RA layer (per-audit grant, 90-day expiry) | Commercial notes, pricing |
-| Insurer (paid) | Score, event count, cert status | Full service notes |
-| Public | Nothing encrypted — on-chain data only | Everything in vault |
+| Notified Body | Full audit evidence for assigned device scope — events, calibration certs, FSCA records | Configurable time-limited grant, initiated by device owner. Read-only. |
+| Insurer (paid) | Score, event count, cert status, event types and outcomes | Commercial API tier — no service notes, no PII. Paid subscription. |
+| Granted viewer (per-transaction) | Compliance score, certification status, event count | Granted by device owner per transaction — buyer, hospital procurement, insurance underwriter. No document content. |
+| Public (no grant required) | Active recall flag only | Safety-critical. Always visible. No score, no history, no certification status. |
 
 **Phase 2 (current):** Documents stored as plaintext on IPFS. Acceptable for
 testnet pilot — no real commercial data. Hash integrity proof still works correctly.
 
 **Phase 3:** AES-256-GCM envelope encryption. Each document encrypted with a
 unique DEK, wrapped separately per authorized role. No trusted intermediary.
+
+**Known design tension:** `ComplianceScorer.getScore(tokenId)` is publicly
+queryable at the smart contract layer — the on-chain score is not encrypted.
+The application layer controls score visibility by requiring a Granted viewer
+authorization before exposing scores in any UI or API. This is a deliberate
+trade-off: operator-free architecture requires public ledger transparency at
+Layer 3. See ADR-012 for full discussion.
+
+**CAPA traceability scope:** MedPassport does not replace the OEM's complaint
+management system. When a corrective action involves an ISO technician,
+MedPassport independently verifies the corrective service event was executed
+by a credentialed actor. The OEM QMS remains the system of record for the
+complaint lifecycle. MedPassport closes the cross-organizational evidence gap.
 
 ---
 
@@ -428,7 +442,7 @@ unique DEK, wrapped separately per authorized role. No trusted intermediary.
 |---|---|---|---|
 | ISO 13485:2016 | Global | §7.5.8 Traceability · §8.2.1 Feedback · §8.3 Nonconforming | ✅ |
 | EU MDR 2017/745 | EU | Art. 27 UDI · Art. 83 PMS · Art. 87 FSCA | ✅ |
-| EUDAMED | EU | 4 modules mandatory 28 May 2026 · Legacy deadline 28 Nov 2026 | ✅ Bridge live |
+| EUDAMED | EU | MedPassport relevant to post-registration PMS evidence (module 4) and VGL vigilance reporting — not device registration. EUDAMED bridge validates device UDI before passport mint. | ✅ Bridge live |
 | EUDAMED VGL | EU | Vigilance & PMS module mandatory ~Q2 2027 | 📅 Phase 3 |
 | EU ESPR 2024/1781 | EU | DPP-ready architecture · Medical device delegated act 2027-28 | ✅ |
 | FDA QMSR 21 CFR 820 | US | §820.10 UDI · §820.35 Records · §820.65 Traceability | ✅ |
@@ -482,7 +496,7 @@ Oracle tests:
   GUDID bridge:     4/4 ✅  (live FDA API)
   EUDAMED bridge:   4/4 ✅  (live EU Commission API — run from home)
   IPFS uploader:    4/4 ✅  (live Pinata)
-  VaultService:     3/4 🔨  (Test 4 pending SERVICE_LOG_ADDRESS)
+  VaultService:     6/7 🔨  (Test 7 requires credential registration on Amoy)
 ```
 
 ### Local development
@@ -524,10 +538,12 @@ cd oracle/vault && DOTENV_CONFIG_PATH=../../.env node test-vault.js
 ### Sprint 8 (current)
 
 - [x] EUDAMED bridge — live, 4/4 tests
-- [x] VaultService — built, Tests 1-3 passing
-- [ ] VaultService Test 4 — requires SERVICE_LOG_ADDRESS from Amoy deployment
+- [x] VaultService — built, Tests 1-6 passing (Test 7 requires credential registration on Amoy)
+- [x] SEQUENCE-DIAGRAMS.md — v2.0 pushed to docs/architecture/ (4 complete Mermaid diagrams)
+- [x] CLAUDE.md — updated May 2026 (80 tests, 12-param logEvent, EUDAMED + VaultService)
+- [x] Google Analytics — GA4 live on all 4 medpassport.io pages (G-BX3RV3FE4T)
+- [ ] VaultService Test 7 — credential registration on Amoy required
 - [ ] Path B production — real mobile form replacing demo version
-- [ ] Update CLAUDE.md — stale (74 tests, missing oracle updates)
 
 ### Phase 2 (next)
 
@@ -582,4 +598,4 @@ investor details. Those belong in the private strategy document.
 ---
 
 *MedPassport Protocol · MIT License · Not legal or regulatory advice*
-*Author: Tomer Saar, PMP · Last updated: May 2026 · Sprint 8*
+*Author: Tomer Saar · Last updated: May 2026 · Sprint 8 complete — access control model updated*
