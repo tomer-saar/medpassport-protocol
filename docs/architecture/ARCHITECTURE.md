@@ -552,9 +552,17 @@ cd oracle/vault && DOTENV_CONFIG_PATH=../../.env node test-vault.js
 - [ ] Polygon mainnet deployment — after first LOI signed
 - [ ] Arweave backup — permanent storage layer alongside Pinata
 
+- [ ] FDA 3rd party service alignment guidance — find specific guidance documents and warning letter patterns around ISO service non-compliance with OEM maintenance requirements
+- [ ] SAP Service Cloud and ServiceNow Field Service Management — API accessibility for CMMS adapter
+- [ ] PSUR minimum evidence set — map each MDCG 2022-21 PSUR section to MedPassport event types
+
 ### Phase 3 (after pilot partner confirmed)
 
-- [ ] CMMS adapter — ServiceMax / Infor EAM (requires pilot partner IT session)
+- [ ] CMMS adapter — ServiceMax / Infor EAM / SAP Service Cloud / ServiceNow (requires pilot partner IT session)
+- [ ] OEM PM Plan Book — new document type uploaded at device registration. Defines: service intervals, required procedures, required parts, calibration requirements, refurbishment specification. Stored in IPFS vault. Accessible to: credentialed ISO technicians (service reference), credentialed refurbishers (at ownership transfer), Notified Body (audit reference).
+- [ ] Refurbishment specification — separate section within OEM PM Plan Book. First standardised refurbishment documentation for secondary market. Gives refurbishers access to official OEM requirements at point of purchase.
+- [ ] Service event vs OEM plan comparison — compliance gap detector. Did the ISO technician follow OEM requirements? Flag deviations. Phase 3 design item.
+- [ ] Parts replacement structured logging — replace boolean flags with barcode-scanned parts array: P/N, lot number, source (OEM/compatible/unknown). OEM catalogue validation via API in Phase 3.
 - [ ] AES-256-GCM vault encryption — ADR-012 implementation
 - [ ] Envelope encryption per role — CredentialRegistry public keys
 - [ ] Notified Body audit portal — read-only grant flow
@@ -598,4 +606,4 @@ investor details. Those belong in the private strategy document.
 ---
 
 *MedPassport Protocol · MIT License · Not legal or regulatory advice*
-*Author: Tomer Saar · Last updated: May 2026 · Sprint 8 complete — access control model updated*
+*Author: Tomer Saar · Last updated: June 2026 · Sprint 8 complete*
