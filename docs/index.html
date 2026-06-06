@@ -284,6 +284,7 @@
     }
 
     /* ── Information Gap ── */
+      .problem-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 2px; background: var(--rule);
       border: 1px solid var(--rule); border-radius: 6px; overflow: hidden;
@@ -633,7 +634,7 @@
       </blockquote>
 
 
-      <h1>Closing <em>the Information Gap</em> in medical device lifecycles</h1>
+      <h1>Addressing <em>the Information Gap</em> in medical device lifecycles</h1>
       <p class="hero-sub">
         MedPassport is an open-source Shared Truth Infrastructure based on
         Distributed Ledger Technology (DLT) — assigning every medical device
@@ -649,7 +650,7 @@
       <div class="hero-stats">
         <div class="hero-stat">
           <div class="hero-stat-value">$21B</div>
-          <div class="hero-stat-label">Refurbished device market</div>
+          <div class="hero-stat-label">Refurbished equipment market</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-value">EU + US</div>
@@ -851,7 +852,7 @@
     <p class="section-sub">
       EUDAMED mandatory 28 May 2026 (EU Decision 2025/2371). FDA QMSR in effect February 2026.
       One protocol. Both markets. Because FDA QMSR incorporates ISO 13485 by
-      reference, EU compliance delivers 80% of US compliance automatically.
+      reference, MedPassport is designed to support a common evidence layer for EU and US regulatory workflows.
     </p>
     <div class="reg-grid">
       <div class="reg-card">
@@ -859,7 +860,7 @@
         <div class="reg-title">EU Market</div>
         <div class="reg-name">MDR + EUDAMED + ESPR</div>
         <div class="reg-desc">Four EUDAMED modules mandatory from 28 May 2026 (EU Decision 2025/2371). Legacy device registration deadline: 27 November 2026. MedPassport UDI anchors to the same UDI in EUDAMED. DPP-ready architecture aligned with the JRC March 2026 methodology for future medical device delegated acts.</div>
-        <div class="reg-status">● EUDAMED bridge — Phase 2 roadmap</div>
+        <div class="reg-status">● EUDAMED bridge — live validation verified</div>
       </div>
       <div class="reg-card">
         <div class="reg-flag">🇺🇸</div>
@@ -957,10 +958,10 @@
       <div class="audience-card">
         <div class="audience-icon">🔄</div>
         <div class="audience-role">Wave 2 — Earliest Commercial ROI</div>
-        <div class="audience-title">The Refurbisher converts the Trust Tax into a verified asset</div>
-        <div class="audience-desc">A 30–50% trust discount applied to every device with unverifiable service history — eliminated. A Gold-certified imaging system, ventilator, or surgical robot with a tamper-evident service history commands a fundamentally different conversation than one with paper records. The buyer scans a QR code and sees everything independently.</div>
-        <div class="audience-metric">→ $21B refurbished device market · 9–11% CAGR</div>
-        <div class="audience-roi">ROI: 30–50% trust discount converted to evidence-based pricing. Measurable per device.</div>
+        <div class="audience-title">The Refurbisher turns unverifiable history into a pricing signal</div>
+        <div class="audience-desc">A 30–50% trust discount applied to every device with unverifiable service history — eliminated. A Gold-certified imaging system, ventilator, or surgical robot with a tamper-evident service history supports a more evidence-based buyer conversation than one with paper records. A buyer or auditor can verify device identity and active recall status publicly; expanded evidence views require owner-authorized access.</div>
+        <div class="audience-metric">→ $21B+ refurbished medical equipment market · trust gap in resale diligence</div>
+        <div class="audience-roi">Value: fragmented service history converted into a verifiable pricing and diligence signal.</div>
       </div>
       <div class="audience-card">
         <div class="audience-icon">📋</div>
@@ -977,35 +978,35 @@
 <!-- ── Funding ── -->
 <section id="funding" style="padding:80px 48px;background:var(--teal-dark);">
   <div class="section-inner">
-    <p class="section-label" style="color:var(--teal-mid);display:block;">Seeking Investment</p>
+    <p class="section-label" style="color:var(--teal-mid);display:block;">TRL 6 Pilot Validation</p>
     <h2 style="color:white;">Building the compliance infrastructure layer for medical devices.</h2>
     <p class="section-sub" style="color:rgba(255,255,255,0.65);">
-      MedPassport is at TRL 4 — lab prototype with 80 passing tests, live Polygon Amoy testnet deployment, and active pilot partner conversations with EU manufacturers and hospitals. We are seeking seed funding to accelerate EUDAMED bridge development, CMMS adapter build, and Wave 1 pilot execution ahead of the November 2026 legacy device deadline and the EUDAMED Vigilance module (~Q2 2027).
+      MedPassport has completed TRL 5 technical validation: 10 smart contracts live on Polygon Amoy, 80 automated tests passing, live FDA GUDID and EU EUDAMED validation bridges, and IPFS document anchoring operational. The next milestone is TRL 6 pilot validation with real stakeholder workflows: device onboarding, service-event anchoring, role-based evidence access, and measurable FSCA and evidence-completeness KPIs.
     </p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:40px 0;">
       <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:20px 24px;">
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Market</div>
         <div style="font-size:28px;font-weight:500;color:white;margin-bottom:4px;">$21B</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);">Refurbished medical device market · 9–11% CAGR</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);">Refurbished medical equipment market · public market estimate</div>
       </div>
       <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:20px 24px;">
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Regulatory trigger</div>
         <div style="font-size:28px;font-weight:500;color:white;margin-bottom:4px;">Nov 2026</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);">EUDAMED legacy device deadline — all pre-2026 EU devices must be registered</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);">EUDAMED registration baseline; post-registration lifecycle evidence remains the gap</div>
       </div>
       <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:20px 24px;">
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Status</div>
-        <div style="font-size:28px;font-weight:500;color:white;margin-bottom:4px;">TRL 4</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);">80 tests passing · Live Amoy testnet · Pilot partner conversations active</div>
+        <div style="font-size:28px;font-weight:500;color:white;margin-bottom:4px;">TRL 5</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);">10 contracts live · 80 tests passing · GUDID/EUDAMED/IPFS operational</div>
       </div>
       <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:20px 24px;">
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--teal-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Model</div>
         <div style="font-size:28px;font-weight:500;color:white;margin-bottom:4px;">Open + SaaS</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);">MIT protocol · Paid managed SaaS · Access marketplace revenue</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);">MIT protocol · Paid managed SaaS · Enterprise SaaS and API access</div>
       </div>
     </div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="contact.html" class="btn-white">Investor Enquiry →</a>
+      <a href="contact.html" class="btn-white">Discuss Pilot / Funding Fit →</a>
       <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank" class="btn-outline-white">Technical Whitepaper ↗</a>
     </div>
   </div>
@@ -1019,7 +1020,7 @@
         <p class="section-label">Ecosystem & Pilots</p>
         <h2>Wave 1 Enterprise Rollout — currently selecting partners</h2>
         <p class="section-sub">
-          Two parallel entry points. <strong>Fast lane (4–8 weeks):</strong> Certified independent refurbishers of Class IIb imaging equipment — immediate measurable ROI. <strong>OEM track:</strong> Mid-size EU/US manufacturer with active PSUR obligations and ServiceMax or Infor EAM.
+          Currently exploring pilot partners through two entry paths: regulated OEMs with active PMS/PSUR obligations, and certified refurbishers of Class IIb/III equipment where verifiable history directly affects buyer confidence. Pilot success will focus on evidence completeness, FSCA device-location time, event capture rate, and field workflow burden.
         </p>
         <div class="pilots-criteria">
           <div class="pilots-criterion">
@@ -1071,7 +1072,7 @@
             <div class="pilots-wave-num">3</div>
             <div>
               <div class="pilots-wave-title">Success metrics (Wave 1 KPIs)</div>
-              <div class="pilots-wave-desc">FSCA identification &lt;4 hours for 100% of fleet · Work order capture ≥95% · Audit prep reduction ≥30% · Zero additional workflow steps · ComplianceScorer calibrated against real field data.</div>
+              <div class="pilots-wave-desc">Target metrics: FSCA device-location time · service-event capture rate · evidence completeness · field workflow burden · ComplianceScorer calibration against real field data.</div>
               <div class="pilots-wave-status">→ 9–12 month timeline</div>
             </div>
           </div>
@@ -1079,10 +1080,10 @@
             <div class="pilots-cta-text">
               The full pilot scope document and Enterprise Addendum — covering
               deployment architecture, GAMP 5 validation, integration details,
-              and ROI benchmarks — are available to qualified partners on request.
+              and validation benchmarks — are available to qualified partners on request.
             </div>
             <a href="contact.html" class="btn-primary">
-              Request Enterprise Addendum →
+              Discuss Pilot Scope →
             </a>
           </div>
         </div>
@@ -1112,13 +1113,13 @@
 <footer>
   <div class="footer-left">
     <span class="footer-logo">MedPassport Protocol</span>
-    <span class="footer-copy">MIT License · Not legal or regulatory advice · © 2026</span>
+    <span class="footer-copy">MIT License · Not legal or regulatory advice · MedPassport is not an EHR, not a QMS replacement, not a regulator · © 2026</span>
   </div>
   <ul class="footer-links">
     <li><a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a></li>
     <li><a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank">Whitepaper</a></li>
     <li><a href="https://www.linkedin.com/in/tomer-saar/" target="_blank">LinkedIn</a></li>
-    <li><a href="contact.html" class="footer-investor">Investor Relations</a></li>
+    <li><a href="contact.html" class="footer-investor">Contact</a></li>
   </ul>
 </footer>
 
