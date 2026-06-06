@@ -2,6 +2,8 @@
 
 **Status:** Accepted  
 **Date:** April 2026  
+**Revised:** June 2026 — Axiom 6 added (open write authority — was referenced in
+ARCHITECTURE.md §6 and Strategy v2 §7 but not formally written into this document)  
 **Author:** Tomer Saar, PMP  
 
 ---
@@ -15,7 +17,7 @@ preferences — they are non-negotiable design constraints.
 
 ---
 
-## The Five Axioms
+## The Six Axioms
 
 ### Axiom 1 — Every write is a signed attestation
 Every lifecycle event recorded on the MedPassport ledger is a signed
@@ -49,20 +51,38 @@ credentialed actors to sign before the event is written as final.
 No single actor can complete either of these events unilaterally.
 Both signing credentials are permanently recorded.
 
+### Axiom 6 — Write access is determined by credential, not by commercial relationship
+Any credentialed actor holding a valid MedPassport credential may write
+service events to any device record within their role permissions.
+No commercial relationship — including OEM service contracts, warranty
+terms, or pricing agreements — can prevent a credentialed actor from
+logging an event on a device they have serviced.
+An OEM may flag warranty implications of non-OEM service. They may not
+prevent the record from being written.
+This is enforced in RoleManager.sol — it is an architectural constraint,
+not a policy. It is the property that makes MedPassport neutral
+infrastructure rather than a vendor enforcement tool.
+
 ---
 
 ## Consequences
 
 Every contract in the MedPassport protocol must be evaluated against
-these five axioms before deployment. Any contract function that would
+these six axioms before deployment. Any contract function that would
 violate any axiom must be redesigned, not deployed.
 
 These axioms map directly to:
 - ISO 13485:2016 §4.2.4 — Control of records
-- ISO 13485:2016 §4.2.5 — Amendment of records  
+- ISO 13485:2016 §4.2.5 — Amendment of records
 - 21 CFR Part 11 — Electronic records and signatures
 - GDPR Article 25 — Data protection by design
 - EU MDR Article 83 — Post-market surveillance
+- EU MDR Article 83 — OEM PMS obligation covers all devices regardless
+  of service provider, requiring that ISO service events are recordable
+  (Axiom 6)
+- FDA QMSR 21 CFR §820.100 — CAPA trend analysis requires a complete
+  dataset including ISO-serviced devices; blocking ISO writes would
+  structurally corrupt trend analysis (Axiom 6)
 
 ---
 
@@ -71,3 +91,9 @@ These axioms map directly to:
 These axioms may not be amended without a full governance review
 and a new ADR superseding this one. They are the foundation on
 which all other architectural decisions rest.
+
+**Revision note (June 2026):** Axiom 6 was present by intent from protocol
+inception — it is referenced as "Protocol Axiom 6" in ARCHITECTURE.md §6,
+Strategy v2 §7, and the Sprint Plan v3 ADR tracker. This revision formally
+writes it into ADR-000 to close the gap between intent and the written record.
+The existing five axioms are unchanged.
