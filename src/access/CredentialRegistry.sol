@@ -2,6 +2,8 @@
 pragma solidity ^0.8.20;
 
 import {DeviceTypes} from "../types/DeviceTypes.sol";
+import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
  * @title CredentialRegistry
@@ -21,9 +23,29 @@ import {DeviceTypes} from "../types/DeviceTypes.sol";
  *      Axiom 3: Original authorship is preserved permanently
  *      ISO 13485:2016 §4.2.4 — Control of records
  */
-contract CredentialRegistry {
+contract CredentialRegistry is EIP712 {
 
     using DeviceTypes for DeviceTypes.Credential;
+
+    // ============================================================
+    //  EIP-712 — DELEGATION TOKENS
+    //  Allows a credentialed organization (orgId) to delegate
+    //  scoped write authority to a technician via an off-chain
+    //  signed DelegationToken. Signature, nonce, and expiry are
+    //  verified on-chain in verifyDelegationToken().
+    // ============================================================
+
+    /// @notice EIP-712 typehash for the DelegationToken struct.
+    /// @dev Array fields are hashed per the EIP-712 spec for dynamic
+    ///      arrays of atomic types: bytes32[] is packed directly
+    ///      (each element is already a 32-byte word), while uint8[]
+    ///      elements are widened to 32-byte words before packing.
+    bytes32 public constant DELEGATION_TOKEN_TYPEHASH = keccak256(
+        "DelegationToken(bytes32 orgId,bytes32 technicianId,bytes32[] udiScopes,uint8[] eventTypes,uint8 credentialTier,uint256 issuedAt,uint256 expiresAt,bytes32 nonce)"
+    );
+
+    /// @dev nonce => used flag. Prevents replay of a DelegationToken.
+    mapping(bytes32 => bool) private _usedDelegationNonces;
 
     // ============================================================
     //  STATE VARIABLES
@@ -88,6 +110,18 @@ contract CredentialRegistry {
         uint256 timestamp
     );
 
+    /// @notice Emitted when a DelegationToken is verified on-chain.
+    /// @dev scopeHash anchors the exact granted scope permanently —
+    ///      it can be referenced by off-chain systems without
+    ///      re-disclosing the full token contents.
+    event DelegationVerified(
+        bytes32 indexed scopeHash,
+        bytes32 indexed orgId,
+        bytes32 indexed technicianId,
+        bytes32 nonce,
+        uint256 timestamp
+    );
+
     // ============================================================
     //  ERRORS
     //  Custom errors are cheaper than string reverts in Solidity
@@ -103,6 +137,12 @@ contract CredentialRegistry {
     error TerminalState(bytes32 credentialId);
     error WalletAlreadyCredentialed(address wallet);
     error SuccessorAlreadyCredentialed(address successor);
+
+    error NonceAlreadyUsed(bytes32 nonce);
+    error DelegationExpired(uint256 expiresAt, uint256 currentTime);
+    error DelegationNotYetValid(uint256 issuedAt, uint256 currentTime);
+    error InvalidDelegationSignature(address recovered, address expected);
+    error DelegatingCredentialNotActive(bytes32 orgId);
 
     // ============================================================
     //  MODIFIERS
@@ -138,7 +178,7 @@ contract CredentialRegistry {
      *        This is the only address that can manage credentials.
      *        In production this should be a Gnosis Safe multisig.
      */
-    constructor(address _governance) {
+    constructor(address _governance) EIP712("MedPassport", "1") {
         require(_governance != address(0), "Governance cannot be zero address");
         governance = _governance;
     }
@@ -460,5 +500,159 @@ contract CredentialRegistry {
         returns (DeviceTypes.CredentialState)
     {
         return _credentials[credentialId].state;
+    }
+
+    // ============================================================
+    //  DELEGATION TOKENS — EIP-712 SIGNATURE VERIFICATION
+    // ============================================================
+
+    /**
+     * @notice Compute the EIP-712 signing digest for a DelegationToken.
+     * @dev This is the value that must be signed (e.g. via
+     *      eth_signTypedData_v4) by the wallet holding the orgId
+     *      credential.
+     *
+     * @param token The DelegationToken to hash
+     * @return The EIP-712 digest, ready for ECDSA recovery
+     */
+    function hashDelegationToken(DeviceTypes.DelegationToken calldata token)
+        public view
+        returns (bytes32)
+    {
+        return _hashTypedDataV4(_delegationStructHash(token));
+    }
+
+    /**
+     * @notice Compute the scope hash that anchors a DelegationToken's
+     *         granted scope.
+     * @dev Plain abi.encode of the full struct — distinct from the
+     *      EIP-712 hashStruct used for signing. Any change to any
+     *      field of the token changes this hash, so it can be used
+     *      as a permanent on-chain reference to exactly what was
+     *      granted, without re-disclosing the token off-chain.
+     *
+     * @param token The DelegationToken to hash
+     * @return The scope hash
+     */
+    function getScopeHash(DeviceTypes.DelegationToken calldata token)
+        public pure
+        returns (bytes32)
+    {
+        return keccak256(abi.encode(token));
+    }
+
+    /**
+     * @notice Expose this contract's EIP-712 domain separator.
+     * @dev Domain is {name: "MedPassport", version: "1",
+     *      chainId: block.chainid, verifyingContract: address(this)}.
+     */
+    function domainSeparatorV4() external view returns (bytes32) {
+        return _domainSeparatorV4();
+    }
+
+    /**
+     * @notice Check whether a DelegationToken nonce has already
+     *         been consumed.
+     * @param nonce The nonce to check
+     */
+    function isDelegationNonceUsed(bytes32 nonce) external view returns (bool) {
+        return _usedDelegationNonces[nonce];
+    }
+
+    /**
+     * @notice Verify a signed DelegationToken and consume its nonce.
+     * @dev Checks, in order:
+     *      1. Nonce has not been used before (replay prevention)
+     *      2. Current time is within [issuedAt, expiresAt]
+     *      3. Signature recovers to the wallet holding the orgId
+     *         credential, and that credential is ACTIVE
+     *      On success, the nonce is marked used and a
+     *      DelegationVerified event anchors the scope hash on-chain.
+     *
+     * @param token     The DelegationToken being presented
+     * @param signature EIP-712 signature over hashDelegationToken(token)
+     * @return scopeHash_ The scope hash anchoring this token's grant
+     */
+    function verifyDelegationToken(
+        DeviceTypes.DelegationToken calldata token,
+        bytes calldata signature
+    ) external returns (bytes32 scopeHash_) {
+        if (_usedDelegationNonces[token.nonce])
+            revert NonceAlreadyUsed(token.nonce);
+
+        if (block.timestamp > token.expiresAt)
+            revert DelegationExpired(token.expiresAt, block.timestamp);
+        if (block.timestamp < token.issuedAt)
+            revert DelegationNotYetValid(token.issuedAt, block.timestamp);
+
+        bytes32 digest = _hashTypedDataV4(_delegationStructHash(token));
+        address signer = ECDSA.recoverCalldata(digest, signature);
+
+        if (!_credentialExists[token.orgId])
+            revert CredentialNotFound(token.orgId);
+
+        DeviceTypes.Credential storage org = _credentials[token.orgId];
+
+        if (signer != org.wallet)
+            revert InvalidDelegationSignature(signer, org.wallet);
+
+        if (org.state != DeviceTypes.CredentialState.ACTIVE)
+            revert DelegatingCredentialNotActive(token.orgId);
+
+        _usedDelegationNonces[token.nonce] = true;
+        scopeHash_ = keccak256(abi.encode(token));
+
+        emit DelegationVerified(
+            scopeHash_,
+            token.orgId,
+            token.technicianId,
+            token.nonce,
+            block.timestamp
+        );
+    }
+
+    // ============================================================
+    //  DELEGATION TOKENS — INTERNAL HASHING HELPERS
+    // ============================================================
+
+    /**
+     * @dev EIP-712 hashStruct for DelegationToken. Dynamic array
+     *      fields are reduced to their EIP-712 array hash before
+     *      being included in the outer abi.encode.
+     */
+    function _delegationStructHash(DeviceTypes.DelegationToken calldata token)
+        internal pure
+        returns (bytes32)
+    {
+        return keccak256(
+            abi.encode(
+                DELEGATION_TOKEN_TYPEHASH,
+                token.orgId,
+                token.technicianId,
+                keccak256(abi.encodePacked(token.udiScopes)),
+                _hashEventTypes(token.eventTypes),
+                token.credentialTier,
+                token.issuedAt,
+                token.expiresAt,
+                token.nonce
+            )
+        );
+    }
+
+    /**
+     * @dev EIP-712 array hash for uint8[]. Each element is widened
+     *      to a 32-byte word (matching the standard ABI encoding of
+     *      a static value) before being packed and hashed, per the
+     *      EIP-712 spec for arrays of atomic types.
+     */
+    function _hashEventTypes(uint8[] calldata eventTypes)
+        internal pure
+        returns (bytes32)
+    {
+        bytes32[] memory words = new bytes32[](eventTypes.length);
+        for (uint256 i = 0; i < eventTypes.length; i++) {
+            words[i] = bytes32(uint256(eventTypes[i]));
+        }
+        return keccak256(abi.encodePacked(words));
     }
 }

@@ -166,4 +166,15 @@ library DeviceTypes {
         CertLevel level;
         bool      active;
     }
+
+    struct DelegationToken {
+        bytes32   orgId;
+        bytes32   technicianId;
+        bytes32[] udiScopes;
+        uint8[]   eventTypes;
+        uint8     credentialTier;
+        uint256   issuedAt;
+        uint256   expiresAt;
+        bytes32   nonce;
+    }
 }
