@@ -1,531 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact - MedPassport</title>
+<meta name="description" content="Get in touch with the MedPassport team. Request demo access, start an Evidence Gap Assessment, or ask a question about the evidence model.">
+  <!-- OpenGraph / Social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MedPassport">
+  <meta property="og:title" content="Contact - MedPassport">
+  <meta property="og:description" content="Request demo access, start an Evidence Gap Assessment, or explore a pilot partnership. Get in touch with the MedPassport team.">
+  <meta property="og:url" content="https://medpassport.io/contact.html">
+  <meta property="og:image" content="https://medpassport.io/social-preview.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MedPassportIO">
+  <meta name="twitter:title" content="Contact - MedPassport">
+  <meta name="twitter:description" content="Request demo access, start an Evidence Gap Assessment, or explore a pilot partnership. Get in touch with the MedPassport team.">
+  <meta name="twitter:image" content="https://medpassport.io/social-preview.svg">
+  <!-- Favicon - inline SVG (no file upload required) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z' fill='%230C447C'/%3E%3Ccircle cx='20' cy='14' r='2.8' fill='%23fff'/%3E%3Ccircle cx='14.5' cy='24' r='2.8' fill='%23fff'/%3E%3Ccircle cx='25.5' cy='24' r='2.8' fill='%23B88746'/%3E%3Cpath d='M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24' stroke='%23fff' stroke-width='1.3' opacity='.85'/%3E%3C/svg%3E">
+  <link rel="canonical" href="https://medpassport.io/contact.html">
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BX3RV3FE4T"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-BX3RV3FE4T");
+  gtag('js', new Date());
+  gtag('config', 'G-BX3RV3FE4T');
 </script>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact — MedPassport Protocol</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0F6E56; --teal-dark: #0B4D3C; --teal-tint: #f0faf6; --teal-tint-2: #e7f4ef;
+  --blue: #0C447C; --blue-dark: #042C53; --blue-tint: #E6F1FB; --blue-tint-2: #B5D4F4;
+  --logo-gold: #B88746; --logo-gold-dark: #854F0B;
+  --ink: #0f1a24; --body: #3a4a5a; --muted: #5a6a7a;
+  --line: #e4eaef; --line-soft: #eef2f5;
+  --bg: #ffffff; --bg-soft: #f7f9fb; --bg-panel: #fbfcfd;
+  --maxw: 1120px;
+  --shadow-sm: 0 1px 2px rgba(15,26,36,.05);
+  --shadow: 0 8px 28px rgba(15,26,36,.08);
+  --f-display: "Newsreader", Georgia, serif;
+  --f-body: "Inter", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
 
-    :root {
-      --teal:        #006B6B;
-      --teal-light:  #E6F2F2;
-      --teal-mid:    #CCE5E5;
-      --teal-dark:   #004E4E;
-      --ink:         #0F1A1A;
-      --ink-mid:     #2D4040;
-      --ink-light:   #5A7070;
-      --rule:        #E8F0F0;
-      --off-white:   #F7FAFA;
-      --white:       #FFFFFF;
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body:    'DM Sans', system-ui, sans-serif;
-      --font-mono:    'DM Mono', 'Courier New', monospace;
-    }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body { margin: 0; font-family: var(--f-body); color: var(--body); background: var(--bg); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--blue); text-decoration: none; } a:hover { color: var(--blue-dark); }
+h1,h2,h3 { font-family: var(--f-display); color: var(--ink); font-weight: 500; letter-spacing: -.01em; }
+p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.eyebrow { font-family: var(--f-body); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin: 0 0 14px; display: inline-flex; align-items: center; gap: 9px; }
+.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px var(--blue-tint); }
 
-    html { font-size: 16px; scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      background: var(--white);
-      color: var(--ink);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.92); backdrop-filter: saturate(180%) blur(8px); border-bottom: 1px solid var(--line); }
+.nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; display: flex; align-items: center; gap: 8px; height: 64px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; margin-right: 14px; }
+.brand:hover { color: inherit; }
+.brand-mark { width: 30px; height: 30px; flex: none; }
+.brand-name { font-family: var(--f-body); font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+.brand-name .pass { color: var(--logo-gold-dark); }
+.nav-menu { display: flex; align-items: center; gap: 2px; margin-left: 6px; }
+.nav-spacer { flex: 1 1 auto; }
+.nav-item { position: relative; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: #3a4a5a; font-size: 13px; font-weight: 500; padding: 9px 13px; border-radius: 8px; cursor: pointer; font-family: var(--f-body); }
+.nav-item:hover { background: var(--blue-tint); color: var(--blue); }
+.nav-item[aria-current="page"] { color: var(--blue); border-bottom: 2px solid var(--blue); border-radius: 0; padding-bottom: 7px; }
+.nav-item .chev { width: 11px; height: 11px; transition: transform .18s ease; }
+.has-drop { position: relative; }
+.drop { position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease, visibility .16s; }
+@media (hover: hover) { .has-drop:hover .drop, .has-drop:focus-within .drop { opacity: 1; visibility: visible; transform: translateY(0); } .has-drop:hover .chev { transform: rotate(180deg); } }
+.has-drop.drop-open .drop { opacity: 1; visibility: visible; transform: translateY(0); }
+.drop a { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 7px; color: var(--body); font-size: 13.5px; font-weight: 500; }
+.drop a:hover { background: var(--blue-tint); color: var(--blue); }
+.drop .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.drop .sub { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--f-body); font-weight: 600; font-size: 14px; padding: 11px 18px; border-radius: 9px; cursor: pointer; border: 1px solid transparent; transition: transform .12s ease, background .15s ease; white-space: nowrap; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--blue); color: #fff; } .btn-primary:hover { background: var(--blue-dark); color: #fff; }
+.btn-sm { padding: 9px 14px; font-size: 13px; } .nav-cta { margin-left: 8px; }
+.nav-toggle { display: none; } .nav-mobile { display: none; }
+@media (max-width: 940px) {
+  .nav-menu, .nav-spacer { display: none; } .nav-cta { margin-left: auto; }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; cursor: pointer; color: var(--ink); }
+  .nav-mobile { display: none; border-top: 1px solid var(--line); background: #fff; padding: 10px 0 16px; }
+  .nav-mobile.open { display: block; }
+  .nav-mobile a { display: block; padding: 11px 28px; color: var(--body); font-size: 15px; font-weight: 500; }
+  .nav-mobile a:hover { background: var(--blue-tint); color: var(--blue); }
+  .nav-mobile .grp { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 16px 28px 4px; font-weight: 600; }
+}
 
-    /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--rule);
-      padding: 0 48px; height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-mark {
-      width: 32px; height: 32px; background: var(--teal); border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-family: var(--font-mono); font-size: 14px; font-weight: 500;
-    }
-    .nav-logo-text {
-      font-family: var(--font-display); font-size: 18px; font-weight: 500;
-      color: var(--ink); letter-spacing: -0.3px;
-    }
-    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-    .nav-links a {
-      font-size: 13px; font-weight: 400; color: var(--ink-light);
-      text-decoration: none; letter-spacing: 0.2px; transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--teal); }
-    .nav-cta {
-      background: var(--teal) !important; color: white !important;
-      padding: 8px 20px; border-radius: 4px; font-weight: 500 !important;
-      transition: background 0.2s !important;
-    }
-    .nav-cta:hover { background: var(--teal-dark) !important; }
+/* MASTHEAD */
+.masthead { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%); color: #fff; position: relative; overflow: hidden; padding: 72px 0 60px; }
+.masthead-net { position: absolute; inset: 0; opacity: .18; pointer-events: none; }
+.masthead .wrap { position: relative; }
+.masthead .eyebrow { color: rgba(255,255,255,.7); }
+.masthead .eyebrow::before { background: rgba(255,255,255,.7); box-shadow: 0 0 0 4px rgba(255,255,255,.12); }
+.masthead h1 { font-size: clamp(32px, 4.4vw, 48px); line-height: 1.08; margin: 0; max-width: 640px; letter-spacing: -.02em; color: #fff; }
+.masthead .mast-sub { font-size: 17px; color: rgba(255,255,255,.78); max-width: 560px; margin-top: 16px; }
 
-    /* ── Page layout ── */
-    .page-wrapper {
-      min-height: 100vh;
-      padding-top: 64px;
-    }
+/* CONTACT BODY */
+.contact-body { display: grid; grid-template-columns: 1fr 340px; gap: 56px; align-items: start; padding: 64px 0 80px; }
 
-    /* ── Hero strip ── */
-    .contact-hero {
-      background: var(--teal-dark);
-      padding: 72px 48px 64px;
-      text-align: center;
-    }
-    .contact-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px; font-weight: 500;
-      color: var(--teal-mid);
-      letter-spacing: 2px; text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .contact-headline {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 500;
-      color: white;
-      line-height: 1.15;
-      margin-bottom: 20px;
-      letter-spacing: -0.5px;
-    }
-    .contact-subline {
-      font-size: 17px;
-      color: rgba(255,255,255,0.65);
-      max-width: 580px;
-      margin: 0 auto;
-      line-height: 1.6;
-      font-weight: 300;
-    }
+/* FORM CARD */
+.form-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 40px; box-shadow: var(--shadow); }
+.form-title { font-family: var(--f-display); font-size: 22px; font-weight: 500; color: var(--ink); margin: 0 0 28px; letter-spacing: -.01em; }
 
-    /* ── Main content ── */
-    .contact-body {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 64px 48px 80px;
-      display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 64px;
-      align-items: start;
-    }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: 11px 14px;
+  border: 1px solid var(--line); border-radius: 8px;
+  font-family: var(--f-body); font-size: 14px; color: var(--ink);
+  background: var(--bg-soft);
+  transition: border-color .18s, box-shadow .18s;
+  appearance: none; -webkit-appearance: none;
+}
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(12,68,124,.09); background: #fff; }
+.form-group textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+.form-group input::placeholder, .form-group textarea::placeholder { color: #aab4bc; }
 
-    /* ── Form ── */
-    .form-card {
-      background: var(--white);
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-      padding: 40px;
-      box-shadow: 0 2px 24px rgba(0,107,107,0.06);
-    }
-    .form-title {
-      font-family: var(--font-display);
-      font-size: 22px; font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 28px;
-      letter-spacing: -0.2px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 12px; font-weight: 500;
-      color: var(--ink-light);
-      letter-spacing: 0.8px; text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1px solid var(--rule);
-      border-radius: 6px;
-      font-family: var(--font-body);
-      font-size: 14px;
-      color: var(--ink);
-      background: var(--off-white);
-      transition: border-color 0.2s, box-shadow 0.2s;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .form-group select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A7070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
-      cursor: pointer;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(0,107,107,0.08);
-      background: white;
-    }
-    .form-group textarea {
-      resize: vertical;
-      min-height: 120px;
-      line-height: 1.6;
-    }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: #AAC0C0;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .submit-btn {
-      width: 100%;
-      padding: 13px 24px;
-      background: var(--teal);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 8px;
-      letter-spacing: 0.2px;
-    }
-    .submit-btn:hover { background: var(--teal-dark); }
-    .submit-btn:active { transform: scale(0.99); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-    /* Success state */
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 48px 24px;
-    }
-    .form-success .success-icon {
-      width: 56px; height: 56px;
-      background: var(--teal-light);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 24px;
-    }
-    .form-success h3 {
-      font-family: var(--font-display);
-      font-size: 22px; font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-    .form-success p {
-      font-size: 14px;
-      color: var(--ink-light);
-      line-height: 1.6;
-    }
+/* Inquiry type dropdown - highlighted as the key decision */
+.inquiry-group { margin-bottom: 24px; }
+.inquiry-group label { font-size: 11.5px; font-weight: 600; color: var(--blue); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; display: block; }
+.inquiry-group select {
+  width: 100%;
+  padding: 11px 36px 11px 14px;
+  border: 1px solid var(--blue-tint-2);
+  border-radius: 8px;
+  font-family: var(--f-body);
+  font-size: 14px;
+  color: var(--ink);
+  background-color: var(--blue-tint);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  appearance: none;
+  -webkit-appearance: none;
+  font-weight: 500;
+  transition: border-color .18s, box-shadow .18s;
+  cursor: pointer;
+}
+.inquiry-group select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(12,68,124,.09); background-color: #fff; }
 
-    /* ── Sidebar ── */
-    .contact-sidebar {
-      position: sticky;
-      top: 88px;
-    }
-    .sidebar-section {
-      margin-bottom: 32px;
-    }
-    .sidebar-label {
-      font-family: var(--font-mono);
-      font-size: 10px; font-weight: 500;
-      color: var(--teal);
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--rule);
-    }
-    .sidebar-text {
-      font-size: 13px;
-      color: var(--ink-mid);
-      line-height: 1.7;
-    }
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      text-decoration: none;
-      color: var(--ink-mid);
-      font-size: 13px;
-      border-bottom: 1px solid var(--rule);
-      transition: color 0.2s;
-    }
-    .contact-link:last-child { border-bottom: none; }
-    .contact-link:hover { color: var(--teal); }
-    .contact-link-icon {
-      width: 32px; height: 32px;
-      background: var(--teal-light);
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
-      flex-shrink: 0;
-    }
-    .contact-link-text { line-height: 1.3; }
-    .contact-link-label {
-      font-size: 11px;
-      color: var(--ink-light);
-      display: block;
-    }
-    .contact-link-value {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--ink);
-    }
+.submit-btn {
+  width: 100%; padding: 13px 24px;
+  background: var(--blue); color: #fff;
+  border: none; border-radius: 9px;
+  font-family: var(--f-body); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background .18s, transform .1s;
+  margin-top: 8px; letter-spacing: .01em;
+}
+.submit-btn:hover { background: var(--blue-dark); }
+.submit-btn:active { transform: scale(0.99); }
+.submit-btn:disabled { background: var(--muted); cursor: default; }
 
-    /* Pilot badge */
-    .pilot-badge {
-      background: var(--teal-light);
-      border: 1px solid var(--teal-mid);
-      border-radius: 8px;
-      padding: 16px 18px;
-      margin-bottom: 32px;
-    }
-    .pilot-badge-title {
-      font-size: 13px; font-weight: 500;
-      color: var(--teal-dark);
-      margin-bottom: 6px;
-    }
-    .pilot-badge-text {
-      font-size: 12px;
-      color: var(--teal);
-      line-height: 1.6;
-    }
+/* Success state */
+.form-success { display: none; text-align: center; padding: 56px 24px; }
+.success-icon { width: 60px; height: 60px; background: var(--teal-tint); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 26px; color: var(--teal); }
+.form-success h3 { font-family: var(--f-display); font-size: 24px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+.form-success p { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-    /* ── Footer ── */
-    footer {
-      background: var(--ink);
-      padding: 28px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .footer-left {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-    }
-    .footer-right {
-      display: flex; gap: 20px;
-    }
-    .footer-right a {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-right a:hover { color: rgba(255,255,255,0.7); }
+/* SIDEBAR */
+.contact-sidebar { position: sticky; top: 82px; }
+.sidebar-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin-bottom: 18px; box-shadow: var(--shadow-sm); }
+.sidebar-card h4 { font-size: 13.5px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+.sidebar-card p { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
+.sidebar-card a { font-size: 13px; color: var(--blue); font-weight: 500; }
+.sidebar-label { font-family: var(--f-mono); font-size: 10px; font-weight: 600; color: var(--blue); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; display: block; }
 
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .contact-hero { padding: 56px 24px 48px; }
-      .contact-body {
-        grid-template-columns: 1fr;
-        padding: 40px 24px 60px;
-        gap: 40px;
-      }
-      .contact-sidebar { position: static; }
-      .form-row { grid-template-columns: 1fr; }
-      footer { padding: 24px; flex-direction: column; }
-    }
-  </style>
+.ega-card { background: var(--blue-tint); border: 1px solid var(--blue-tint-2); border-radius: 12px; padding: 20px 22px; margin-bottom: 18px; }
+.ega-card h4 { font-size: 13.5px; font-weight: 600; color: var(--blue-dark); margin: 0 0 7px; }
+.ega-card p { font-size: 12.5px; color: var(--blue); line-height: 1.6; margin: 0; }
+
+.email-link { display: flex; align-items: center; gap: 10px; padding: 12px 0; text-decoration: none; color: var(--body); }
+.email-link:hover { color: var(--blue); }
+.email-icon { width: 36px; height: 36px; background: var(--blue-tint); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+.email-lbl { font-size: 11px; color: var(--muted); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1px; display: block; }
+.email-val { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+.sidebar-about { font-size: 13px; color: var(--muted); line-height: 1.65; padding-top: 18px; border-top: 1px solid var(--line-soft); }
+
+/* FOOTER */
+.footer { background: var(--bg-soft); border-top: 1px solid var(--line); }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 28px; padding: 56px 0 36px; }
+.footer-brand p { font-size: 13px; color: var(--muted); margin-top: 12px; max-width: 240px; }
+.footer-col h4 { font-size: 13px; font-weight: 600; color: var(--ink); margin: 0 0 14px; font-family: var(--f-body); }
+.footer-col a { display: block; font-size: 12px; color: var(--muted); padding: 4px 0; }
+.footer-col a:hover { color: var(--blue); }
+.footer-legal { border-top: 1px solid var(--line); padding: 18px 0 34px; }
+.footer-legal p { font-size: 11.5px; color: var(--muted); margin: 0; max-width: 860px; }
+
+@media (max-width: 860px) {
+  .contact-body { grid-template-columns: 1fr; gap: 36px; padding: 48px 0 60px; }
+  .contact-sidebar { position: static; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+@media (max-width: 560px) {
+  .form-card { padding: 28px 22px; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+</style>
 </head>
 <body>
 
-<!-- Nav -->
-<nav>
-  <a class="nav-logo" href="index.html">
-    <div class="nav-logo-mark">MP</div>
-    <span class="nav-logo-text">MedPassport</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html#pillars">Solution</a></li>
-    <li><a href="how-it-works.html">How It Works</a></li>
-    <li><a href="index.html#regulatory">Regulatory</a></li>
-    <li><a href="demo.html">Interactive Demo</a></li>
-    <li><a href="index.html#verify">UDI Lookup</a></li>
-    <li><a href="index.html#pilots">Pilots</a></li>
-    <li><a href="contact.html" class="nav-cta">Contact</a></li>
-  </ul>
-</nav>
+<!-- NAV -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MedPassport home">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z" fill="#0C447C"/>
+        <circle cx="20" cy="14" r="2.8" fill="#fff"/>
+        <circle cx="14.5" cy="24" r="2.8" fill="#fff"/>
+        <circle cx="25.5" cy="24" r="2.8" fill="#B88746"/>
+        <path d="M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24" stroke="#fff" stroke-width="1.3" opacity=".85"/>
+      </svg>
+      <span class="brand-name">Med<span class="pass">Passport</span></span>
+    </a>
 
-<div class="page-wrapper">
+    <nav class="nav-menu" aria-label="Primary">
+      <div class="has-drop">
+        <a href="technology.html" class="nav-item" aria-haspopup="true">
+          How it works
+          <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="drop" role="menu">
+          <a href="technology.html" role="menuitem"><span class="dot" style="background:#0C447C"></span><span>Technology<span class="sub">Architecture, demo and how it runs</span></span></a>
+          <a href="https://github.com/tomer-saar/medpassport-protocol#readme" role="menuitem" target="_blank" rel="noopener"><span class="dot" style="background:#0C447C"></span><span>README<span class="sub">Protocol documentation on GitHub</span></span></a>
+        </div>
+      </div>
+      <div class="has-drop">
+        <a href="index.html#who-it-serves" class="nav-item" aria-haspopup="true">
+          Who it serves
+          <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="drop" role="menu">
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#0F6E56"></span>Manufacturers</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#0E7C8B"></span>Hospitals</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#B88746"></span>Refurbishers</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#3D4F86"></span>Insurers</a>
+        </div>
+      </div>
+      <a href="regulatory-path.html" class="nav-item">Regulatory path</a>
+      <a href="pilot-funding.html" class="nav-item">Pilot Program</a>
+      <a href="contact.html" class="nav-item" aria-current="page">Contact</a>
+    </nav>
 
-  <!-- Hero -->
-  <div class="contact-hero">
-    <div class="contact-eyebrow">Get in touch</div>
-    <h1 class="contact-headline">Work with MedPassport</h1>
-    <p class="contact-subline">Whether you're exploring a pilot partnership, VC investment, a grant collaboration, or have a technical question — we'd like to hear from you.</p>
+    <span class="nav-spacer"></span>
+    <a href="contact.html" class="btn btn-primary btn-sm nav-cta">Get workflow demo access</a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
   </div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="grp">How it works</div>
+    <a href="technology.html">Technology</a>
+    <a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener">README</a>
+    <div class="grp">Who it serves</div>
+    <a href="index.html#who-it-serves">Manufacturers</a>
+    <a href="index.html#who-it-serves">Hospitals</a>
+    <a href="index.html#who-it-serves">Refurbishers</a>
+    <a href="index.html#who-it-serves">Insurers</a>
+    <div class="grp">More</div>
+    <a href="regulatory-path.html">Regulatory path</a>
+    <a href="pilot-funding.html">Pilot Program</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
 
-  <!-- Body -->
+<!-- MASTHEAD -->
+<section class="masthead">
+  <svg class="masthead-net" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g stroke="#ffffff" stroke-width="1"><path d="M900 60 L1040 120 M1040 120 L980 230 M980 230 L1100 190 M1100 190 L1040 120 M900 60 L760 150 M760 150 L980 230"/></g>
+    <g fill="#ffffff"><circle cx="900" cy="60" r="4"/><circle cx="1040" cy="120" r="5"/><circle cx="980" cy="230" r="4"/><circle cx="1100" cy="190" r="4"/><circle cx="760" cy="150" r="4"/></g>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow">Contact</span>
+    <h1>Work with MedPassport</h1>
+    <p class="mast-sub">Whether you are exploring a pilot partnership, evaluating the evidence model for your device fleet, considering a funding or collaboration conversation, or have a specific technical question - this is the right place to start.</p>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="wrap">
   <div class="contact-body">
 
-    <!-- Form -->
+    <!-- FORM -->
     <div class="form-card">
       <div class="form-title">Send a message</div>
 
       <form id="contactForm" action="https://formspree.io/f/mgoqzgwy" method="POST">
 
+        <!-- Inquiry type - highlighted, auto-populated from URL param -->
+        <div class="inquiry-group">
+          <label for="inquiry">What can we help with? *</label>
+          <select id="inquiry" name="inquiry" required>
+            <option value="" disabled selected>Select a topic...</option>
+            <option value="demo">Get workflow demo access</option>
+            <option value="ega">Request an Evidence Gap Assessment</option>
+            <option value="info">Request more information</option>
+            <option value="partner">Partnership or integration inquiry</option>
+            <option value="press">Press or research inquiry</option>
+            <option value="other">Other topic</option>
+          </select>
+        </div>
+
         <div class="form-row">
           <div class="form-group">
             <label for="name">Name *</label>
-            <input type="text" id="name" name="name" placeholder="Your full name" required/>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
           </div>
           <div class="form-group">
             <label for="organisation">Organisation *</label>
-            <input type="text" id="organisation" name="organisation" placeholder="Company or institution" required/>
+            <input type="text" id="organisation" name="organisation" placeholder="Company or institution" required>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email address *</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required/>
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone <span style="font-weight:300;color:#AAC0C0;">(optional)</span></label>
-          <input type="tel" id="phone" name="phone" placeholder="+1 555 000 0000"/>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="role">Role *</label>
+            <label for="role">Your role *</label>
             <select id="role" name="role" required>
-              <option value="" disabled selected>Select your role…</option>
+              <option value="" disabled selected>Select your role...</option>
               <option>VP Regulatory Affairs</option>
               <option>VP Service / Field Operations</option>
               <option>Clinical Engineering / Biomed</option>
               <option>C-Suite (CEO / CFO / COO)</option>
-              <option>VC Fund Manager / Investor</option>
+              <option>Investor / Fund Manager</option>
               <option>Refurbisher / Asset Manager</option>
               <option>Regulator / Notified Body</option>
+              <option>Insurer / Underwriter</option>
               <option>Developer / Researcher</option>
               <option>Other</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="reason">Reason for contact *</label>
-            <select id="reason" name="reason" required>
-              <option value="" disabled selected>Select a topic…</option>
-              <option>Pilot partnership inquiry</option>
-              <option>VC investment inquiry</option>
-              <option>Grant or funding collaboration</option>
-              <option>Technical question</option>
-              <option>Press / media</option>
-              <option>Other</option>
-            </select>
+            <label for="phone">Phone <span style="font-weight:400;color:var(--muted);font-size:10px;text-transform:none;letter-spacing:0;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 555 000 0000">
           </div>
         </div>
 
         <div class="form-group">
           <label for="message">Message *</label>
-          <textarea id="message" name="message" placeholder="Tell us about your interest, organisation, or question…" required></textarea>
+          <textarea id="message" name="message" placeholder="Tell us about your organisation, your device fleet, or the question you want to answer..." required></textarea>
         </div>
 
-        <input type="hidden" name="_subject" value="MedPassport contact form submission"/>
-        <input type="text" name="_gotcha" style="display:none"/>
+        <input type="hidden" name="_subject" id="formSubject" value="MedPassport contact form">
+        <input type="text" name="_gotcha" style="display:none">
 
-        <button type="submit" class="submit-btn">Send message →</button>
+        <button type="submit" class="submit-btn" id="submitBtn">Send message</button>
       </form>
 
       <!-- Success state -->
       <div class="form-success" id="formSuccess">
-        <div class="success-icon">✓</div>
+        <div class="success-icon">&#10003;</div>
         <h3>Message received</h3>
-        <p>Thank you for reaching out. We will follow up at the email address you provided within 48 hours.<br/>All communications are treated as strictly confidential.</p>
+        <p>We have received your message and will be in touch at the email address you provided. All communications are treated as strictly confidential.</p>
       </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="contact-sidebar">
+    <!-- SIDEBAR -->
+    <aside class="contact-sidebar">
 
-      <div class="pilot-badge">
-        <div class="pilot-badge-title">Wave 1 Pilot — now open</div>
-        <div class="pilot-badge-text">We are selectively onboarding Class IIb/III manufacturers for a 90-day free pilot. Fleet size 50–5,000 devices. EU MDR and FDA QMSR coverage.</div>
+      <div class="ega-card">
+        <h4>Start with the evidence gap</h4>
+        <p>Before committing to a pilot, we work with your team using your own device data to map where the evidence chain breaks and what a focused pilot would test. Select "Evidence Gap Assessment" above to tell us more.</p>
       </div>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">Direct contact</div>
-        <a class="contact-link" href="mailto:medpassport.protocol@gmail.com">
-          <div class="contact-link-icon">✉</div>
-          <div class="contact-link-text">
-            <span class="contact-link-label">Email</span>
-            <span class="contact-link-value">medpassport.protocol@gmail.com</span>
+      <div class="sidebar-card">
+        <span class="sidebar-label">Direct contact</span>
+        <a class="email-link" href="mailto:contact@medpassport.io">
+          <div class="email-icon">&#9993;</div>
+          <div>
+            <span class="email-lbl">Email</span>
+            <span class="email-val">contact@medpassport.io</span>
           </div>
         </a>
+        <p class="sidebar-about">MedPassport is an open-source, operator-free protocol (MIT) that gives every high-risk medical device a permanent Digital Product Passport anchored to its UDI, carrying independently verifiable evidence across every organisational boundary.</p>
       </div>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">About</div>
-        <p class="sidebar-text">MedPassport is an open-source blockchain protocol (MIT) that gives every high-risk medical device a permanent Digital Product Passport — anchored to its UDI, carrying lifecycle evidence across every organisational boundary.</p>
+      <div class="sidebar-card">
+        <span class="sidebar-label">Useful links</span>
+        <a href="technology.html" style="display:block;font-size:13px;color:var(--blue);padding:4px 0;">See how it works - Technology page</a>
+        <a href="pilot-funding.html" style="display:block;font-size:13px;color:var(--blue);padding:4px 0;">Pilot Program overview</a>
+        <a href="regulatory-path.html" style="display:block;font-size:13px;color:var(--blue);padding:4px 0;">Regulatory path - EU MDR and FDA QMSR</a>
+        <a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener" style="display:block;font-size:13px;color:var(--blue);padding:4px 0;">Protocol README on GitHub</a>
       </div>
 
-    </div>
+    </aside>
+
   </div>
-
 </div>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-left">MedPassport Protocol · MIT License · © 2026</div>
-  <div class="footer-right">
-    <a href="https://github.com/tomer-saar/medpassport-protocol" target="_blank">GitHub</a>
-    <a href="https://github.com/tomer-saar/medpassport-protocol/blob/main/docs/WHITEPAPER.md" target="_blank">Whitepaper</a>
-    <a href="index.html">Home</a>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z" fill="#0C447C"/><circle cx="20" cy="14" r="2.8" fill="#fff"/><circle cx="14.5" cy="24" r="2.8" fill="#fff"/><circle cx="25.5" cy="24" r="2.8" fill="#B88746"/><path d="M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24" stroke="#fff" stroke-width="1.3" opacity=".85"/></svg>
+          <span class="brand-name">Med<span class="pass">Passport</span></span>
+        </a>
+        <p>A neutral evidence layer for high-risk medical devices, across every ownership and service boundary.</p>
+      </div>
+      <div class="footer-col">
+        <h4>How it works</h4>
+        <a href="technology.html">Technology</a>
+        <a href="regulatory-path.html">Regulatory Path</a>
+        <a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener">README</a>
+      </div>
+      <div class="footer-col">
+        <h4>Who It Serves</h4>
+        <a href="index.html#who-it-serves">Manufacturers</a>
+        <a href="index.html#who-it-serves">Hospitals</a>
+        <a href="index.html#who-it-serves">Refurbishers</a>
+        <a href="index.html#who-it-serves">Insurers</a>
+      </div>
+      <div class="footer-col">
+        <h4>Pilot Program</h4>
+        <a href="pilot-funding.html">Pilot Program</a>
+        <a href="contact.html">Get workflow demo access</a>
+        <a href="for-investors.html">For Investors</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="contact.html">Contact us</a>
+        <a href="mailto:contact@medpassport.io">contact@medpassport.io</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="wrap">
+      <p>© 2026 MedPassport Protocol. MIT licensed open protocol. No patient data - enforced at protocol level. Not a substitute for a manufacturer's quality management system or a regulatory submission.</p>
+    </div>
   </div>
 </footer>
 
 <script>
-  // Handle form submission with fetch for smooth success state
-  const form = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
+  // Mobile nav toggle
+  (function(){
+    var t = document.getElementById('navToggle'), m = document.getElementById('navMobile');
+    if (t && m) t.addEventListener('click', function(){
+      var open = m.classList.toggle('open');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+
+  // Mobile dropdown touch handler
+  (function(){
+    var drops = document.querySelectorAll('.has-drop');
+    drops.forEach(function(drop){
+      var btn = drop.querySelector('.nav-item[aria-haspopup]');
+      if (!btn) return;
+      btn.addEventListener('click', function(e){
+        if (!window.matchMedia('(hover: none)').matches) return;
+        if (!drop.classList.contains('drop-open')) {
+          e.preventDefault();
+          drops.forEach(function(d){ d.classList.remove('drop-open'); });
+          drop.classList.add('drop-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    document.addEventListener('click', function(e){
+      if (!e.target.closest('.has-drop')) {
+        drops.forEach(function(d){ d.classList.remove('drop-open'); });
+      }
+    });
+  })();
+
+  // Auto-select inquiry type from URL parameter
+  // Usage: contact.html?type=demo | ?type=ega | ?type=info | ?type=partner | ?type=press
+  (function(){
+    var params = new URLSearchParams(window.location.search);
+    var type = params.get('type');
+    var select = document.getElementById('inquiry');
+    var subjectMap = {
+      'demo':    'MedPassport - Demo access request',
+      'ega':     'MedPassport - Evidence Gap Assessment request',
+      'info':    'MedPassport - Information request',
+      'partner': 'MedPassport - Partnership inquiry',
+      'press':   'MedPassport - Press inquiry',
+      'other':   'MedPassport - General inquiry',
+    };
+    if (type && select) {
+      select.value = type;
+      var subject = document.getElementById('formSubject');
+      if (subject && subjectMap[type]) subject.value = subjectMap[type];
+    }
+    // Update hidden subject when dropdown changes
+    select.addEventListener('change', function(){
+      var subject = document.getElementById('formSubject');
+      if (subject && subjectMap[this.value]) subject.value = subjectMap[this.value];
+    });
+  })();
+
+  // Form submission - fetch with success state
+  var form = document.getElementById('contactForm');
+  var successEl = document.getElementById('formSuccess');
+  var submitBtn = document.getElementById('submitBtn');
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = form.querySelector('.submit-btn');
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
 
     try {
-      const response = await fetch(form.action, {
+      var response = await fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
       });
-
       if (response.ok) {
         form.style.display = 'none';
-        success.style.display = 'block';
+        successEl.style.display = 'block';
       } else {
-        btn.textContent = 'Send message →';
-        btn.disabled = false;
-        alert('Something went wrong. Please email us directly at medpassport.protocol@gmail.com');
+        submitBtn.textContent = 'Send message';
+        submitBtn.disabled = false;
+        alert('Something went wrong. Please email us directly at contact@medpassport.io');
       }
     } catch(err) {
-      btn.textContent = 'Send message →';
-      btn.disabled = false;
-      alert('Something went wrong. Please email us directly at medpassport.protocol@gmail.com');
+      submitBtn.textContent = 'Send message';
+      submitBtn.disabled = false;
+      alert('Something went wrong. Please email us directly at contact@medpassport.io');
     }
   });
 </script>
-
 </body>
 </html>

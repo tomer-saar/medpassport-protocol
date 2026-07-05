@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BX3RV3FE4T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-BX3RV3FE4T");
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regulatory Path - MedPassport</title>
+<meta name="description" content="How MedPassport addresses EU MDR post-market surveillance obligations, FDA QMSR requirements, and EUDAMED evidence responsibilities across the device lifecycle.">
+  <!-- OpenGraph / Social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MedPassport">
+  <meta property="og:title" content="Regulatory Path - EU MDR, FDA QMSR and EUDAMED">
+  <meta property="og:description" content="How MedPassport addresses EU MDR post-market surveillance, FSCA evidence obligations, FDA QMSR requirements, and EUDAMED responsibilities.">
+  <meta property="og:url" content="https://medpassport.io/regulatory-path.html">
+  <meta property="og:image" content="https://medpassport.io/social-preview.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MedPassportIO">
+  <meta name="twitter:title" content="Regulatory Path - EU MDR, FDA QMSR and EUDAMED">
+  <meta name="twitter:description" content="How MedPassport addresses EU MDR post-market surveillance, FSCA evidence obligations, FDA QMSR requirements, and EUDAMED responsibilities.">
+  <meta name="twitter:image" content="https://medpassport.io/social-preview.svg">
+  <!-- Favicon - inline SVG (no file upload required) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z' fill='%230C447C'/%3E%3Ccircle cx='20' cy='14' r='2.8' fill='%23fff'/%3E%3Ccircle cx='14.5' cy='24' r='2.8' fill='%23fff'/%3E%3Ccircle cx='25.5' cy='24' r='2.8' fill='%23B88746'/%3E%3Cpath d='M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24' stroke='%23fff' stroke-width='1.3' opacity='.85'/%3E%3C/svg%3E">
+  <link rel="canonical" href="https://medpassport.io/regulatory-path.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #0F6E56; --teal-dark: #0B4D3C; --teal-tint: #f0faf6; --teal-tint-2: #e7f4ef;
+  --blue: #0C447C; --blue-dark: #042C53; --blue-tint: #E6F1FB; --blue-tint-2: #B5D4F4;
+  --logo-gold: #B88746; --logo-gold-dark: #854F0B;
+  --ink: #0f1a24; --body: #3a4a5a; --muted: #5a6a7a;
+  --line: #e4eaef; --line-soft: #eef2f5;
+  --bg: #ffffff; --bg-soft: #f7f9fb; --bg-panel: #fbfcfd;
+  --maxw: 1120px; --shadow-sm: 0 1px 2px rgba(15,26,36,.05); --shadow: 0 8px 28px rgba(15,26,36,.08);
+  --f-display: "Newsreader", Georgia, serif;
+  --f-body: "Inter", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body { margin: 0; font-family: var(--f-body); color: var(--body); background: var(--bg); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: var(--blue); text-decoration: none; } a:hover { color: var(--blue-dark); }
+h1,h2,h3 { font-family: var(--f-display); color: var(--ink); font-weight: 500; letter-spacing: -.01em; }
+p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.eyebrow { font-family: var(--f-body); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue); margin: 0 0 14px; display: inline-flex; align-items: center; gap: 9px; }
+.eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 4px var(--blue-tint); }
+.section { padding: 92px 0; } .section--soft { background: var(--bg-soft); }
+.section-head { max-width: 780px; margin-bottom: 48px; }
+.section-head h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin: 0; letter-spacing: -.022em; font-weight: 600; }
+.section-head .lede { margin-top: 18px; font-size: 18px; color: var(--body); line-height: 1.6; }
+
+/* NAV - identical to other pages */
+.nav { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.92); backdrop-filter: saturate(180%) blur(8px); border-bottom: 1px solid var(--line); }
+.nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; display: flex; align-items: center; gap: 8px; height: 64px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; margin-right: 14px; }
+.brand-mark { width: 30px; height: 30px; flex: none; }
+.brand-name { font-family: var(--f-body); font-weight: 700; font-size: 16px; color: var(--ink); letter-spacing: -.01em; }
+.brand-name .pass { color: var(--logo-gold-dark); }
+.nav-menu { display: flex; align-items: center; gap: 2px; margin-left: 6px; }
+.nav-spacer { flex: 1 1 auto; }
+.nav-item { position: relative; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: #3a4a5a; font-size: 13px; font-weight: 500; padding: 9px 13px; border-radius: 8px; cursor: pointer; font-family: var(--f-body); }
+.nav-item:hover { background: var(--blue-tint); color: var(--blue); }
+.nav-item[aria-current="page"] { color: var(--blue); border-bottom: 2px solid var(--blue); border-radius: 0; padding-bottom: 7px; }
+.nav-item .chev { width: 11px; height: 11px; transition: transform .18s ease; }
+.has-drop { position: relative; }
+.drop { position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease, visibility .16s; }
+@media (hover: hover) { .has-drop:hover .drop, .has-drop:focus-within .drop { opacity: 1; visibility: visible; transform: translateY(0); } .has-drop:hover .chev { transform: rotate(180deg); } }
+.has-drop.drop-open .drop { opacity: 1; visibility: visible; transform: translateY(0); }
+.drop a { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 7px; color: var(--body); font-size: 13.5px; font-weight: 500; }
+.drop a:hover { background: var(--blue-tint); color: var(--blue); }
+.drop .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.drop .sub { display: block; font-size: 11.5px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--f-body); font-weight: 600; font-size: 14px; padding: 11px 18px; border-radius: 9px; cursor: pointer; border: 1px solid transparent; transition: transform .12s ease, background .15s ease; white-space: nowrap; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--blue); color: #fff; } .btn-primary:hover { background: var(--blue-dark); color: #fff; }
+.btn-light { background: #fff; color: var(--blue); } .btn-light:hover { background: #f3faf7; }
+.btn-outline-light { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); } .btn-outline-light:hover { background: rgba(255,255,255,.12); }
+.btn-sm { padding: 9px 14px; font-size: 13px; } .nav-cta { margin-left: 8px; }
+.nav-toggle { display: none; } .nav-mobile { display: none; }
+@media (max-width: 940px) {
+  .nav-menu, .nav-spacer { display: none; } .nav-cta { margin-left: auto; }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; cursor: pointer; color: var(--ink); }
+  .nav-mobile { display: none; border-top: 1px solid var(--line); background: #fff; padding: 10px 0 16px; }
+  .nav-mobile.open { display: block; }
+  .nav-mobile a { display: block; padding: 11px 28px; color: var(--body); font-size: 15px; font-weight: 500; }
+  .nav-mobile a:hover { background: var(--blue-tint); color: var(--blue); }
+  .nav-mobile .grp { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding: 16px 28px 4px; font-weight: 600; }
+}
+/* MASTHEAD */
+.masthead { background: linear-gradient(180deg,#fff, var(--bg-soft)); border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+.masthead .wrap { padding: 66px 28px 54px; }
+.masthead h1 { font-size: clamp(32px, 4.4vw, 48px); line-height: 1.08; margin: 0; max-width: 760px; letter-spacing: -.02em; }
+.masthead .mast-sub { font-size: 18px; color: var(--body); max-width: 620px; margin-top: 18px; }
+/* CONTENT */
+.reg-body { display: grid; grid-template-columns: 1fr 2fr; gap: 56px; align-items: start; }
+.reg-toc { position: sticky; top: 82px; }
+.reg-toc-list { list-style: none; margin: 0; padding: 0; }
+.reg-toc-list li { margin-bottom: 2px; }
+.reg-toc-list a { display: block; font-size: 13px; color: var(--muted); padding: 6px 10px; border-radius: 7px; border-left: 2px solid transparent; }
+.reg-toc-list a:hover, .reg-toc-list a.active { color: var(--blue); border-left-color: var(--blue); background: var(--blue-tint); }
+.reg-sections h2 { font-size: clamp(24px,2.8vw,32px); margin: 0 0 16px; padding-top: 56px; }
+.reg-sections h2:first-child { padding-top: 0; }
+.reg-sections p { font-size: 15.5px; line-height: 1.7; }
+.reg-badge { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--blue-dark); background: var(--blue-tint); padding: 4px 10px; border-radius: 6px; margin-bottom: 14px; }
+.reg-status-line { font-size: 12.5px; font-weight: 600; color: var(--teal); margin: 0 0 18px; display: flex; align-items: center; gap: 7px; }
+.reg-status-line::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--teal); }
+.reg-callout { border-left: 4px solid var(--blue); background: var(--blue-tint); border-radius: 0 10px 10px 0; padding: 18px 22px; margin: 22px 0; }
+.reg-callout p { font-size: 15px; color: var(--ink); margin: 0; font-weight: 500; line-height: 1.6; }
+.reg-divider { border: 0; border-top: 1px solid var(--line); margin: 52px 0 0; }
+.reg-source { font-family: var(--f-mono); font-size: 11px; color: var(--muted); margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+.scope-note { background: var(--bg-panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; margin-top: 20px; font-size: 13.5px; color: var(--muted); }
+.scope-note strong { color: var(--ink); }
+/* TIMELINE */
+.timeline { margin: 28px 0; }
+.tl-item { display: flex; gap: 18px; margin-bottom: 22px; }
+.tl-date { font-family: var(--f-mono); font-size: 11.5px; font-weight: 600; color: var(--blue); min-width: 110px; padding-top: 2px; }
+.tl-body { border-left: 2px solid var(--line); padding-left: 18px; }
+.tl-body strong { display: block; font-size: 14.5px; color: var(--ink); margin-bottom: 4px; }
+.tl-body p { font-size: 13.5px; margin: 0; color: var(--body); }
+/* CTA */
+.ctaband { background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 70%); color: #fff; position: relative; overflow: hidden; }
+.ctaband .wrap { position: relative; padding: 64px 28px; text-align: center; }
+.ctaband h2 { color: #fff; font-size: clamp(24px,3vw,36px); margin: 0 0 12px; }
+.ctaband p { color: rgba(255,255,255,.88); font-size: 17px; max-width: 560px; margin: 0 auto 26px; }
+.ctaband-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+/* FOOTER */
+.footer { background: var(--bg-soft); border-top: 1px solid var(--line); }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; gap: 28px; padding: 56px 0 36px; }
+.footer-brand p { font-size: 13px; color: var(--muted); margin-top: 12px; max-width: 240px; }
+.footer-col h4 { font-size: 13px; font-weight: 600; color: var(--ink); margin: 0 0 14px; font-family: var(--f-body); }
+.footer-col a { display: block; font-size: 12px; color: var(--muted); padding: 4px 0; }
+.footer-col a:hover { color: var(--blue); }
+.footer-legal { border-top: 1px solid var(--line); padding: 18px 0 34px; }
+.footer-legal p { font-size: 11.5px; color: var(--muted); margin: 0; max-width: 860px; }
+@media (max-width: 940px) {
+  .reg-body { grid-template-columns: 1fr; }
+  .reg-toc { position: static; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+@media (max-width: 560px) { .section { padding: 60px 0; } .footer-grid { grid-template-columns: 1fr; } }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="MedPassport home">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z" fill="#0C447C"/>
+        <circle cx="20" cy="14" r="2.8" fill="#fff"/><circle cx="14.5" cy="24" r="2.8" fill="#fff"/><circle cx="25.5" cy="24" r="2.8" fill="#B88746"/>
+        <path d="M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24" stroke="#fff" stroke-width="1.3" opacity=".85"/>
+      </svg>
+      <span class="brand-name">Med<span class="pass">Passport</span></span>
+    </a>
+    <nav class="nav-menu" aria-label="Primary">
+      <div class="has-drop">
+        <a href="technology.html" class="nav-item" aria-haspopup="true">
+          How it works <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="drop" role="menu">
+          <a href="technology.html" role="menuitem"><span class="dot" style="background:#0C447C"></span><span>Overview<span class="sub">The evidence model, end to end</span></span></a>
+          <a href="technology.html" role="menuitem"><span class="dot" style="background:#0C447C"></span><span>Technology<span class="sub">Architecture and how it runs</span></span></a>
+          <a href="https://github.com/tomer-saar/medpassport-protocol#readme" role="menuitem" target="_blank" rel="noopener"><span class="dot" style="background:#0C447C"></span><span>README<span class="sub">Protocol documentation on GitHub</span></span></a>
+        </div>
+      </div>
+      <div class="has-drop">
+        <a href="index.html#who-it-serves" class="nav-item" aria-haspopup="true">
+          Who it serves <svg class="chev" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="drop" role="menu">
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#0F6E56"></span>Manufacturers</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#0E7C8B"></span>Hospitals</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#B88746"></span>Refurbishers</a>
+          <a href="index.html#who-it-serves" role="menuitem"><span class="dot" style="background:#3D4F86"></span>Insurers</a>
+        </div>
+      </div>
+      <a href="regulatory-path.html" class="nav-item" aria-current="page">Regulatory path</a>
+      <a href="pilot-funding.html" class="nav-item">Pilot Program</a>
+      <a href="contact.html" class="nav-item">Contact</a>
+    </nav>
+    <span class="nav-spacer"></span>
+    <a href="contact.html?type=demo" class="btn btn-primary btn-sm nav-cta">Get workflow demo access</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="grp">How it works</div>
+    <a href="technology.html">Overview</a>
+    <a href="technology.html">Technology</a>
+    <a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener">README</a>
+    <div class="grp">Who it serves</div>
+    <a href="index.html#who-it-serves">Manufacturers</a>
+    <a href="index.html#who-it-serves">Hospitals</a>
+    <a href="index.html#who-it-serves">Refurbishers</a>
+    <a href="index.html#who-it-serves">Insurers</a>
+    <div class="grp">More</div>
+    <a href="regulatory-path.html">Regulatory path</a>
+    <a href="pilot-funding.html">Pilot Program</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</header>
+
+<section class="masthead">
+  <div class="wrap">
+    <span class="eyebrow">Regulatory path</span>
+    <h1>The evidence obligations MedPassport addresses</h1>
+    <p class="mast-sub">EU MDR, FDA QMSR, and EUDAMED each create specific evidence requirements that follow the device across its operational lifetime. This page sets out those requirements and how MedPassport addresses them.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="reg-body">
+      <aside class="reg-toc" aria-label="Page contents">
+        <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;">On this page</p>
+        <ul class="reg-toc-list">
+          <li><a href="#eu-mdr">EU MDR - Post-market surveillance</a></li>
+          <li><a href="#fsca">EU MDR - Field safety corrective action</a></li>
+          <li><a href="#eudamed">EUDAMED - Registration and vigilance</a></li>
+          <li><a href="#fda-qmsr">FDA QMSR - Quality system regulation</a></li>
+          <li><a href="#scope">What MedPassport does not replace</a></li>
+        </ul>
+      </aside>
+
+      <div class="reg-sections">
+
+        <div id="eu-mdr">
+          <span class="reg-badge">EU MDR 2017/745</span>
+          <div class="reg-status-line">In force - lifetime PMS obligation</div>
+          <h2>Post-market surveillance</h2>
+          <p>Article 83 of EU MDR 2017/745 requires every manufacturer to establish and maintain a post-market surveillance system for the full operational lifetime of the device. The obligation to collect and evaluate safety and performance data continues regardless of whether the service contract is active or whether the device has changed ownership.</p>
+          <p>The practical consequence is that a manufacturer's PMS responsibility does not end when the device leaves their contracted service network. When a device is serviced by an independent ISO, operated in a hospital outside the OEM service contract, or transferred to a new owner, the manufacturer still needs evidence of what happened to it.</p>
+          <div class="reg-callout">
+            <p>Registration confirms a device exists. PMS evidence continues after registration, for the device's entire operational lifetime, across every owner and service provider. That is the gap MedPassport addresses.</p>
+          </div>
+          <p>MedPassport provides the cross-boundary evidence layer that makes this data accessible: every credentialed service event, regardless of which organisation performed it, is recorded to the same independently verifiable chain. The manufacturer's PMS data collection process can query that chain directly, without requiring voluntary cooperation from every prior service actor.</p>
+          <div class="reg-source">Source: EU MDR 2017/745, Article 83</div>
+        </div>
+
+        <hr class="reg-divider">
+
+        <div id="fsca">
+          <span class="reg-badge">EU MDR 2017/745</span>
+          <div class="reg-status-line">In force - notification and evidence obligation</div>
+          <h2>Field safety corrective action</h2>
+          <p>Article 87 requires manufacturers to notify the relevant competent authority of field safety corrective actions and to maintain evidence of correction across every device in their distribution chain - regardless of current owner, current service provider, or contract status.</p>
+          <p>In practice, this means locating and verifying every affected device, not just demonstrating that an FSCA programme was executed in aggregate. For high-risk devices, that increasingly means device-level evidence that corrective actions were communicated, performed, and traceable across the affected fleet.</p>
+          <p>When a device has crossed an ownership boundary or been serviced by an independent ISO, that evidence depends on voluntary cooperation from every prior actor, unless a neutral, independently verifiable record already exists. MedPassport provides that neutral evidence layer.</p>
+          <div class="reg-source">Source: EU MDR 2017/745, Article 87</div>
+        </div>
+
+        <hr class="reg-divider">
+
+        <div id="eudamed">
+          <span class="reg-badge">EUDAMED</span>
+          <div class="reg-status-line">Mandatory - 28 May 2026</div>
+          <h2>EUDAMED - Registration and vigilance</h2>
+          <p>EUDAMED registration became mandatory on 28 May 2026. Registration confirms a device's existence in the EU regulatory system. It does not replace the post-market evidence obligations that continue under Articles 83 and 87.</p>
+
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-date">28 May 2026</div>
+              <div class="tl-body"><strong>UDI and device registration mandatory</strong><p>All Class IIb and Class III devices must be registered in EUDAMED. The registration obligation is now in force.</p></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">27 Nov 2026</div>
+              <div class="tl-body"><strong>Legacy device registration deadline</strong><p>Devices placed on the market before 26 May 2021 must complete EUDAMED registration by this date.</p></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-date">~Q2 2027</div>
+              <div class="tl-body"><strong>EUDAMED Vigilance module - expected mandatory</strong><p>When the Vigilance and post-market surveillance module becomes mandatory, PSUR submissions move to structured digital format through EUDAMED. The evidence MedPassport assembles today becomes a direct input to that submission. Note: EU regulatory timelines typically slip 6-12 months. This date is the current expectation, not a confirmed deadline.</p></div>
+            </div>
+          </div>
+          <div class="reg-source">Source: EU MDR 2017/745, EUDAMED published timeline, European Commission</div>
+        </div>
+
+        <hr class="reg-divider">
+
+        <div id="fda-qmsr">
+          <span class="reg-badge">FDA QMSR</span>
+          <div class="reg-status-line">In force - February 2026</div>
+          <h2>FDA QMSR - Quality system regulation</h2>
+          <p>The FDA Quality Management System Regulation (21 CFR Part 820, effective February 2026) incorporates ISO 13485 by reference. Because of this, the same evidence layer that supports EU MDR post-market surveillance also supports the ISO 13485 evidence requirements that QMSR now references in the US.</p>
+          <p>QMSR also incorporates ISO 13485 supplier controls (§7.4) and CAPA trend analysis (§820.100) by reference, both requiring service trend data across the full device population, including independently serviced devices. MedPassport supplies structured, queryable pass and fail data from every credentialed actor, OEM and ISO alike, as an input to that analysis. A single deployment built for EU evidence requirements extends naturally to support these US requirements as well.</p>
+          <p>QMSR §820.100 requires a corrective and preventive action process that includes data analysis from post-production sources. MedPassport provides independently verifiable service and complaint data from across the device chain - the cross-boundary evidence that CMMS and QMS systems generate internally but do not transfer between organisations.</p>
+          <div class="reg-callout">
+            <p>MedPassport supplies data to the OEM's QMS and CAPA process. It does not replace either, and it does not itself determine regulatory compliance.</p>
+          </div>
+          <div class="reg-source">Source: FDA 21 CFR Part 820, effective February 2026 - ISO 13485:2016</div>
+        </div>
+
+        <hr class="reg-divider">
+
+        <div id="scope">
+          <h2>What MedPassport does not replace</h2>
+          <p>MedPassport is an evidence layer. It is not a quality management system, a CMMS, a clinical system, or a regulatory submission platform.</p>
+          <div class="scope-note"><strong>MedPassport does not replace:</strong> the manufacturer's QMS or CAPA process - the hospital's CMMS or internal service management - the OEM's service contract obligations - EUDAMED registration (a manufacturer obligation MedPassport does not participate in) - a notified body's conformity assessment - a regulatory submission</div>
+          <p style="margin-top:20px;">What MedPassport provides is the cross-boundary evidence layer that none of those systems can currently provide: independently verifiable proof of what happened to a device, across every owner and service provider, available to authorised parties at the moment they need it.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ctaband">
+  <svg style="position:absolute;inset:0;opacity:.22;pointer-events:none;" viewBox="0 0 1200 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g stroke="#ffffff" stroke-width="1"><path d="M120 60 L260 120 M260 120 L200 230 M200 230 L380 200 M900 70 L1040 130 M1040 130 L980 240 M980 240 L1100 200"/></g>
+    <g fill="#ffffff"><circle cx="120" cy="60" r="4"/><circle cx="260" cy="120" r="5"/><circle cx="900" cy="70" r="4"/><circle cx="1040" cy="130" r="5"/></g>
+  </svg>
+  <div class="wrap">
+    <h2>See how the evidence model applies to your fleet.</h2>
+    <p>Request a conversation to see how MedPassport's evidence model maps to your EU MDR and QMSR obligations, using your own devices as the example.</p>
+    <div class="ctaband-cta">
+      <a href="pilot-funding.html" class="btn btn-light">Start with an Evidence Gap Assessment</a>
+      <a href="contact.html" class="btn btn-outline-light">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 3 L33 8 V19 C33 27.5 27.5 33.5 20 37 C12.5 33.5 7 27.5 7 19 V8 Z" fill="#0C447C"/><circle cx="20" cy="14" r="2.8" fill="#fff"/><circle cx="14.5" cy="24" r="2.8" fill="#fff"/><circle cx="25.5" cy="24" r="2.8" fill="#B88746"/><path d="M20 14 L14.5 24 M20 14 L25.5 24 M14.5 24 L25.5 24" stroke="#fff" stroke-width="1.3" opacity=".85"/></svg>
+          <span class="brand-name">Med<span class="pass">Passport</span></span>
+        </a>
+        <p>A neutral evidence layer for high-risk medical devices, across every ownership and service boundary.</p>
+      </div>
+      <div class="footer-col"><h4>How it works</h4><a href="technology.html">Overview</a><a href="technology.html">Technology</a><a href="regulatory-path.html">Regulatory Path</a><a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener">README</a></div>
+      <div class="footer-col"><h4>Who It Serves</h4><a href="index.html#who-it-serves">Manufacturers</a><a href="index.html#who-it-serves">Hospitals</a><a href="index.html#who-it-serves">Refurbishers</a><a href="index.html#who-it-serves">Insurers</a></div>
+      <div class="footer-col"><h4>Pilot Program</h4><a href="pilot-funding.html">Pilot Program</a><a href="contact.html?type=demo">Get workflow demo access</a><a href="for-investors.html">For Investors</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="contact.html">Contact us</a><a href="contact.html?type=demo">Get workflow demo access</a></div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    <div class="wrap">
+      <p>© 2026 MedPassport Protocol. MIT licensed open protocol. No patient data - enforced at protocol level. Not a substitute for a manufacturer's quality management system or a regulatory submission.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var t = document.getElementById('navToggle'), m = document.getElementById('navMobile');
+    if (t && m) t.addEventListener('click', function(){ var open = m.classList.toggle('open'); t.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+  })();
+  (function(){
+    var drops = document.querySelectorAll('.has-drop');
+    drops.forEach(function(drop){
+      var btn = drop.querySelector('.nav-item[aria-haspopup]');
+      if (!btn) return;
+      btn.addEventListener('click', function(e){
+        if (!window.matchMedia('(hover: none)').matches) return;
+        if (!drop.classList.contains('drop-open')) { e.preventDefault(); drops.forEach(function(d){ d.classList.remove('drop-open'); }); drop.classList.add('drop-open'); btn.setAttribute('aria-expanded','true'); }
+      });
+    });
+    document.addEventListener('click', function(e){ if (!e.target.closest('.has-drop')) { drops.forEach(function(d){ d.classList.remove('drop-open'); }); } });
+  })();
+</script>
+</body>
+</html>
