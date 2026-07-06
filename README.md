@@ -33,14 +33,16 @@ MedPassport is an open-source protocol that creates **permanent, independently v
 MedPassport is currently a **TRL 5 testnet protocol**.
 
 - **10 smart contracts** live on Polygon Amoy testnet
-- **80 automated Foundry tests** passing, with GitHub Actions CI enabled
+- **100 automated Foundry tests** passing, with GitHub Actions CI enabled
 - **FDA GUDID bridge** live and verified against AccessGUDID
 - **EU EUDAMED bridge** live against public EU Commission endpoints
 - **IPFS document uploader** live via Pinata
-- **VaultService bridge** implemented for IPFS upload + on-chain hash anchoring
+- **VaultService bridge** implemented for IPFS upload + on-chain hash anchoring; final on-chain write path pending a scheduled contract redeployment
 - **Public website and interactive demo** available for stakeholder walkthroughs
 
 The public repository contains the open protocol surface. Detailed enterprise architecture, access-tier decisions, custody models, and pilot-specific operating documents are maintained privately while the design and IP position continue to mature.
+
+This section reflects live status — the test count above should always match the CI badge at the top of this file.
 
 ---
 
@@ -273,7 +275,7 @@ EUDAMED and GUDID identify devices. MedPassport records what happens to those de
 
 | Document | Description |
 |---|---|
-| [Whitepaper](docs/WHITEPAPER.md) | Public protocol overview — problem, solution, regulatory alignment, and current status |
+| [Whitepaper](docs/WHITEPAPER.md) | Public market and regulatory thesis — problem, solution, business model, and Web3 category fit. For live technical status and proof, this README and its CI badge are the source of truth. |
 | [ADR-000 Protocol Axioms](docs/adrs/ADR-000-protocol-axioms.md) | Constitutional protocol rules that every contract and workflow must uphold |
 
 Detailed architecture ADRs, access-tier framework, custody model, and pilot-readiness documents are maintained privately during the current design and IP phase.
@@ -362,7 +364,7 @@ Pricing, ROI analysis, and pilot definitions are not published in the open repos
 **Tomer Saar, PMP**  
 20+ years in the medical device industry  
 R&D · Engineering · Manufacturing Management at Tier-1 global medical device companies  
-Co-inventor on multiple granted patents in implantable cardiac devices and motion systems
+Co-inventor on granted patents in implantable cardiac devices and motion systems
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/tomer-saar/)
 

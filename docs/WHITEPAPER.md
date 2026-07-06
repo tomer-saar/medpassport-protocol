@@ -19,6 +19,8 @@ MedPassport does not require an application token for pilot adoption. The protoc
 
 Detailed implementation annexes, partner-specific pilot documents, security architecture, and enterprise integration designs are available only under appropriate confidentiality terms for qualified partners, auditors, and institutional collaborators.
 
+This document covers the market, regulatory, and architectural thesis. To verify the protocol's current build status, test results, and to run it yourself, see the [project README](https://github.com/tomer-saar/medpassport-protocol#readme).
+
 ---
 
 ## 1. Executive Summary
@@ -31,7 +33,7 @@ The first market is high-risk medical devices: Class IIb and Class III equipment
 
 The broader thesis is larger: MedPassport is infrastructure for verifiable lifecycle evidence of regulated physical assets. Medical devices are the first wedge because the pain is immediate, the identity layer exists, and the regulatory timing is strong.
 
-As of June 2026, MedPassport is at TRL 5: ten smart contracts are live on Polygon Amoy testnet, 80 Foundry tests are passing, CI is green, FDA GUDID and EU EUDAMED bridge services are live, the IPFS document uploader is operational, VaultService is functionally built with one remaining testnet credential-registration blocker, and a public website and interactive demo are live.
+As of June 2026, MedPassport is at TRL 5: ten smart contracts are live on Polygon Amoy testnet, 100 Foundry tests are passing, CI is green, FDA GUDID and EU EUDAMED bridge services are live, the IPFS document uploader is operational, VaultService is functionally built with its on-chain write path pending a scheduled contract redeployment, and a public website and interactive demo are live. Current test count and build status are maintained in the project README, which reflects live CI results.
 
 ---
 
@@ -309,18 +311,9 @@ Public-safe positioning:
 
 ## 12. Current Technical Status
 
-As of June 2026, MedPassport is at Technology Readiness Level 5.
+As of June 2026, MedPassport is at Technology Readiness Level 5: ten smart contracts live on Polygon Amoy testnet, FDA GUDID and EU EUDAMED bridges live and tested, an IPFS document uploader operational with Pinata, VaultService built with its on-chain write path pending a scheduled contract redeployment, and a public site live with demo and stakeholder flows, under an MIT open-source license.
 
-| Area | Status |
-|---|---|
-| Smart contracts | 10 contracts live on Polygon Amoy testnet |
-| Tests | 80 Foundry tests passing, CI green |
-| Device validation | FDA GUDID bridge live and tested |
-| EU validation | EUDAMED bridge live and tested against public endpoints |
-| Document storage | IPFS uploader live with Pinata |
-| Vault service | Built; 6/7 tests passing, final testnet credential registration pending |
-| Public site | medpassport.io live with demo and stakeholder flows |
-| License | MIT open-source protocol |
+This whitepaper describes the qualitative state of the protocol and does not track exact test counts or build numbers, since those change between whitepaper revisions. For current test results, contract counts, and CI status, see the [project README](https://github.com/tomer-saar/medpassport-protocol#readme), which reflects live CI status via its test badge.
 
 The current testnet implementation proves the core architecture: device identity, event logging, compliance scoring, certification, ownership transfer, oracle bridges, document hashing, and public verification.
 
@@ -404,7 +397,7 @@ As the number of devices and credentialed actors increases, the network becomes 
 
 ### Near Term: Pilot Readiness
 
-- Finalize VaultService testnet credential registration
+- Execute the scheduled VaultService contract redeployment
 - Build production-grade Path B mobile PWA
 - Prepare security audit scope
 - Prepare pilot evidence dashboards
