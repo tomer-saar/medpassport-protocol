@@ -499,7 +499,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
           <div class="sdemo-steps">
             <div class="sdemo-step" id="rs1"><div class="sn">1</div><div class="st"><h4>Validate UDI against FDA GUDID and EU EUDAMED</h4><p>Device identity and regulatory classification confirmed before passport is created.</p></div><div class="scheck">&#10003;</div></div>
             <div class="sdemo-step" id="rs2"><div class="sn">2</div><div class="st"><h4>Create unique digital identity for this device</h4><p>One permanent record per physical device, anchored to the UDI. Cannot be duplicated.</p></div><div class="scheck">&#10003;</div></div>
-            <div class="sdemo-step" id="rs3"><div class="sn">3</div><div class="st"><h4>Initial compliance score set: 100/100</h4><p>The score reflects the device's evidence status. It is affected by active recalls, missed scheduled maintenance, or unresolved safety correction requirements.</p></div><div class="scheck">&#10003;</div></div>
+            <div class="sdemo-step" id="rs3"><div class="sn">3</div><div class="st"><h4>Initial evidence score set: 100/100</h4><p>The score reflects the device's evidence status. It is affected by active recalls, missed scheduled maintenance, or unresolved safety correction requirements.</p></div><div class="scheck">&#10003;</div></div>
             <div class="sdemo-step" id="rs4"><div class="sn">4</div><div class="st"><h4>Digital Product Passport ready</h4><p>Passport travels with this device for its entire operational life, across every owner and service provider.</p></div><div class="scheck">&#10003;</div></div>
           </div>
 
@@ -610,7 +610,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
               <div class="fc-lbl">With MedPassport</div>
               <div class="fc-item">Query the ledger - every registered device located instantly</div>
               <div class="fc-item">Current owner identified regardless of ownership history</div>
-              <div class="fc-item">FSCA flag written on-chain - compliance score suspended pending corrective action</div>
+              <div class="fc-item">FSCA flag written on-chain - evidence score suspended pending corrective action</div>
               <div class="fc-item">All registered holders notified</div>
               <div class="fc-item">Corrective action logged per serial number - dual signature</div>
               <div class="fc-item">Regulator verifies execution from read-only access</div>
@@ -664,7 +664,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
               <div class="wsw-head"><div class="wsw-role">Your organisation</div><div class="wsw-name">Manufacturer / Hospital</div></div>
               <div class="wsw-body">
                 <div class="wsw-item"><div class="wsw-item-lbl">Device</div><div class="wsw-item-val">CardioScan Pro 3000 - SN00432</div></div>
-                <div class="wsw-item"><div class="wsw-item-lbl">Compliance score</div><div class="wsw-item-val" style="color:var(--blue);font-size:15px;">100/100 Gold</div></div>
+                <div class="wsw-item"><div class="wsw-item-lbl">Evidence score</div><div class="wsw-item-val" style="color:var(--blue);font-size:15px;">100/100 Gold</div></div>
                 <div class="wsw-item"><div class="wsw-item-lbl">Last PM</div><div class="wsw-item-val">March 2026 - OEM certified - Passed</div></div>
                 <div class="wsw-item"><div class="wsw-item-lbl">FSCA status</div><div class="wsw-item-val" style="color:var(--teal-dark);">No active FSCA</div></div>
                 <span class="wsw-badge" style="background:var(--blue-tint);color:var(--blue-dark);border:1px solid var(--blue-tint-2);">Full access - your credential</span>
@@ -734,7 +734,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
       <div class="tech-detail-body" id="tech-detail-body">
         <p>Documents are stored in a role-gated vault using envelope encryption. Each document is encrypted with its own AES-256-GCM key. That key is then wrapped separately for every actor authorised to read it, so no single party, including MedPassport, holds a master key. Only a content hash and IPFS content identifier are anchored on-chain. The document itself never touches the public ledger.</p>
         <p>Events are recorded to the ServiceLogRegistry contract on Polygon. Each entry is append-only, signed by the actor's delegated key via ERC-4337 account abstraction. No participant ever manages a private key or interacts with wallet infrastructure directly. The contract address, transaction hash, and block number are publicly verifiable by any party without requiring access to MedPassport.</p>
-        <p>The compliance score is computed by ComplianceScorer.sol and is publicly queryable at the smart contract layer. Score visibility in the application layer is controlled by requiring a Granted viewer authorisation before the score is exposed in any UI or API - protecting commercially sensitive scoring information while keeping the cryptographic verification layer fully open.</p>
+        <p>The evidence score is computed by ComplianceScorer.sol and is publicly queryable at the smart contract layer. Score visibility in the application layer is controlled by requiring a Granted viewer authorisation before the score is exposed in any UI or API - protecting commercially sensitive scoring information while keeping the cryptographic verification layer fully open.</p>
         <p>Full architecture documentation: <a href="https://github.com/tomer-saar/medpassport-protocol#readme" target="_blank" rel="noopener">README on GitHub</a></p>
       </div>
     </div>
