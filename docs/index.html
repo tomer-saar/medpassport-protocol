@@ -74,6 +74,7 @@
   --acc-hosp:    #0E7C8B;
   --acc-refurb:  #B88746;
   --acc-ins:     #3D4F86;
+  --acc-aud:     #2A8C8C;
 
   --gold:        #9a7420;
   --gold-tint:   #f6efdd;
@@ -150,9 +151,11 @@ strong { color: var(--ink); font-weight: 600; }
 /* ===================== NAV ===================== */
 .nav {
   position: sticky; top: 0; z-index: 60;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: saturate(180%) blur(8px);
-  border-bottom: 1px solid var(--line);
+  background: rgba(246,250,253,.94);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid #d6e5f2;
+  box-shadow: 0 1px 0 rgba(12,68,124,.04);
 }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px;
   display: flex; align-items: center; gap: 8px; height: 64px; }
@@ -178,6 +181,12 @@ strong { color: var(--ink); font-weight: 600; }
   font-family: var(--f-body);
 }
 .nav-item:hover { background: var(--blue-tint); color: var(--blue); }
+.nav-item[aria-current="page"] {
+  color: var(--blue);
+  background: rgba(230,241,251,.65);
+  border-radius: 9px;
+  font-weight: 600;
+}
 .nav-item .chev { width: 11px; height: 11px; transition: transform .18s ease; color: currentColor; }
 .has-drop { position: relative; }
 .has-drop:hover .chev { transform: rotate(180deg); }
@@ -416,10 +425,12 @@ strong { color: var(--ink); font-weight: 600; }
 .xcard[data-acc="hosp"]   .xcard-accent { background: var(--acc-hosp); }
 .xcard[data-acc="refurb"] .xcard-accent { background: var(--acc-refurb); }
 .xcard[data-acc="ins"]    .xcard-accent { background: var(--acc-ins); }
+.xcard[data-acc="aud"]    .xcard-accent { background: var(--acc-aud); }
 .xcard[data-acc="mfr"]    .x-trigger,
 .xcard[data-acc="hosp"]   .x-trigger,
 .xcard[data-acc="refurb"] .x-trigger,
-.xcard[data-acc="ins"]    .x-trigger { color: var(--blue); }
+.xcard[data-acc="ins"]    .x-trigger,
+.xcard[data-acc="aud"]    .x-trigger { color: var(--blue); }
 .xcard .x-meta { font-size: 12.5px; font-weight: 600; color: var(--muted); margin-top: 12px; display: block; }
 
 /* ===================== REGULATORY ALIGNMENT ===================== */
@@ -881,7 +892,7 @@ a.nav-item[aria-disabled="true"] {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Who It Serves</span>
-      <h2>One protocol. Four audiences.</h2>
+      <h2>One protocol. Five audiences.</h2>
     </div>
     <div class="xgrid">
 
@@ -914,6 +925,14 @@ a.nav-item[aria-disabled="true"] {
         <p class="x-text">Documentation gaps feature in liability proceedings and influence underwriting terms. MedPassport creates a shared, independently anchored record both parties can reference. <span class="x-tail">MedPassport does not eliminate disputes or guarantee legal outcomes. What it removes is the informational asymmetry that turns every claim into a contested reconstruction. Service events, credentials, and timestamps are recorded at the time they occur, signed by the credentialed actor, independently anchored, accessible to both parties under role-governed access. When an investigation begins, both parties reference the same record rather than assembling competing versions from their own systems.</span> <span class="x-trigger"><span class="more-label">Read more</span><span class="less-label">Show less</span><svg class="chev" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></p>
         <span class="x-meta">Shared record - role-governed - available at the moment it is needed</span>
         <div class="x-src">Admiral Insurance Group published product liability guidance, 2026</div>
+      </div>
+
+      <div class="xcard" data-acc="aud" aria-expanded="false">
+        <div class="xcard-accent"></div>
+        <h3>The Auditor / Notified Body</h3>
+        <p class="x-text">When an audit or notified body review begins, the device owner grants time-limited, read-only access to the full evidence layer: events, calibration certificates, FSCA records, and ownership chain. <span class="x-tail">The auditor sees a complete, independently verifiable record, so there is no need to trust a single party's account or wait for the owner to assemble evidence by hand. Each grant covers only the devices under review and expires when the audit closes. Under EU MDR Article 87 the FSCA obligation sits with the manufacturer and the regulator issues the directive - MedPassport does not author regulatory actions, it preserves the evidence that supports them. The device owner is always in control of who sees the record and for how long. The one exception, by design, is the live recall flag: safety-critical status is always public, while the full FSCA record and all other audit detail remain owner-granted.</span> <span class="x-trigger"><span class="more-label">Read more</span><span class="less-label">Show less</span><svg class="chev" viewBox="0 0 12 12" fill="none"><path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></p>
+        <span class="x-meta">Owner-granted. Time-limited. Read-only.</span>
+        <div class="x-src">Access model: owner-granted, default 90 days, read-only - EU MDR Art. 87</div>
       </div>
 
     </div>

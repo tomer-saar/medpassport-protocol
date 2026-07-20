@@ -63,7 +63,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
 .section-head .lede { margin-top: 18px; font-size: 18px; color: var(--body); line-height: 1.6; }
 
 /* NAV - identical to other pages */
-.nav { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.92); backdrop-filter: saturate(180%) blur(8px); border-bottom: 1px solid var(--line); }
+.nav { position: sticky; top: 0; z-index: 60; background: rgba(246,250,253,.94); -webkit-backdrop-filter: saturate(180%) blur(10px); backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid #d6e5f2; box-shadow: 0 1px 0 rgba(12,68,124,.04); }
 .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; display: flex; align-items: center; gap: 8px; height: 64px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; margin-right: 14px; }
 .brand-mark { width: 30px; height: 30px; flex: none; }
@@ -73,7 +73,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
 .nav-spacer { flex: 1 1 auto; }
 .nav-item { position: relative; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: #3a4a5a; font-size: 13px; font-weight: 500; padding: 9px 13px; border-radius: 8px; cursor: pointer; font-family: var(--f-body); }
 .nav-item:hover { background: var(--blue-tint); color: var(--blue); }
-.nav-item[aria-current="page"] { color: var(--blue); border-bottom: 2px solid var(--blue); border-radius: 0; padding-bottom: 7px; }
+.nav-item[aria-current="page"] { color: var(--blue); background: rgba(230,241,251,.65); border-radius: 9px; font-weight: 600; }
 .nav-item .chev { width: 11px; height: 11px; transition: transform .18s ease; }
 .has-drop { position: relative; }
 .drop { position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .16s ease, transform .16s ease, visibility .16s; }
@@ -105,12 +105,19 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
 .masthead h1 { font-size: clamp(32px, 4.4vw, 48px); line-height: 1.08; margin: 0; max-width: 760px; letter-spacing: -.02em; }
 .masthead .mast-sub { font-size: 18px; color: var(--body); max-width: 620px; margin-top: 18px; }
 /* CONTENT */
+.reg-page-section {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(12,68,124,.045), transparent 28%),
+    linear-gradient(180deg, #f6f9fc 0%, #fff 48%);
+}
+.reg-shell { background: #fff; border: 1px solid #dde8f1; border-radius: 18px; box-shadow: 0 18px 50px rgba(12,68,124,.07); padding: 42px 46px; }
 .reg-body { display: grid; grid-template-columns: 1fr 2fr; gap: 56px; align-items: start; }
-.reg-toc { position: sticky; top: 82px; }
+.reg-toc { position: sticky; top: 88px; align-self: start; background: #f8fbfd; border: 1px solid #dde8f1; border-radius: 14px; padding: 18px 16px; }
 .reg-toc-list { list-style: none; margin: 0; padding: 0; }
 .reg-toc-list li { margin-bottom: 2px; }
-.reg-toc-list a { display: block; font-size: 13px; color: var(--muted); padding: 6px 10px; border-radius: 7px; border-left: 2px solid transparent; }
+.reg-toc-list a { display: block; font-size: 13px; color: var(--muted); padding: 8px 10px; border-radius: 8px; border-left: 3px solid transparent; }
 .reg-toc-list a:hover, .reg-toc-list a.active { color: var(--blue); border-left-color: var(--blue); background: var(--blue-tint); }
+.reg-sections { border-left: 1px solid #e6eef5; padding-left: 44px; min-width: 0; }
 .reg-sections h2 { font-size: clamp(24px,2.8vw,32px); margin: 0 0 16px; padding-top: 56px; }
 .reg-sections h2:first-child { padding-top: 0; }
 .reg-sections p { font-size: 15.5px; line-height: 1.7; }
@@ -146,11 +153,13 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
 .footer-legal { border-top: 1px solid var(--line); padding: 18px 0 34px; }
 .footer-legal p { font-size: 11.5px; color: var(--muted); margin: 0; max-width: 860px; }
 @media (max-width: 940px) {
-  .reg-body { grid-template-columns: 1fr; }
+  .reg-shell { padding: 28px 22px; }
+  .reg-body { grid-template-columns: 1fr; gap: 36px; }
   .reg-toc { position: static; }
+  .reg-sections { border-left: 0; padding-left: 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
 }
-@media (max-width: 560px) { .section { padding: 60px 0; } .footer-grid { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .section { padding: 60px 0; } .reg-shell { padding: 22px 16px; border-radius: 14px; } .footer-grid { grid-template-columns: 1fr; } }
 :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
 </style>
 </head>
@@ -207,9 +216,10 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
   </div>
 </section>
 
-<section class="section">
+<section class="section reg-page-section">
   <div class="wrap">
-    <div class="reg-body">
+    <div class="reg-shell">
+      <div class="reg-body">
       <aside class="reg-toc" aria-label="Page contents">
         <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;">On this page</p>
         <ul class="reg-toc-list">
@@ -298,6 +308,7 @@ p { margin: 0 0 1rem; } strong { color: var(--ink); font-weight: 600; }
         </div>
 
       </div>
+    </div>
     </div>
   </div>
 </section>
