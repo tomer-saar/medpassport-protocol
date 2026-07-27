@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏥 MedPassport Protocol
+# MedPassport Protocol
 
 ## The cross-organizational evidence layer for regulated medical devices
 
@@ -13,16 +13,16 @@
 
 <br/>
 
-MedPassport is an open-source protocol that creates **permanent, independently verifiable lifecycle records** for high-risk medical devices — preserving service, ownership, calibration, software, and compliance evidence across the organizational boundaries where OEM clouds, CMMS platforms, QMS databases, and local records lose continuity.
+MedPassport is an open-source protocol that creates **permanent, independently verifiable lifecycle records** for high-risk medical devices - preserving service, ownership, calibration, software, and compliance evidence across the organizational boundaries where OEM clouds, CMMS platforms, QMS databases, and local records lose continuity.
 
 <br/>
 
-[📄 Whitepaper](docs/WHITEPAPER.md) &nbsp;·&nbsp;
-[🏗️ Architecture](#architecture) &nbsp;·&nbsp;
-[🔐 Security & Privacy](#-security--privacy) &nbsp;·&nbsp;
-[🌍 Dual-Market Readiness](#-dual-market-readiness--eu-and-us) &nbsp;·&nbsp;
-[🚀 Quick Start](#-quick-start) &nbsp;·&nbsp;
-[🗺️ Roadmap](#%EF%B8%8F-roadmap)
+[Whitepaper](docs/WHITEPAPER.md) &nbsp;·&nbsp;
+[Architecture](#architecture) &nbsp;·&nbsp;
+[Security & Privacy](#security-privacy) &nbsp;·&nbsp;
+[Dual-Market Readiness](#dual-market-readiness---eu-and-us) &nbsp;·&nbsp;
+[Quick Start](#quick-start) &nbsp;·&nbsp;
+[Roadmap](#roadmap)
 
 </div>
 
@@ -42,7 +42,7 @@ MedPassport is currently a **TRL 5 testnet protocol**.
 
 The public repository contains the open protocol surface. Detailed enterprise architecture, access-tier decisions, custody models, and pilot-specific operating documents are maintained privately while the design and IP position continue to mature.
 
-This section reflects live status — the test count above should always match the CI badge at the top of this file.
+This section reflects current status as of the last update. The CI badge at the top of this file always shows the live, up-to-the-minute test result.
 
 ---
 
@@ -52,13 +52,13 @@ This section reflects live status — the test count above should always match t
 
 **The architectural gap:** No existing single-organization system can create a neutral, tamper-evident record that manufacturers, hospitals, refurbishers, independent service organizations, insurers, and regulators can all trust. Proprietary OEM clouds stop at the contract boundary. CMMS systems stop at the organizational boundary. EUDAMED and GUDID identify devices, but they do not record what happens to each physical device after it leaves the manufacturer's direct control.
 
-**MedPassport's answer:** An open protocol that turns the device UDI into a cryptographic passport — carrying signed attestations from every credentialed actor who touches the device, from manufacture to service, resale, refurbishment, audit, and end-of-life.
+**MedPassport's answer:** An open protocol that turns the device UDI into a cryptographic passport - carrying signed attestations from every credentialed actor who touches the device, from manufacture to service, resale, refurbishment, audit, and end-of-life.
 
 ---
 
 ## The Four Structural Gaps
 
-High-risk medical devices — Class IIb/III systems such as CT, MRI, EEG, cardiology, and other capital equipment — operate under strict regulation but move through a fragmented chain:
+High-risk medical devices - Class IIb/III systems such as CT, MRI, EEG, cardiology, and other capital equipment - operate under strict regulation but move through a fragmented chain:
 
 **OEM → distributor → hospital → ISO service organization → refurbisher → secondary buyer**
 
@@ -66,10 +66,10 @@ At every organizational handoff, existing systems lose continuity. The failure i
 
 | Gap | The structural problem | Compliance consequence |
 |---|---|---|
-| **A — Legacy / disconnected devices** | Many high-risk devices operate for years without continuous cloud connectivity or with local service records only. | PSUR evidence gaps, incomplete audit trails, and weak field traceability. |
-| **B — Ownership transfer breaks the chain** | When a device changes owner, the manufacturer's direct service record and visibility often stop. | OEM PMS obligations continue, but the evidence trail becomes fragmented. |
-| **C — Independent service dead zone** | ISO and third-party service events often stay outside OEM systems and are difficult to verify later. | Incomplete service history, disputed liability, and weak evidence for maintenance quality. |
-| **D — Lack of independent evidence** | Records controlled only by one commercial party carry lower evidentiary weight in disputes and audits. | Regulators, notified bodies, insurers, and buyers must reconstruct evidence manually. |
+| **A - Legacy / disconnected devices** | Many high-risk devices operate for years without continuous cloud connectivity or with local service records only. | PSUR evidence gaps, incomplete audit trails, and weak field traceability. |
+| **B - Ownership transfer breaks the chain** | When a device changes owner, the manufacturer's direct service record and visibility often stop. | OEM PMS obligations continue, but the evidence trail becomes fragmented. |
+| **C - Independent service dead zone** | ISO and third-party service events often stay outside OEM systems and are difficult to verify later. | Incomplete service history, disputed liability, and weak evidence for maintenance quality. |
+| **D - Lack of independent evidence** | Records controlled only by one commercial party carry lower evidentiary weight in disputes and audits. | Regulators, notified bodies, insurers, and buyers must reconstruct evidence manually. |
 
 ---
 
@@ -87,7 +87,7 @@ MedPassport does not determine whether a refurbished, reprocessed, or remanufact
 |---|---|
 | **Every write is a signed attestation** | Lifecycle events are written by credentialed actors; anonymous writes do not exist. |
 | **Append-only integrity** | Nothing is deleted or overwritten. Corrections are appended as new records that reference the original. |
-| **Zero-PII on-chain** | The ledger contains hashes, timestamps, UDI-linked metadata, and credential references — not patient data, pricing, or personal information. |
+| **Zero-PII on-chain** | The ledger contains hashes, timestamps, UDI-linked metadata, and credential references - not patient data, pricing, or personal information. |
 | **Neutral scoring** | Compliance reflects device condition and evidence quality, not vendor loyalty. OEM and qualified ISO service can both receive full credit for valid work. |
 | **Credential-based write authority** | Write permissions are determined by role and credential status, not by commercial relationships. |
 | **Owner-controlled disclosure** | Sensitive evidence is shared through role-based access and owner-authorized grants, not exposed publicly by default. |
@@ -104,19 +104,19 @@ MedPassport separates **private operational data**, **role-gated evidence**, and
 
 ```mermaid
 graph TD
-    A["👥 Stakeholders\nOEM · Hospital · ISO · Refurbisher · Regulator · Insurer"]
+    A["Stakeholders\nOEM · Hospital · ISO · Refurbisher · Regulator · Insurer"]
 
-    B["🔐 Application / API Layer\nRole-based access · Grants · Dashboards · CMMS adapters · Barcode fallback"]
+    B["Application / API Layer\nRole-based access · Grants · Dashboards · CMMS adapters · Barcode fallback"]
 
-    C["🪪 Credential & Access Layer\nCredential states · Role permissions · Owner-authorized disclosure"]
+    C["Credential & Access Layer\nCredential states · Role permissions · Owner-authorized disclosure"]
 
-    D["📦 Evidence Vault\nService reports · Calibration certificates · SBOMs · Sanitised evidence\nEncrypted or access-controlled off-chain storage"]
+    D["Evidence Vault\nService reports · Calibration certificates · SBOMs · Sanitised evidence\nEncrypted or access-controlled off-chain storage"]
 
-    E["🔗 Public Ledger\nDevice passport NFT · Event hashes · Timestamps · Credential references\nAppend-only attestation trail"]
+    E["Public Ledger\nDevice passport NFT · Event hashes · Timestamps · Credential references\nAppend-only attestation trail"]
 
-    F["🌐 Oracle Bridges\nFDA GUDID · EU EUDAMED · IPFS"]
+    F["Oracle Bridges\nFDA GUDID · EU EUDAMED · IPFS"]
 
-    G["👁️ Read Consumers\nPublic QR scan · Granted viewer · Audit portal · Insurer API"]
+    G["Read Consumers\nPublic QR scan · Granted viewer · Audit portal · Insurer API"]
 
     A --> B
     B --> C
@@ -147,7 +147,7 @@ Ten contracts are deployed in dependency order on Polygon Amoy testnet.
 
 | Layer | Contract | Purpose |
 |---|---|---|
-| **Types** | `DeviceTypes.sol` | Shared enums and structs — the protocol dictionary |
+| **Types** | `DeviceTypes.sol` | Shared enums and structs - the protocol dictionary |
 | **Access** | `CredentialRegistry.sol` | Credential lifecycle: ACTIVE, REVOKED, INACTIVE, MIGRATED |
 | **Access** | `RoleManager.sol` | Role-based permission enforcement for write paths |
 | **Access** | `MigrationGovernance.sol` | Multisig credential succession and organizational migration |
@@ -162,34 +162,7 @@ Ten contracts are deployed in dependency order on Polygon Amoy testnet.
 
 ## Compliance Scoring Model
 
-MedPassport uses a **decay-from-100** scoring model. A newly registered compliant device starts at 100/100. Deductions are applied when service is overdue, inspection or calibration evidence is missing, software is outdated, parts evidence is incomplete, or safety events remain unresolved.
-
-```text
-New device baseline:             100 / 100
-Minor service deviation:          score reduced according to component weight
-Major overdue service:            larger deduction
-Active recall / decommissioned:   hard zero until resolved where applicable
-```
-
-Default component categories:
-
-| Component | Purpose |
-|---|---|
-| Calibration compliance | Evidence that calibration was performed and passed |
-| Preventive maintenance compliance | Evidence that scheduled PM was completed |
-| Inspection compliance | Evidence that inspections were completed |
-| Software currency | Evidence that required software / cybersecurity updates were installed |
-| Parts integrity | Evidence that parts are documented and acceptable |
-| Regulatory safety record | Evidence of unresolved serious safety events or recall state |
-
-Certification thresholds:
-
-| Level | Score range |
-|---|---|
-| **Gold** | 90–100 |
-| **Silver** | 75–89 |
-| **Bronze** | 60–74 |
-| **Not certifiable** | Below 60 |
+MedPassport evaluates each device's evidence completeness across categories such as calibration, preventive maintenance, inspection, software currency, parts integrity, and unresolved safety events. Certification tiers (Bronze, Silver, Gold) summarize this evidence state at a glance. The underlying scoring methodology is being calibrated against real pilot field data and is not yet finalized.
 
 Scoring is a transparency tool, not a replacement for regulatory judgment, clinical evaluation, or manufacturer QMS obligations.
 
@@ -201,22 +174,22 @@ MedPassport supports two complementary evidence-capture paths.
 
 | Path | Description | Intended use |
 |---|---|---|
-| **Path A — CMMS integration** | A closed work order in a CMMS or service system triggers structured evidence capture and on-chain attestation. | OEM, hospital, or service organizations with IT integration available. |
-| **Path B — Barcode / mobile fallback** | A technician scans a device barcode and submits a structured service event with supporting evidence. | Pilot sites, offline environments, refurbishers, and organizations without immediate CMMS integration. |
+| **Path A - CMMS integration** | A closed work order in a CMMS or service system triggers structured evidence capture and on-chain attestation. | OEM, hospital, or service organizations with IT integration available. |
+| **Path B - Barcode / mobile fallback** | A technician scans a device barcode and submits a structured service event with supporting evidence. | Pilot sites, offline environments, refurbishers, and organizations without immediate CMMS integration. |
 
 Both paths produce the same output: a signed lifecycle attestation anchored to the device passport.
 
 ---
 
-## 🔐 Security & Privacy
+## Security & Privacy
 
 ### Three-layer data architecture
 
 | Layer | What belongs here | Public? |
 |---|---|---|
-| **Layer 1 — Source systems** | CMMS, QMS, ERP, pricing, contracts, full internal notes | No |
-| **Layer 2 — Evidence vault** | Service reports, calibration certificates, SBOMs, sanitized evidence documents | Role-gated |
-| **Layer 3 — Public ledger** | Hashes, timestamps, credential references, device/event metadata | Yes |
+| **Layer 1 - Source systems** | CMMS, QMS, ERP, pricing, contracts, full internal notes | No |
+| **Layer 2 - Evidence vault** | Service reports, calibration certificates, SBOMs, sanitized evidence documents | Role-gated |
+| **Layer 3 - Public ledger** | Hashes, timestamps, credential references, device/event metadata | Yes |
 
 ### Privacy principles
 
@@ -245,13 +218,13 @@ MedPassport is designed as an evidence layer for device lifecycle traceability, 
 
 ---
 
-## 🌍 Dual-Market Readiness — EU and US
+## Dual-Market Readiness - EU and US
 
 | Market | Registry / framework | Status |
 |---|---|---|
-| 🇪🇺 EU | EUDAMED public device data | Bridge implemented against public endpoints |
-| 🇺🇸 US | FDA GUDID / AccessGUDID | Bridge live and verified |
-| 🌐 Dual-market | UDI-linked passport model | Designed for single protocol deployment across jurisdictions |
+| EU | EUDAMED public device data | Bridge implemented against public endpoints |
+| US | FDA GUDID / AccessGUDID | Bridge live and verified |
+| Dual-market | UDI-linked passport model | Designed for single protocol deployment across jurisdictions |
 
 EUDAMED and GUDID identify devices. MedPassport records what happens to those devices throughout their operational life.
 
@@ -264,25 +237,25 @@ EUDAMED and GUDID identify devices. MedPassport records what happens to those de
 | Cross-organizational service evidence | Limited | Partial | Core design |
 | Device-level medical regulatory context | Limited | Usually no | Built in |
 | UDI-linked lifecycle record | Partial | Sometimes | Core design |
-| Neutral evidence layer | No — controlled by one organization | Varies | Core design |
+| Neutral evidence layer | No - controlled by one organization | Varies | Core design |
 | Zero-PII public ledger model | N/A | Varies | Core design |
 | Works with CMMS and fallback capture | Usually one or the other | Rare | Both paths |
 | Dual-signature high-risk workflows | No | Rare | Built in |
 
 ---
 
-## 📄 Public Documentation
+## Public Documentation
 
 | Document | Description |
 |---|---|
-| [Whitepaper](docs/WHITEPAPER.md) | Public market and regulatory thesis — problem, solution, business model, and Web3 category fit. For live technical status and proof, this README and its CI badge are the source of truth. |
+| [Whitepaper](docs/WHITEPAPER.md) | Public market and regulatory thesis - problem, solution, business model, and Web3 category fit. For live technical status and proof, this README and its CI badge are the source of truth. |
 | [ADR-000 Protocol Axioms](docs/adrs/ADR-000-protocol-axioms.md) | Constitutional protocol rules that every contract and workflow must uphold |
 
 Detailed architecture ADRs, access-tier framework, custody model, and pilot-readiness documents are maintained privately during the current design and IP phase.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/tomer-saar/medpassport-protocol.git
@@ -296,7 +269,7 @@ Expected baseline: all public Foundry tests pass on the current main branch.
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 ### Completed
 
@@ -313,35 +286,32 @@ Expected baseline: all public Foundry tests pass on the current main branch.
 
 ### Current / Next
 
-- Complete VaultService end-to-end credentialed testnet flow
-- Build production-grade Path B mobile / PWA evidence capture
-- Define and test CMMS adapter interfaces
-- Prepare preliminary smart contract security review
-- Execute pilot-readiness walkthroughs with real stakeholder roles
-- Calibrate compliance scoring against field evidence
-- Publish measured pilot outcomes before mainnet deployment
+- Completing VaultService's on-chain write path and production data flow
+- Building mobile/PWA evidence capture and CMMS integration adapters
+- Preparing for external smart-contract security review
+- Validating the protocol with real pilot stakeholder participation
 
 ### Later
 
-- Production vault encryption and access grants
-- Enterprise credential hierarchy and SSO integration
-- Mainnet deployment after audit and pilot readiness gates
-- Insurer and audit-facing API surfaces
-- Permanent archive layer for long-term evidence retention
+- Production-grade vault encryption and enterprise access controls
+- Enterprise credential and SSO infrastructure
+- Mainnet deployment following security audit and pilot validation
+- Expanded evidence-access APIs for additional stakeholder types
+- Long-term archival storage for evidence retention
 
 ---
 
-## ✅ Demo Snapshot
+## Demo Snapshot
 
 ```text
-PASSPORT STATUS — Demo Device
+PASSPORT STATUS - Demo Device
 =============================
-Device identity:     UDI-linked passport token
-Lifecycle events:    PM · Calibration · Inspection · Software update
-Compliance score:    Derived from service evidence
-Certification:       Bronze / Silver / Gold when thresholds are met
-Recall status:       Publicly visible active recall flag
-Evidence model:      Document hash anchored on-chain, content off-chain
+Device identity: UDI-linked passport token
+Lifecycle events: PM · Calibration · Inspection · Software update
+Compliance score: Derived from service evidence
+Certification: Bronze / Silver / Gold when thresholds are met
+Recall status: Publicly visible active recall flag
+Evidence model: Document hash anchored on-chain, content off-chain
 =============================
 ```
 
@@ -359,12 +329,10 @@ Pricing, ROI analysis, and pilot definitions are not published in the open repos
 
 ---
 
-## 👤 Author
+## Author
 
-**Tomer Saar, PMP**  
-20+ years in the medical device industry  
-R&D · Engineering · Manufacturing Management at Tier-1 global medical device companies  
-Co-inventor on granted patents in implantable cardiac devices and motion systems
+**Tomer Saar**  
+An entrepreneur with 20+ years of experience in the medical device industry - R&D, engineering, and manufacturing management at Tier-1 global manufacturers. Now building MedPassport: a blockchain-based evidence protocol with the specific architecture and access controls medical device companies need to bring regulated, cross-organizational lifecycle records onto a neutral, verifiable ledger.
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://www.linkedin.com/in/tomer-saar/)
 
@@ -373,7 +341,7 @@ DSc Biomedical Engineering, Technion · 35+ years Class IIb/III · 2 US patents 
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome from Solidity developers, medical device professionals, healthcare IT specialists, security researchers, and regulatory technology practitioners.
 
@@ -388,7 +356,7 @@ Recommended contribution areas:
 
 ---
 
-## ⚖️ License
+## License
 
 MIT License.  
 Not legal, medical, regulatory, cybersecurity, or insurance advice.
@@ -397,6 +365,6 @@ Not legal, medical, regulatory, cybersecurity, or insurance advice.
 
 <div align="center">
 
-**If this project is useful to you, please ⭐ star the repo.**
+**If this project is useful to you, please star the repo.**
 
 </div>

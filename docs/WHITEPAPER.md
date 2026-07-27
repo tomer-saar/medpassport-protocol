@@ -5,7 +5,7 @@
 ## Verifiable Lifecycle Evidence for Regulated Physical Assets
 ### Medical Devices as the First Market
 
-`Public Review Draft` · `June 2026` · `MIT License`
+`Public Review Draft` · `MIT License`
 
 </div>
 
@@ -33,7 +33,7 @@ The first market is high-risk medical devices: Class IIb and Class III equipment
 
 The broader thesis is larger: MedPassport is infrastructure for verifiable lifecycle evidence of regulated physical assets. Medical devices are the first wedge because the pain is immediate, the identity layer exists, and the regulatory timing is strong.
 
-As of June 2026, MedPassport is at TRL 5: ten smart contracts are live on Polygon Amoy testnet, 100 Foundry tests are passing, CI is green, FDA GUDID and EU EUDAMED bridge services are live, the IPFS document uploader is operational, VaultService is functionally built with its on-chain write path pending a scheduled contract redeployment, and a public website and interactive demo are live. Current test count and build status are maintained in the project README, which reflects live CI results.
+MedPassport is currently at TRL 5: ten smart contracts are live on Polygon Amoy testnet, Foundry tests are passing, CI is green, FDA GUDID and EU EUDAMED bridge services are live, the IPFS document uploader is operational, VaultService is functionally built with its on-chain write path pending a scheduled contract redeployment, and a public website and interactive demo are live. Current test count and build status are maintained in the project README, which reflects live CI results.
 
 ---
 
@@ -107,14 +107,14 @@ This is a Web3 infrastructure use case, not a speculative token use case.
 MedPassport has three public-facing architectural layers.
 
 ```text
-Layer 1 — Private enterprise systems
+Layer 1 - Private enterprise systems
 CMMS · QMS · ERP · OEM service platforms · hospital records
 
-Layer 2 — Controlled evidence vault
+Layer 2 - Controlled evidence vault
 Encrypted or controlled-access documents: service reports, calibration certificates,
 software release notes, SBOM references, refurbishment evidence
 
-Layer 3 — Public attestation ledger
+Layer 3 - Public attestation ledger
 Device identity token, event hash, document hash, timestamp, credential reference,
 active recall state, certification attestation
 ```
@@ -214,7 +214,7 @@ MedPassport is not a regulatory database and does not replace regulatory submiss
 
 The public regulatory thesis is:
 
-> Registration tells the regulator what the device is. MedPassport records what happens to the device after registration — across ownership, service, software, calibration, incident, refurbishment, and decommissioning boundaries.
+> Registration tells the regulator what the device is. MedPassport records what happens to the device after registration - across ownership, service, software, calibration, incident, refurbishment, and decommissioning boundaries.
 
 ### 9.1 EU MDR: Post-Market Evidence, Not Device Registration
 
@@ -226,11 +226,11 @@ MedPassport should not be positioned as replacing EUDAMED registration. It is th
 
 As of 28 May 2026, the first four EUDAMED modules became mandatory: Actor registration, UDI/Device registration, Notified Bodies & Certificates, and Market Surveillance. These modules establish the EU registry baseline for actors, devices, certificates, and market surveillance.
 
-The remaining EUDAMED modules — Vigilance and Post-Market Surveillance, and Clinical Investigations/Performance Studies — remain under development. The European Commission states that the remaining modules will be released when mandatory, with no voluntary-use period. This is the forward-looking MedPassport hook: manufacturers need structured evidence before digital vigilance and PMS workflows become mandatory, because the evidence record must already exist when the reporting obligation arrives.
+The remaining EUDAMED modules - Vigilance and Post-Market Surveillance, and Clinical Investigations/Performance Studies - remain under development. The European Commission states that the remaining modules will be released when mandatory, with no voluntary-use period. This is the forward-looking MedPassport hook: manufacturers need structured evidence before digital vigilance and PMS workflows become mandatory, because the evidence record must already exist when the reporting obligation arrives.
 
 Public-safe positioning:
 
-> EUDAMED registration confirms that a device exists. MedPassport creates the cross-organizational lifecycle evidence needed after that registration — the evidence that supports PMS, PSUR preparation, FSCA execution, and future digital vigilance workflows.
+> EUDAMED registration confirms that a device exists. MedPassport creates the cross-organizational lifecycle evidence needed after that registration - the evidence that supports PMS, PSUR preparation, FSCA execution, and future digital vigilance workflows.
 
 ### 9.3 FDA QMSR: ISO 13485 Alignment Makes Traceability More Strategic
 
@@ -272,18 +272,9 @@ Its contribution is the evidence layer beneath those workflows: signed service r
 
 ## 10. Compliance Evidence and Scoring
 
-MedPassport includes an evidence-based compliance scoring model. The score is not a medical decision, not a regulatory decision, and not a substitute for professional judgment. It is a structured summary of device evidence.
+MedPassport includes an evidence-based compliance scoring model. The score is not a medical decision, not a regulatory decision, and not a substitute for professional judgment. It is a structured summary of device evidence across categories such as calibration, preventive maintenance, inspection, software currency, parts integrity, and safety events.
 
-A new compliant device starts at 100/100. Deductions occur when evidence indicates overdue maintenance, missing calibration, failed inspection, undocumented parts, software currency gaps, or unresolved safety events. Active recall or decommissioned state can force a hard-zero condition until corrective action is completed and verified.
-
-Certification levels summarize the evidence state:
-
-| Level | Score range | Meaning |
-|---|---:|---|
-| Gold | 90-100 | Strong evidence of current service and compliance state |
-| Silver | 75-89 | Generally strong evidence with some deductions |
-| Bronze | 60-74 | Evidence exists, but material gaps or delays are present |
-| Not certifiable | Below 60 | Significant gaps require correction before certification |
+Certification tiers (Bronze, Silver, Gold) summarize this evidence state at a glance. The underlying scoring methodology is being calibrated against real pilot field data and is not yet finalized.
 
 The score is designed to be explainable. A device owner, auditor, insurer, or buyer should be able to understand which evidence components affected the score.
 
@@ -311,7 +302,7 @@ Public-safe positioning:
 
 ## 12. Current Technical Status
 
-As of June 2026, MedPassport is at Technology Readiness Level 5: ten smart contracts live on Polygon Amoy testnet, FDA GUDID and EU EUDAMED bridges live and tested, an IPFS document uploader operational with Pinata, VaultService built with its on-chain write path pending a scheduled contract redeployment, and a public site live with demo and stakeholder flows, under an MIT open-source license.
+MedPassport is currently at Technology Readiness Level 5: ten smart contracts live on Polygon Amoy testnet, FDA GUDID and EU EUDAMED bridges live and tested, an IPFS document uploader operational with Pinata, VaultService built with its on-chain write path pending a scheduled contract redeployment, and a public site live with demo and stakeholder flows, under an MIT open-source license.
 
 This whitepaper describes the qualitative state of the protocol and does not track exact test counts or build numbers, since those change between whitepaper revisions. For current test results, contract counts, and CI status, see the [project README](https://github.com/tomer-saar/medpassport-protocol#readme), which reflects live CI status via its test badge.
 
@@ -384,40 +375,13 @@ As the number of devices and credentialed actors increases, the network becomes 
 
 ## 16. Roadmap
 
-### Completed: Testnet Evidence Protocol
+MedPassport has completed its testnet evidence protocol: ten smart contracts live on Polygon Amoy, FDA GUDID and EU EUDAMED bridges operating against public regulatory data, append-only lifecycle logging and compliance evidence logic implemented, and a public demonstration available for stakeholder review.
 
-- Protocol axioms and event model
-- Ten-contract smart contract stack
-- Polygon Amoy testnet deployment
-- FDA GUDID bridge
-- EU EUDAMED bridge
-- IPFS document upload and hash anchoring
-- Compliance scoring and certification logic
-- Public website and interactive demo
+The current phase is pilot readiness. Work is focused on production-grade evidence capture for both integrated and offline environments, external review of the smart contract layer, and validating the protocol with real-world stakeholder participation ahead of a structured pilot engagement.
 
-### Near Term: Pilot Readiness
+The pilot phase itself will onboard a limited device fleet, capture lifecycle events under real operating conditions, and measure evidence completeness and workflow time against the protocol's design targets - calibrating the scoring model against real field data rather than theoretical assumptions.
 
-- Execute the scheduled VaultService contract redeployment
-- Build production-grade Path B mobile PWA
-- Prepare security audit scope
-- Prepare pilot evidence dashboards
-- Define public-safe pilot materials and legal templates
-
-### Pilot Phase
-
-- Onboard limited Class IIb/III device fleet
-- Capture lifecycle events through CMMS integration or barcode fallback
-- Measure event capture rate, workflow time, audit readiness, and evidence completeness
-- Calibrate scoring model against real field data
-
-### Production Hardening
-
-- Security audit completion
-- Encrypted evidence vault
-- Enterprise credential onboarding
-- Production key custody model
-- Mainnet deployment after audit and pilot readiness gates
-- Expanded API access for insurers, buyers, and audit stakeholders
+Following a successful pilot, MedPassport moves toward production hardening: encrypted evidence storage, enterprise-grade credential and access management, and a mainnet deployment once audit and pilot-readiness criteria are met. As the network of registered devices and credentialed actors grows, the evidence layer is designed to extend to additional classes of authorized read access.
 
 ---
 
@@ -439,9 +403,9 @@ MedPassport is not a speculative token project. Pilot adoption does not require 
 
 ## 18. Team
 
-**Tomer Saar, PMP** — Founder. 20+ years in the medical device industry across R&D, engineering, and manufacturing management for tier-1 global manufacturers. Co-inventor on granted patents in implantable cardiac devices and motion systems.
+**Tomer Saar** - Founder. An entrepreneur with 20+ years of experience in the medical device industry across R&D, engineering, and manufacturing management for tier-1 global manufacturers. Building MedPassport: a blockchain-based evidence protocol with the specific architecture and access controls medical device companies need to bring regulated, cross-organizational lifecycle records onto a neutral, verifiable ledger.
 
-**Dr. Shlomo Gilat** — Research Lead and Industry Advisor. DSc Biomedical Engineering, Technion. 35+ years in Class IIb/III medical devices, two US patents, and 22 publications.
+**Dr. Shlomo Gilat** - Research Lead and Industry Advisor. DSc Biomedical Engineering, Technion. 35+ years in Class IIb/III medical devices, two US patents, and 22 publications.
 
 MedPassport combines medical-device operating experience, regulatory evidence awareness, and blockchain engineering into one focused protocol.
 
@@ -449,7 +413,7 @@ MedPassport combines medical-device operating experience, regulatory evidence aw
 
 ## 19. References
 
-1. European Commission, EUDAMED Overview — mandatory first four modules from 28 May 2026 and development status of remaining modules: https://health.ec.europa.eu/medical-devices-eudamed/overview_en
+1. European Commission, EUDAMED Overview - mandatory first four modules from 28 May 2026 and development status of remaining modules: https://health.ec.europa.eu/medical-devices-eudamed/overview_en
 2. Federal Register, FDA Medical Devices; Quality System Regulation Amendments, final rule effective February 2, 2026: https://www.federalregister.gov/documents/2024/02/02/2024-01709/medical-devices-quality-system-regulation-amendments
 3. Regulation (EU) 2024/1781 establishing a framework for ecodesign requirements for sustainable products: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32024R1781
 4. a16z crypto, State of Crypto 2025: https://a16zcrypto.com/posts/article/state-of-crypto-report-2025/
@@ -466,7 +430,6 @@ MedPassport combines medical-device operating experience, regulatory evidence aw
 <div align="center">
 
 **MedPassport Protocol**  
-Verifiable lifecycle evidence for regulated physical assets.  
-Medical devices first.
+Verifiable lifecycle evidence for regulated physical assets, starting with medical devices.
 
 </div>
